@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OFFLIQ Intelligence | Air-Gapped AI for Enterprise IT</title>
+    
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="100% offline, autonomous AI engineer that automates local Windows IT scripting and maintenance to cut payroll overhead with zero cloud data leaks.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#E11D48',
+                            darkred: '#BE123C',
+                            black: '#050505',
+                            gray: '#121212',
+                            border: '#262626'
+                        }
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z' fill='%231a1a1a' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 30px rgba(225, 29, 72, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.5);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-red selection:text-white relative">
+    
+    <!-- Background Grid overlay -->
+    <div class="fixed inset-0 bg-grid-pattern z-[-1] opacity-50"></div>
+    <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red/10 blur-[120px] z-[-1]"></div>
+
+    <!-- Toast Notification Container (Top Right) -->
+    <div id="toast-container" class="fixed top-24 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 rounded-lg object-cover bg-brand-gray border border-brand-red/50" onerror="this.onerror=null; this.src='https://placehold.co/40x40/121212/E11D48?text=O';">
+                    <span class="font-display font-bold text-2xl tracking-wider">OFFLIQ<span class="text-brand-red">.</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#architecture" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Architecture</a>
+                        <a href="#security" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Security</a>
+                        <a href="#capabilities" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Capabilities</a>
+                        <a href="#pilot" class="btn-primary text-white px-6 py-2.5 rounded-md text-sm font-bold tracking-wide">Request Pilot</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-brand-border">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#architecture" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-border">Architecture</a>
+                <a href="#security" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-border">Security</a>
+                <a href="#capabilities" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-border">Capabilities</a>
+                <a href="#pilot" class="block px-3 py-2 rounded-md text-base font-bold text-brand-red">Request Pilot</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div data-aos="fade-down" data-aos-duration="1000" class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-brand-red/30 text-brand-red text-sm font-semibold mb-8">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-red opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-red"></span>
+                </span>
+                V1.0 ENTERPRISE BINARY NOW AVAILABLE
+            </div>
+            
+            <h1 data-aos="fade-up" data-aos-duration="1000" class="text-5xl md:text-7xl font-display font-bold tracking-tight mb-6">
+                The 100% Air-Gapped <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500">Autonomous IT Engineer.</span>
+            </h1>
+            
+            <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100" class="mt-4 text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 font-light">
+                Stop leaking proprietary client data to public cloud APIs. OFFLIQ natively writes and executes OS scripts directly on your local hardware to eliminate L1/L2 payroll overhead.
+            </p>
+            
+            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#pilot" class="btn-primary text-white px-8 py-4 rounded-md font-bold text-lg flex items-center justify-center gap-2">
+                    Start 3-Day Free Pilot <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="#architecture" class="glass-panel text-white px-8 py-4 rounded-md font-bold text-lg border border-brand-border hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-gray-400"></i> View Architecture
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem / Security Section -->
+    <section id="security" class="py-20 border-t border-brand-border bg-black/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-display font-bold mb-4">The Public Cloud Liability</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Pasting client network logs or Active Directory structures into ChatGPT violates SOC2 and HIPAA compliance. OFFLIQ fixes this.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div data-aos="fade-up" data-aos-delay="0" class="glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/50 transition-colors">
+                    <div class="w-14 h-14 rounded-lg bg-red-500/10 flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-wifi text-brand-red text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display">Zero Telemetry</h3>
+                    <p class="text-gray-400 leading-relaxed">Operates entirely offline. Physically disconnect your router, and OFFLIQ will continue to write and execute code perfectly.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div data-aos="fade-up" data-aos-delay="100" class="glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/50 transition-colors relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl"><i class="fa-brands fa-windows"></i></div>
+                    <div class="w-14 h-14 rounded-lg bg-red-500/10 flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-terminal text-brand-red text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display">Native OS Execution</h3>
+                    <p class="text-gray-400 leading-relaxed">Unlike passive chatbots, OFFLIQ autonomously edits local files and executes PowerShell/Python natively in the Windows environment.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div data-aos="fade-up" data-aos-delay="200" class="glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/50 transition-colors">
+                    <div class="w-14 h-14 rounded-lg bg-red-500/10 flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-user-shield text-brand-red text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display">Human-In-The-Loop</h3>
+                    <p class="text-gray-400 leading-relaxed">A native Windows UAC popup intercepts all terminal actions. A human must click "Approve" before the AI modifies any system architecture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Detail Section -->
+    <section id="architecture" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div data-aos="fade-right">
+                    <h2 class="text-3xl md:text-5xl font-display font-bold mb-6">Dual-Engine <br><span class="text-brand-red glow-text">Swarm Architecture</span></h2>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                        To prevent hardware crashes, OFFLIQ features dynamic VRAM telemetry. It utilizes a lightweight "Gatekeeper" engine for rapid conversation, and automatically hot-swaps to a massive 32-Billion parameter "Heavy Coder" engine only when deep logic is required.
+                    </p>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-brand-red mt-1"></i>
+                            <span class="text-gray-300"><strong>Self-Healing Loop:</strong> If code execution fails, OFFLIQ reads the terminal error and surgically fixes its own bug.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-brand-red mt-1"></i>
+                            <span class="text-gray-300"><strong>Cryptographic Hardware Lock:</strong> Binaries are mathematically bound to your specific motherboard UUID.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-brand-red mt-1"></i>
+                            <span class="text-gray-300"><strong>Local Vector RAG:</strong> Drop your SOPs and scripts into a folder. OFFLIQ indexes them offline for infinite recall.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Mockup Terminal -->
+                <div data-aos="fade-left" class="glass-panel rounded-xl border border-brand-border overflow-hidden shadow-2xl">
+                    <div class="bg-[#1a1a1a] px-4 py-3 border-b border-brand-border flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-4 text-xs text-gray-500 font-mono">offliq_core.exe - Secure Sandbox</span>
+                    </div>
+                    <div class="p-6 font-mono text-sm leading-relaxed text-gray-300 bg-[#0a0a0a]">
+                        <span class="text-gray-500">C:\Enterprise></span> offliq run audit<br><br>
+                        <span class="text-blue-400">[ SYSTEM ]</span> Initializing 100% Air-Gapped Matrix...<br>
+                        <span class="text-blue-400">[ SYSTEM ]</span> Gatekeeper Engine Active.<br>
+                        <span class="text-purple-400">[ USER ]</span> Write a PowerShell script to disable SMBv1 and execute it natively.<br>
+                        <span class="text-brand-red">[ TELEMETRY ]</span> Swapping to 32B Heavy Coder Engine...<br>
+                        <span class="text-green-400">[ OFFLIQ ]</span> Generating cve_audit.ps1...<br>
+                        <span class="text-yellow-400">[ SHIELD ]</span> Human-In-The-Loop Approval Required.<br>
+                        <span class="text-green-400">[ OFFLIQ ]</span> Executing... SMBv1 successfully disabled. Log saved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities / Features Section -->
+    <section id="capabilities" class="py-24 border-t border-brand-border bg-[#050505] relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-brand-red/5 rounded-full blur-[150px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-brand-red font-bold tracking-wider text-sm mb-2 block uppercase">Enterprise Capabilities</span>
+                <h2 class="text-3xl md:text-5xl font-display font-bold mb-4">More Than A Chatbot. <br>An Active Execution Engine.</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div data-aos="fade-up" data-aos-delay="0" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
+                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
+                        <i class="fa-solid fa-code text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">Autonomous Scripting</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Generates complex PowerShell and Python scripts natively on the host OS without human copying/pasting.</p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="100" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
+                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
+                        <i class="fa-solid fa-bug-slash text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">Self-Healing Loop</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">If execution fails, the AI reads the terminal error, autonomously edits its own file, and patches the bug.</p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
+                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
+                        <i class="fa-solid fa-database text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">Local RAG Memory</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Indexes your historical IT scripts into an offline vector database for infinite, secure organizational recall.</p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
+                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
+                        <i class="fa-solid fa-microchip text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">VRAM Hardware Shield</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Dynamically reads motherboard specs to prevent memory overflow crashes, ensuring 100% stable execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pilot Request Section -->
+    <section id="pilot" class="py-20 border-t border-brand-border bg-gradient-to-b from-transparent to-brand-red/5">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-panel p-8 md:p-12 rounded-2xl border border-brand-border relative overflow-hidden" data-aos="zoom-in">
+                
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-display font-bold mb-4">Request a 5-Day Free Pilot</h2>
+                    <p class="text-gray-400">Receive a cryptographically secure key to test OFFLIQ natively on an isolated machine. Zero obligations.</p>
+                </div>
+
+                <!-- NEW AJAX FORM -->
+                <!-- DO NOT add action="" or method="" here anymore. JavaScript handles it. -->
+                <form id="pilot-form" class="space-y-6">
+                    <input type="hidden" name="_subject" value="New OFFLIQ Pilot Request!">
+                    <input type="hidden" name="_captcha" value="false">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Full Name</label>
+                            <input type="text" name="name" required class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Work Email</label>
+                            <input type="email" name="email" required class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Company Name (IT/MSP)</label>
+                        <input type="text" name="company" required class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Message (Optional)</label>
+                        <textarea name="message" rows="3" class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors"></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submit-btn" class="w-full btn-primary text-white font-bold py-4 rounded-md text-lg">
+                        Request Secure Pilot Key
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand-border bg-brand-black py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <img src="logo.png" alt="Logo" class="w-6 h-6 rounded object-cover bg-brand-gray" onerror="this.style.display='none';">
+                <span class="font-display font-bold tracking-wider">OFFLIQ INTELLIGENCE</span>
+            </div>
+            <p class="text-gray-500 text-sm">
+                &copy; 2026 OFFLIQ Intelligence. Built in the NCR, India.
+            </p>
+            <div class="text-gray-500 text-sm">
+                Contact: founder.offliq@gmail.com
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize Animations
+        AOS.init({ once: true, offset: 50 });
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // =========================================================================
+        // AJAX FORM SUBMISSION & TOAST NOTIFICATION LOGIC
+        // =========================================================================
+        const form = document.getElementById('pilot-form');
+        const toastContainer = document.getElementById('toast-container');
+        const submitBtn = document.getElementById('submit-btn');
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            
+            // Dynamic styling based on success or error
+            const bgColor = type === 'success' ? 'bg-green-500/20 border-green-500' : 'bg-brand-red/20 border-brand-red';
+            const textColor = type === 'success' ? 'text-green-400' : 'text-brand-red';
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-circle-exclamation';
+
+            // Base class list (starting hidden off-screen)
+            toast.className = `glass-panel border ${bgColor} px-5 py-4 rounded-lg flex items-center gap-3 shadow-[0_0_20px_rgba(0,0,0,0.5)] transform transition-all duration-500 translate-x-full opacity-0 pointer-events-auto`;
+            
+            toast.innerHTML = `<i class="fa-solid ${icon} ${textColor} text-xl"></i><span class="text-white text-sm font-medium">${message}</span>`;
+            
+            toastContainer.appendChild(toast);
+            
+            // Trigger animation slightly after appending
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    toast.classList.remove('translate-x-full', 'opacity-0');
+                });
+            });
+
+            // Remove toast after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 500); // Wait for transition to finish
+            }, 5000);
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop page reload
+            
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Initializing Request...';
+            submitBtn.disabled = true;
+
+            // Submit using FormSubmit's AJAX Endpoint
+            fetch('https://formsubmit.co/ajax/founder.offliq@gmail.com', {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    showToast('Request sent securely. Check your email shortly.', 'success');
+                    form.reset(); // Clear the form fields
+                } else {
+                    showToast('Transmission error. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                showToast('Network error. Unable to connect to server.', 'error');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+
+    <!-- 
+      ========================================================================
+      TIDIO AUTOMATED CHATBOT WIDGET
+      Paste your actual Tidio script below this comment when you have it!
+      ========================================================================
+    -->
+    <script src="//code.tidio.co/YOUR_TIDIO_CODE_HERE.js" async></script>
+</body>
+</html>
