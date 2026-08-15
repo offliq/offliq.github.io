@@ -151,7 +151,7 @@
             
             <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="#pilot" class="btn-primary text-white px-8 py-4 rounded-md font-bold text-lg flex items-center justify-center gap-2">
-                    Start 3-Day Free Pilot <i class="fa-solid fa-arrow-right"></i>
+                    Start 5-Day Free Pilot <i class="fa-solid fa-arrow-right"></i>
                 </a>
                 <a href="#architecture" class="glass-panel text-white px-8 py-4 rounded-md font-bold text-lg border border-brand-border hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
                     <i class="fa-solid fa-shield-halved text-gray-400"></i> View Architecture
@@ -306,7 +306,6 @@
                 </div>
 
                 <!-- NEW AJAX FORM -->
-                <!-- DO NOT add action="" or method="" here anymore. JavaScript handles it. -->
                 <form id="pilot-form" class="space-y-6">
                     <input type="hidden" name="_subject" value="New OFFLIQ Pilot Request!">
                     <input type="hidden" name="_captcha" value="false">
@@ -354,6 +353,64 @@
         </div>
     </footer>
 
+    <!-- ========================================== -->
+    <!-- CUSTOM OFFLIQ PROPRIETARY CHATBOT WIDGET   -->
+    <!-- ========================================== -->
+    
+    <!-- Chatbot Toggle Button -->
+    <button id="chatbot-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-brand-red rounded-full shadow-[0_0_20px_rgba(225,29,72,0.5)] flex items-center justify-center cursor-pointer z-[100] hover:scale-110 transition-transform duration-300">
+        <i class="fa-solid fa-comment-dots text-white text-2xl"></i>
+    </button>
+
+    <!-- Chatbot Window -->
+    <div id="chatbot-window" class="fixed bottom-24 right-6 w-[350px] max-w-[calc(100vw-48px)] h-[450px] glass-panel border border-brand-border rounded-xl flex-col shadow-2xl z-[100] transition-all duration-300 transform scale-0 origin-bottom-right opacity-0 hidden">
+        
+        <!-- Chat Header -->
+        <div class="bg-brand-gray border-b border-brand-border p-4 rounded-t-xl flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <img src="logo.png" alt="OFFLIQ" class="w-8 h-8 rounded-md bg-black border border-brand-red/50" onerror="this.onerror=null; this.src='https://placehold.co/32x32/121212/E11D48?text=O';">
+                    <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-brand-gray"></div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm">OFFLIQ Routing Agent</h4>
+                    <p class="text-green-400 text-xs">Online</p>
+                </div>
+            </div>
+            <button id="chatbot-close" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto flex flex-col gap-4 bg-[#0a0a0a]">
+            <!-- Initial Welcome Message -->
+            <div class="flex gap-2 w-full">
+                <div class="w-6 h-6 rounded-md bg-brand-red/20 flex-shrink-0 flex items-center justify-center mt-1 border border-brand-red/30">
+                    <i class="fa-solid fa-robot text-brand-red text-xs"></i>
+                </div>
+                <div class="bg-[#1a1a1a] border border-brand-border p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-300 max-w-[85%]">
+                    Welcome to OFFLIQ Intelligence. I am the automated routing agent. You can type your question below, or select an option to learn more:
+                    <div class="flex flex-col gap-2 mt-3">
+                        <button class="chat-shortcut text-left text-xs bg-[#262626] hover:bg-brand-red/20 border border-brand-border hover:border-brand-red transition-colors p-2 rounded text-white" data-query="security">How is my data kept safe?</button>
+                        <button class="chat-shortcut text-left text-xs bg-[#262626] hover:bg-brand-red/20 border border-brand-border hover:border-brand-red transition-colors p-2 rounded text-white" data-query="price">What is the pricing model?</button>
+                        <button class="chat-shortcut text-left text-xs bg-[#262626] hover:bg-brand-red/20 border border-brand-border hover:border-brand-red transition-colors p-2 rounded text-white" data-query="pilot">How do I test the software?</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input Area -->
+        <div class="p-3 bg-brand-gray border-t border-brand-border rounded-b-xl">
+            <form id="chatbot-form" class="flex gap-2">
+                <input type="text" id="chatbot-input" placeholder="Type a message..." autocomplete="off" class="flex-1 bg-[#121212] border border-brand-border rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                <button type="submit" class="bg-brand-red hover:bg-brand-darkred text-white w-10 h-10 rounded-md flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-paper-plane text-sm"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -376,41 +433,27 @@
 
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
-            
-            // Dynamic styling based on success or error
             const bgColor = type === 'success' ? 'bg-green-500/20 border-green-500' : 'bg-brand-red/20 border-brand-red';
             const textColor = type === 'success' ? 'text-green-400' : 'text-brand-red';
             const icon = type === 'success' ? 'fa-check-circle' : 'fa-circle-exclamation';
 
-            // Base class list (starting hidden off-screen)
             toast.className = `glass-panel border ${bgColor} px-5 py-4 rounded-lg flex items-center gap-3 shadow-[0_0_20px_rgba(0,0,0,0.5)] transform transition-all duration-500 translate-x-full opacity-0 pointer-events-auto`;
-            
             toast.innerHTML = `<i class="fa-solid ${icon} ${textColor} text-xl"></i><span class="text-white text-sm font-medium">${message}</span>`;
-            
             toastContainer.appendChild(toast);
             
-            // Trigger animation slightly after appending
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    toast.classList.remove('translate-x-full', 'opacity-0');
-                });
-            });
-
-            // Remove toast after 5 seconds
+            requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.remove('translate-x-full', 'opacity-0')));
             setTimeout(() => {
                 toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => toast.remove(), 500); // Wait for transition to finish
+                setTimeout(() => toast.remove(), 500); 
             }, 5000);
         }
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Stop page reload
-            
+            e.preventDefault(); 
             const originalBtnText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Initializing Request...';
             submitBtn.disabled = true;
 
-            // Submit using FormSubmit's AJAX Endpoint
             fetch('https://formsubmit.co/ajax/founder.offliq@gmail.com', {
                 method: 'POST',
                 body: new FormData(form)
@@ -419,27 +462,121 @@
             .then(data => {
                 if(data.success) {
                     showToast('Request sent securely. Check your email shortly.', 'success');
-                    form.reset(); // Clear the form fields
-                } else {
-                    showToast('Transmission error. Please try again.', 'error');
-                }
+                    form.reset(); 
+                } else { showToast('Transmission error. Please try again.', 'error'); }
             })
-            .catch(error => {
-                showToast('Network error. Unable to connect to server.', 'error');
-            })
+            .catch(error => showToast('Network error. Unable to connect to server.', 'error'))
             .finally(() => {
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
             });
         });
-    </script>
 
-    <!-- 
-      ========================================================================
-      TIDIO AUTOMATED CHATBOT WIDGET
-      Paste your actual Tidio script below this comment when you have it!
-      ========================================================================
-    -->
-    <script src="//code.tidio.co/YOUR_TIDIO_CODE_HERE.js" async></script>
+        // =========================================================================
+        // CUSTOM RULE-BASED PROPRIETARY CHATBOT LOGIC
+        // =========================================================================
+        const chatToggleBtn = document.getElementById('chatbot-toggle');
+        const chatWindow = document.getElementById('chatbot-window');
+        const chatCloseBtn = document.getElementById('chatbot-close');
+        const chatForm = document.getElementById('chatbot-form');
+        const chatInput = document.getElementById('chatbot-input');
+        const chatMessages = document.getElementById('chatbot-messages');
+        const shortcuts = document.querySelectorAll('.chat-shortcut');
+
+        // Intelligence Database
+        const botKnowledge = {
+            "price": "OFFLIQ operates on a CapEx model. It is a one-time workstation license of ₹80,000 ($950) for lifetime use. There are absolutely no recurring SaaS or API token fees.",
+            "cost": "OFFLIQ operates on a CapEx model. It is a one-time workstation license of ₹80,000 ($950) for lifetime use. There are absolutely no recurring SaaS or API token fees.",
+            "security": "OFFLIQ is engineered for 100% air-gapped environments. It runs natively on your hardware with zero internet required. Your client data, active directory structures, and logs never leave your physical workstation.",
+            "safe": "OFFLIQ is engineered for 100% air-gapped environments. It runs natively on your hardware with zero internet required. Your client data, active directory structures, and logs never leave your physical workstation.",
+            "internet": "No internet connection is required. Physically disconnect the router and OFFLIQ will continue to autonomously write and execute code perfectly.",
+            "pilot": "To test the software, please fill out the 'Request Pilot' form on this page. Our Lead Architect will manually generate a secure Hardware ID key for your test machine.",
+            "demo": "To test the software, please fill out the 'Request Pilot' form on this page. Our Lead Architect will manually generate a secure Hardware ID key for your test machine.",
+            "default": "I am an automated routing agent. Please submit a Pilot Request via the form on this page to connect directly with our Lead Architect, Om Sharma."
+        };
+
+        function toggleChat() {
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden');
+                setTimeout(() => {
+                    chatWindow.classList.remove('scale-0', 'opacity-0');
+                    chatWindow.classList.add('scale-100', 'opacity-100');
+                    chatWindow.style.display = 'flex';
+                }, 10);
+            } else {
+                chatWindow.classList.remove('scale-100', 'opacity-100');
+                chatWindow.classList.add('scale-0', 'opacity-0');
+                setTimeout(() => {
+                    chatWindow.classList.add('hidden');
+                    chatWindow.style.display = '';
+                }, 300);
+            }
+        }
+
+        chatToggleBtn.addEventListener('click', toggleChat);
+        chatCloseBtn.addEventListener('click', toggleChat);
+
+        function addMessage(text, isUser = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex gap-2 w-full ${isUser ? 'justify-end' : ''}`;
+            
+            if (isUser) {
+                msgDiv.innerHTML = `
+                    <div class="bg-brand-red text-white text-sm p-3 rounded-l-xl rounded-br-xl max-w-[85%] border border-brand-darkred">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                msgDiv.innerHTML = `
+                    <div class="w-6 h-6 rounded-md bg-brand-red/20 flex-shrink-0 flex items-center justify-center mt-1 border border-brand-red/30">
+                        <i class="fa-solid fa-robot text-brand-red text-xs"></i>
+                    </div>
+                    <div class="bg-[#1a1a1a] border border-brand-border p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-300 max-w-[85%]">
+                        ${text}
+                    </div>
+                `;
+            }
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function botReply(userText) {
+            const textLower = userText.toLowerCase();
+            let replyText = botKnowledge["default"];
+            
+            for (const key in botKnowledge) {
+                if (textLower.includes(key)) {
+                    replyText = botKnowledge[key];
+                    break;
+                }
+            }
+            
+            // Add slight typing delay to feel like AI processing
+            setTimeout(() => addMessage(replyText, false), 600);
+        }
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            addMessage(text, true);
+            chatInput.value = '';
+            botReply(text);
+        });
+
+        // Handle Shortcut Buttons
+        shortcuts.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const query = this.getAttribute('data-query');
+                addMessage(this.innerText, true);
+                
+                // Hide the buttons after one is clicked
+                this.parentElement.style.display = 'none';
+                
+                botReply(query);
+            });
+        });
+    </script>
 </body>
 </html>
