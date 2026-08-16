@@ -1,25 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth bg-[#030303]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFFLIQ Intelligence | Air-Gapped AI for Enterprise IT</title>
+    <title>OFFLIQ Intelligence | Autonomous Air-Gapped AI</title>
     
-    <!-- Meta Tags for SEO -->
-    <meta name="description" content="100% offline, autonomous AI engineer that automates local Windows IT scripting and maintenance to cut payroll overhead with zero cloud data leaks.">
+    <meta name="description" content="100% offline, autonomous AI engineer that automates local Windows IT scripting and maintenance.">
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,13 +29,16 @@
                         brand: {
                             red: '#E11D48',
                             darkred: '#BE123C',
-                            black: '#050505',
-                            gray: '#121212',
-                            border: '#262626'
+                            black: '#030303',
+                            gray: '#0a0a0a',
+                            border: '#1f1f1f',
+                            text: '#E2E8F0',
+                            muted: '#888888'
                         }
                     },
-                    backgroundImage: {
-                        'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z' fill='%231a1a1a' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+                    letterSpacing: {
+                        tighter: '-0.04em',
+                        tightest: '-0.06em',
                     }
                 }
             }
@@ -48,535 +47,1038 @@
 
     <style>
         body {
-            background-color: #050505;
-            color: #ffffff;
+            background-color: #030303;
+            color: #E2E8F0;
             overflow-x: hidden;
+            cursor: none; 
+            -webkit-font-smoothing: antialiased;
         }
         
-        .glass-panel {
-            background: rgba(18, 18, 18, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* Apply custom cursor globally */
+        a, button, input, select, textarea, .interactive, * {
+            cursor: none !important;
         }
 
-        .glow-text {
-            text-shadow: 0 0 30px rgba(225, 29, 72, 0.5);
+        /* --- THE FIX: Restoring default cursor ONLY inside the chatbot --- */
+        body.default-cursor, body.default-cursor * {
+            cursor: auto !important;
+        }
+        body.default-cursor a, body.default-cursor button, body.default-cursor select, body.default-cursor input, body.default-cursor textarea {
+            cursor: pointer !important;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
-            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-position: center center;
+        }
+
+        #neural-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* The Custom Dart Cursor - Increased to 28px */
+        .cursor-wrapper {
+            position: fixed;
+            top: 0; left: 0;
+            width: 28px; height: 28px; 
+            margin-top: -14px; margin-left: -14px;
+            pointer-events: none;
+            z-index: 999999;
+            will-change: transform;
+            mix-blend-mode: difference;
+            transition: opacity 0.2s ease;
+        }
+
+        .cursor-svg {
+            width: 100%; height: 100%;
+            fill: #E11D48;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), fill 0.2s;
+            filter: drop-shadow(0 0 5px rgba(225, 29, 72, 0.8));
+        }
+
+        .cursor-hover .cursor-svg {
+            transform: scale(1.3);
+            fill: #ffffff; 
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+        }
+
+        @media (max-width: 1024px) {
+            .cursor-wrapper { display: none; }
+            body, a, button, input, select, textarea, .interactive, * { cursor: auto !important; }
+        }
+
+        .text-massive {
+            font-size: clamp(3rem, 8vw, 7.5rem);
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+        }
+        .text-huge {
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+        
+        .glass-nav {
+            background: rgba(3, 3, 3, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Form Visibility Fixes */
+        .form-input {
+            background-color: #161616;
+            border: 1px solid #333333;
+            color: #ffffff;
             transition: all 0.3s ease;
         }
+        .form-input:hover, .form-input:focus {
+            border-color: #E11D48;
+            box-shadow: 0 0 10px rgba(225, 29, 72, 0.1);
+            outline: none;
+        }
         
-        .btn-primary:hover:not(:disabled) {
+        select.form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+        select option { background-color: #0a0a0a; color: #fff; padding: 15px; }
+
+        .btn-premium {
+            background: #E11D48;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+        .btn-premium::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%); transition: 0.6s;
+        }
+        .btn-premium:hover::before { transform: translateX(100%); }
+        .btn-premium:hover {
+            box-shadow: 0 0 30px rgba(225, 29, 72, 0.5);
+            border: 1px solid rgba(255,255,255,0.2);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.5);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
+        .tilt-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .tilt-card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(225, 29, 72, 0.15);
+            border-color: rgba(225, 29, 72, 0.4);
+            transform: translateY(-8px) scale(1.02);
+            z-index: 10;
+        }
+
+        .watermark-text {
+            font-size: clamp(5rem, 20vw, 25rem);
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            line-height: 0.75;
+            letter-spacing: -0.05em;
+            user-select: none;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: #1f1f1f; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E11D48; }
+
+        @keyframes floatEffect {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: floatEffect 6s ease-in-out infinite;
+        }
+
+        /* Typewriter Cursor */
+        .typewriter-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background-color: #E11D48;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: bottom;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        /* Hero Glow Animation */
+        .hero-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(225,29,72,0.15) 0%, rgba(3,3,3,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: pulseGlow 8s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        /* HARDWARE ACCELERATION FOR LAG-FREE ANIMATIONS */
+        .gsap-fade, .gsap-stagger, .gsap-hero {
+            will-change: transform, opacity;
+        }
+
+        /* Ensure Chatbot scrolls smoothly */
+        #chatbot-messages {
+            overscroll-behavior: contain;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-brand-red selection:text-white relative">
-    
-    <!-- Background Grid overlay -->
-    <div class="fixed inset-0 bg-grid-pattern z-[-1] opacity-50"></div>
-    <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red/10 blur-[120px] z-[-1]"></div>
+<body class="antialiased selection:bg-brand-red selection:text-white">
 
-    <!-- Toast Notification Container (Top Right) -->
+    <canvas id="neural-canvas"></canvas>
+
+    <div class="cursor-wrapper" id="custom-cursor">
+        <svg class="cursor-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="12,2 4,22 12,18 20,22" />
+        </svg>
+    </div>
+    
     <div id="toast-container" class="fixed top-24 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel border-b border-brand-border">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 rounded-lg object-cover bg-brand-gray border border-brand-red/50" onerror="this.onerror=null; this.src='https://placehold.co/40x40/121212/E11D48?text=O';">
-                    <span class="font-display font-bold text-2xl tracking-wider">OFFLIQ<span class="text-brand-red">.</span></span>
-                </div>
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div class="flex items-center justify-between h-20 md:h-24">
                 
+                <div class="flex-shrink-0 flex items-center gap-3 interactive group cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(225,29,72,0.4)] transition-transform group-hover:scale-110 duration-300" onerror="this.onerror=null; this.src='https://placehold.co/100x100/030303/E11D48?text=O';">
+                    <span class="font-display font-bold text-2xl md:text-3xl tracking-tighter text-white">OFFLIQ<span class="text-brand-red">.</span></span>
+                </div>
+
                 <!-- Desktop Menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#architecture" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Architecture</a>
-                        <a href="#security" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Security</a>
-                        <a href="#capabilities" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Capabilities</a>
-                        <a href="#pilot" class="btn-primary text-white px-6 py-2.5 rounded-md text-sm font-bold tracking-wide">Request Pilot</a>
-                    </div>
+                <div class="hidden md:flex items-center gap-10">
+                    <a href="#metrics" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Architecture</a>
+                    <a href="#process" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Execution</a>
+                    <a href="#features" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Capabilities</a>
+                    <a href="#contact" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Support</a>
+                    <a href="#contact" class="btn-premium px-7 py-3 text-sm font-bold interactive flex items-center gap-2">
+                        Request Pilot <i class="fa-solid fa-terminal text-xs"></i>
+                    </a>
                 </div>
-                
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-brand-border">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#architecture" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-border">Architecture</a>
-                <a href="#security" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-border">Security</a>
-                <a href="#capabilities" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-brand-border">Capabilities</a>
-                <a href="#pilot" class="block px-3 py-2 rounded-md text-base font-bold text-brand-red">Request Pilot</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div data-aos="fade-down" data-aos-duration="1000" class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-brand-red/30 text-brand-red text-sm font-semibold mb-8">
-                <span class="relative flex h-3 w-3">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-red opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-red"></span>
-                </span>
-                V1.0 ENTERPRISE BINARY NOW AVAILABLE
+    <main class="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden bg-grid-pattern">
+        <div class="hero-glow"></div>
+
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12 w-full relative z-10 flex flex-col justify-center animate-float">
+            
+            <div class="gsap-hero opacity-0 translate-y-10">
+                <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-brand-red/30 bg-[#111]/80 backdrop-blur-md mb-8 interactive shadow-[0_0_15px_rgba(225,29,72,0.15)]">
+                    <span class="w-2 h-2 rounded-full bg-brand-red animate-pulse shadow-[0_0_10px_#E11D48]"></span>
+                    <span class="text-xs font-bold tracking-widest uppercase text-gray-200">V1.0 Enterprise Edition Live</span>
+                </div>
             </div>
             
-            <h1 data-aos="fade-up" data-aos-duration="1000" class="text-5xl md:text-7xl font-display font-bold tracking-tight mb-6">
-                The 100% Air-Gapped <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500">Autonomous IT Engineer.</span>
+            <h1 class="font-display text-massive font-bold text-white mb-6 tracking-tightest gsap-hero opacity-0 translate-y-10">
+                Engineer <br>
+                <span class="text-brand-red drop-shadow-[0_0_20px_rgba(225,29,72,0.4)]" id="typewriter-text"></span><span class="typewriter-cursor"></span>
             </h1>
             
-            <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100" class="mt-4 text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 font-light">
-                Stop leaking proprietary client data to public cloud APIs. OFFLIQ natively writes and executes OS scripts directly on your local hardware to eliminate L1/L2 payroll overhead.
-            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-4 items-end gsap-hero opacity-0 translate-y-10">
+                <p class="text-xl md:text-2xl text-gray-400 max-w-2xl font-light leading-relaxed">
+                    OFFLIQ is an autonomous, 100% air-gapped AI engineer. Stop pasting proprietary client network data into public cloud APIs. Execute Windows server scripts locally with absolute zero telemetry.
+                </p>
+                <div class="flex gap-4 md:justify-end">
+                    <a href="#contact" class="btn-premium px-8 py-4 text-base font-bold flex items-center justify-center gap-3 interactive group">
+                        Deploy OFFLIQ <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section id="metrics" class="py-32 relative bg-[#0a0a0a] border-y border-brand-border">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div class="mb-20 gsap-fade opacity-0">
+                <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase flex items-center gap-3">
+                    <i class="fa-solid fa-microchip"></i> The Math Behind the Architecture
+                </span>
+                <h2 class="font-display text-huge font-bold tracking-tighter">
+                    Absolute Data <br>Sovereignty.
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
+                        <i class="fa-solid fa-shield-halved text-brand-red"></i>
+                    </div>
+                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">Data Leakage</span>
+                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">0%</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Physically disconnect your router. OFFLIQ continues to code and execute perfectly offline.</p>
+                </div>
+                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
+                        <i class="fa-solid fa-money-bill-wave text-brand-red"></i>
+                    </div>
+                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">API Token Costs</span>
+                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-brand-red drop-shadow-[0_0_15px_rgba(225,29,72,0.3)]">₹0</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">A one-time CapEx license. Zero recurring SaaS fees regardless of how much code you generate.</p>
+                </div>
+                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
+                        <i class="fa-solid fa-bolt text-brand-red"></i>
+                    </div>
+                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">RAG Engine Recall</span>
+                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">&lt;42ms</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Local Vector DB ingestion. Drop your historical SOPs into the folder for instant organizational memory.</p>
+                </div>
+                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
+                        <i class="fa-solid fa-server text-brand-red"></i>
+                    </div>
+                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">Required Hardware</span>
+                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">8GB+</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Dynamic telemetry reads your physical VRAM and adjusts chunking to prevent OOM system crashes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process" class="py-32 relative bg-[#030303] overflow-hidden bg-grid-pattern">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
+            <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 text-center uppercase">Autonomous Workflow</span>
+            <h2 class="font-display text-5xl md:text-6xl font-bold mb-24 tracking-tighter text-center">From problem to <br>executed solution.</h2>
             
-            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#pilot" class="btn-primary text-white px-8 py-4 rounded-md font-bold text-lg flex items-center justify-center gap-2">
-                    Start 3-Day Free Pilot <i class="fa-solid fa-arrow-right"></i>
-                </a>
-                <a href="#architecture" class="glass-panel text-white px-8 py-4 rounded-md font-bold text-lg border border-brand-border hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-gray-400"></i> View Architecture
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- The Problem / Security Section -->
-    <section id="security" class="py-20 border-t border-brand-border bg-black/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl md:text-4xl font-display font-bold mb-4">The Public Cloud Liability</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Pasting client network logs or Active Directory structures into ChatGPT violates SOC2 and HIPAA compliance. OFFLIQ fixes this.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div data-aos="fade-up" data-aos-delay="0" class="glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/50 transition-colors">
-                    <div class="w-14 h-14 rounded-lg bg-red-500/10 flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-wifi text-brand-red text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 font-display">Zero Telemetry</h3>
-                    <p class="text-gray-400 leading-relaxed">Operates entirely offline. Physically disconnect your router, and OFFLIQ will continue to write and execute code perfectly.</p>
-                </div>
-                
-                <!-- Card 2 -->
-                <div data-aos="fade-up" data-aos-delay="100" class="glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/50 transition-colors relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl"><i class="fa-brands fa-windows"></i></div>
-                    <div class="w-14 h-14 rounded-lg bg-red-500/10 flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-terminal text-brand-red text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 font-display">Native OS Execution</h3>
-                    <p class="text-gray-400 leading-relaxed">Unlike passive chatbots, OFFLIQ autonomously edits local files and executes PowerShell/Python natively in the Windows environment.</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative mt-10">
+                <!-- Perfectly Aligned Connected Line -->
+                <div class="hidden md:block absolute top-[48px] left-[12.5%] right-[12.5%] h-[2px] bg-[#1f1f1f] z-0">
+                    <div class="absolute top-0 left-0 h-full w-[20%] bg-brand-red shadow-[0_0_20px_#E11D48] animate-data-flow"></div>
                 </div>
 
-                <!-- Card 3 -->
-                <div data-aos="fade-up" data-aos-delay="200" class="glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/50 transition-colors">
-                    <div class="w-14 h-14 rounded-lg bg-red-500/10 flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-user-shield text-brand-red text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 font-display">Human-In-The-Loop</h3>
-                    <p class="text-gray-400 leading-relaxed">A native Windows UAC popup intercepts all terminal actions. A human must click "Approve" before the AI modifies any system architecture.</p>
+                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl group interactive">
+                    <div class="w-24 h-24 rounded-full bg-[#050505] border-2 border-[#1f1f1f] text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">01</div>
+                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-gray-200">Ingest</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed text-center md:text-left">Provide a prompt or error log. OFFLIQ's Gatekeeper instantly queries your local Vector database for relevant company SOPs.</p>
+                </div>
+                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl group interactive">
+                    <div class="w-24 h-24 rounded-full bg-[#050505] border-2 border-[#1f1f1f] text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">02</div>
+                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-gray-200">Architect</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed text-center md:text-left">The Heavy Coder engine spins up, allocating dynamic VRAM to write the necessary PowerShell or Python script from scratch.</p>
+                </div>
+                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-gradient-to-b from-[#1a050a] to-[#0a0a0a] border border-brand-red/50 rounded-xl interactive">
+                    <div class="w-24 h-24 rounded-full bg-brand-red border-4 border-[#050505] outline outline-2 outline-brand-red text-white flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 shadow-[0_0_30px_rgba(225,29,72,0.5)]">03</div>
+                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-white">Execute</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed text-center md:text-left font-medium">The Windows UAC shield triggers. Once a human clicks 'Approve', OFFLIQ executes the script natively on the host OS.</p>
+                </div>
+                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl group interactive">
+                    <div class="w-24 h-24 rounded-full bg-[#050505] border-2 border-[#1f1f1f] text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">04</div>
+                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-gray-200">Self-Heal</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed text-center md:text-left">If the terminal returns a syntax error, the AI reads it, patches the local file, and re-runs the loop automatically.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Architecture Detail Section -->
-    <section id="architecture" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div data-aos="fade-right">
-                    <h2 class="text-3xl md:text-5xl font-display font-bold mb-6">Dual-Engine <br><span class="text-brand-red glow-text">Swarm Architecture</span></h2>
-                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">
-                        To prevent hardware crashes, OFFLIQ features dynamic VRAM telemetry. It utilizes a lightweight "Gatekeeper" engine for rapid conversation, and automatically hot-swaps to a massive 32-Billion parameter "Heavy Coder" engine only when deep logic is required.
-                    </p>
+    <section id="features" class="py-32 relative bg-[#0a0a0a] border-t border-[#1a1a1a]">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-32">
+                <div class="gsap-fade opacity-0">
+                    <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase">Core Technology Stack</span>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tighter mb-6">Engineered for the Edge.</h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8">OFFLIQ is not a web wrapper. It is a highly optimized, C++ compiled executable designed to interface natively with the Windows OS kernel while maintaining a zero-byte external footprint.</p>
                     
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-brand-red mt-1"></i>
-                            <span class="text-gray-300"><strong>Self-Healing Loop:</strong> If code execution fails, OFFLIQ reads the terminal error and surgically fixes its own bug.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-brand-red mt-1"></i>
-                            <span class="text-gray-300"><strong>Cryptographic Hardware Lock:</strong> Binaries are mathematically bound to your specific motherboard UUID.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-brand-red mt-1"></i>
-                            <span class="text-gray-300"><strong>Local Vector RAG:</strong> Drop your SOPs and scripts into a folder. OFFLIQ indexes them offline for infinite recall.</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Mockup Terminal -->
-                <div data-aos="fade-left" class="glass-panel rounded-xl border border-brand-border overflow-hidden shadow-2xl">
-                    <div class="bg-[#1a1a1a] px-4 py-3 border-b border-brand-border flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span class="ml-4 text-xs text-gray-500 font-mono">offliq_core.exe - Secure Sandbox</span>
-                    </div>
-                    <div class="p-6 font-mono text-sm leading-relaxed text-gray-300 bg-[#0a0a0a]">
-                        <span class="text-gray-500">C:\Enterprise></span> offliq run audit<br><br>
-                        <span class="text-blue-400">[ SYSTEM ]</span> Initializing 100% Air-Gapped Matrix...<br>
-                        <span class="text-blue-400">[ SYSTEM ]</span> Gatekeeper Engine Active.<br>
-                        <span class="text-purple-400">[ USER ]</span> Write a PowerShell script to disable SMBv1 and execute it natively.<br>
-                        <span class="text-brand-red">[ TELEMETRY ]</span> Swapping to 32B Heavy Coder Engine...<br>
-                        <span class="text-green-400">[ OFFLIQ ]</span> Generating cve_audit.ps1...<br>
-                        <span class="text-yellow-400">[ SHIELD ]</span> Human-In-The-Loop Approval Required.<br>
-                        <span class="text-green-400">[ OFFLIQ ]</span> Executing... SMBv1 successfully disabled. Log saved.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Capabilities / Features Section -->
-    <section id="capabilities" class="py-24 border-t border-brand-border bg-[#050505] relative overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-brand-red/5 rounded-full blur-[150px] pointer-events-none"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-brand-red font-bold tracking-wider text-sm mb-2 block uppercase">Enterprise Capabilities</span>
-                <h2 class="text-3xl md:text-5xl font-display font-bold mb-4">More Than A Chatbot. <br>An Active Execution Engine.</h2>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div data-aos="fade-up" data-aos-delay="0" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
-                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
-                        <i class="fa-solid fa-code text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">Autonomous Scripting</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Generates complex PowerShell and Python scripts natively on the host OS without human copying/pasting.</p>
-                </div>
-
-                <div data-aos="fade-up" data-aos-delay="100" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
-                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
-                        <i class="fa-solid fa-bug-slash text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">Self-Healing Loop</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">If execution fails, the AI reads the terminal error, autonomously edits its own file, and patches the bug.</p>
-                </div>
-
-                <div data-aos="fade-up" data-aos-delay="200" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
-                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
-                        <i class="fa-solid fa-database text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">Local RAG Memory</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Indexes your historical IT scripts into an offline vector database for infinite, secure organizational recall.</p>
-                </div>
-
-                <div data-aos="fade-up" data-aos-delay="300" class="group glass-panel p-8 rounded-xl border border-brand-border hover:border-brand-red/80 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(225,29,72,0.2)] bg-gradient-to-b from-[#121212] to-transparent">
-                    <div class="w-14 h-14 rounded-lg bg-black border border-brand-border flex items-center justify-center mb-6 group-hover:bg-brand-red/20 group-hover:border-brand-red/50 transition-colors">
-                        <i class="fa-solid fa-microchip text-2xl text-gray-400 group-hover:text-brand-red transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 font-display text-white group-hover:text-brand-red transition-colors">VRAM Hardware Shield</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Dynamically reads motherboard specs to prevent memory overflow crashes, ensuring 100% stable execution.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pilot Request Section -->
-    <section id="pilot" class="py-20 border-t border-brand-border bg-gradient-to-b from-transparent to-brand-red/5">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-panel p-8 md:p-12 rounded-2xl border border-brand-border relative overflow-hidden" data-aos="zoom-in">
-                
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-display font-bold mb-4">Request a 3-Day Free Pilot</h2>
-                    <p class="text-gray-400">Receive a cryptographically secure key to test OFFLIQ natively on an isolated machine. Zero obligations.</p>
-                </div>
-
-                <!-- NEW AJAX FORM -->
-                <form id="pilot-form" class="space-y-6">
-                    <input type="hidden" name="_subject" value="New OFFLIQ Pilot Request!">
-                    <input type="hidden" name="_captcha" value="false">
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Full Name</label>
-                            <input type="text" name="name" required class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-[#111] border border-brand-red/30 flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-microchip text-brand-red text-xs"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Llama.cpp Backend</h4>
+                                <p class="text-sm text-gray-500">C-compiled ML inferencing ensures massive AI models can run on standard consumer hardware.</p>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Work Email</label>
-                            <input type="email" name="email" required class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-[#111] border border-brand-red/30 flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-code text-brand-red text-xs"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Native OS Subprocess Hooking</h4>
+                                <p class="text-sm text-gray-500">Directly executes and parses standard output/error from PowerShell and Python interpreters.</p>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Company Name (IT/MSP)</label>
-                        <input type="text" name="company" required class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors">
+                </div>
+                
+                <div class="gsap-fade opacity-0 relative">
+                    <div class="absolute inset-0 bg-brand-red/10 blur-[80px] rounded-full pointer-events-none"></div>
+                    <div class="bg-[#111] border border-[#222] rounded-2xl p-6 relative z-10 shadow-2xl font-mono text-sm text-gray-300 overflow-hidden">
+                        <div class="flex gap-2 mb-4 border-b border-[#222] pb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <p class="text-brand-red mb-2">> Initialization Sequence Started</p>
+                        <p class="mb-1 text-gray-400">Loading Configuration... [OK]</p>
+                        <p class="mb-1 text-gray-400">Querying Hardware Telemetry...</p>
+                        <p class="mb-4 text-green-400">↳ Detected: 12GB Physical VRAM (Tier 2)</p>
+                        <p class="mb-1 text-gray-400">Mounting Vector DB (Offline Mode)... [OK]</p>
+                        <p class="mb-1 text-white font-bold">> Engine Ready. Awaiting execution command.</p>
+                        <div class="w-2 h-4 bg-white animate-pulse mt-2 inline-block"></div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Message (Optional)</label>
-                        <textarea name="message" rows="3" class="w-full bg-[#121212] border border-brand-border rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand-red transition-colors"></textarea>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="tilt-card bg-[#111] border border-[#222] p-10 rounded-3xl interactive gsap-stagger opacity-0 translate-y-10 group">
+                    <i class="fa-solid fa-fingerprint text-4xl text-brand-red mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></i>
+                    <h3 class="text-2xl font-bold text-white mb-4 font-display">Cryptographic Hardware Lock</h3>
+                    <p class="text-gray-400 leading-relaxed">Piracy is impossible. Every OFFLIQ binary is mathematically bound to the unique UUID of your purchasing motherboard. It will not boot on an unauthorized flash drive or secondary machine.</p>
+                </div>
+                <div class="tilt-card bg-[#111] border border-[#222] p-10 rounded-3xl interactive gsap-stagger opacity-0 translate-y-10 group">
+                    <i class="fa-solid fa-memory text-4xl text-brand-red mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></i>
+                    <h3 class="text-2xl font-bold text-white mb-4 font-display">Dynamic Swarm Telemetry</h3>
+                    <p class="text-gray-400 leading-relaxed">You don't need a supercomputer. OFFLIQ's telemetry node reads your physical VRAM on boot and adjusts its neural chunking limits to prevent your system from crashing via OOM errors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 relative bg-[#030303] border-t border-[#1a1a1a] bg-grid-pattern">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8">
+            <div class="bg-[#050505] rounded-3xl p-10 md:p-16 border border-[#1f1f1f] shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative gsap-fade opacity-0 translate-y-10 tilt-card">
+                
+                <div class="text-center mb-12 gsap-stagger opacity-0 translate-y-10">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tighter">Contact & Procurement</h2>
+                    <p class="text-brand-muted text-lg">Request a free pilot, purchase a license, or contact the architecture team directly.</p>
+                </div>
+
+                <form id="offliq-form" class="space-y-8">
+                    <div class="gsap-stagger opacity-0 translate-y-10">
+                        <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Inquiry Type <span class="text-brand-red">*</span></label>
+                        <div class="relative interactive group">
+                            <select id="inquiry-type" required class="w-full form-input rounded-xl px-5 py-4 font-medium cursor-none appearance-none bg-[#161616]">
+                                <option value="" disabled selected class="text-gray-500">Select an option...</option>
+                                <option value="Request 3-Day Free Pilot">Request 3-Day Free Pilot</option>
+                                <option value="Purchase Permanent License (₹80,000)">Purchase Permanent License (₹80,000)</option>
+                                <option value="Technical Support / Bug Report">Technical Support / Bug Report</option>
+                                <option value="General Question / Other">General Question / Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="gsap-stagger opacity-0 translate-y-10">
+                            <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Full Name <span class="text-brand-red">*</span></label>
+                            <input type="text" id="full-name" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="John Doe">
+                        </div>
+                        <div class="gsap-stagger opacity-0 translate-y-10">
+                            <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Work Email <span class="text-brand-red">*</span></label>
+                            <input type="email" id="work-email" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="john@company.com">
+                        </div>
                     </div>
                     
-                    <button type="submit" id="submit-btn" class="w-full btn-primary text-white font-bold py-4 rounded-md text-lg">
-                        Request Secure Pilot Key
+                    <div class="gsap-stagger opacity-0 translate-y-10">
+                        <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Company Name (IT/MSP) <span class="text-brand-red">*</span></label>
+                        <input type="text" id="company-name" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="Acme Tech Solutions">
+                    </div>
+                    
+                    <div class="gsap-stagger opacity-0 translate-y-10">
+                        <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Message (Optional)</label>
+                        <textarea id="message" rows="4" class="w-full form-input rounded-xl px-5 py-4 resize-none interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="Tell us about your infrastructure requirements..."></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submit-btn" class="w-full btn-premium py-5 rounded-xl font-bold text-lg flex justify-center items-center gap-3 interactive mt-4 shadow-[0_0_20px_rgba(225,29,72,0.3)] gsap-stagger opacity-0 translate-y-10">
+                        <span>Send Secure Message</span>
+                        <i class="fa-solid fa-paper-plane text-sm"></i>
                     </button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="border-t border-brand-border bg-brand-black py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-2">
-                <img src="logo.png" alt="Logo" class="w-6 h-6 rounded object-cover bg-brand-gray" onerror="this.style.display='none';">
-                <span class="font-display font-bold tracking-wider">OFFLIQ INTELLIGENCE</span>
+    <footer class="relative overflow-hidden bg-[#0a0a0a] pt-32 pb-12 border-t border-[#1a1a1a]">
+        <div class="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none z-0">
+            <h1 class="font-display watermark-text">OFFLIQ.</h1>
+        </div>
+
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
+                <div class="md:col-span-2 gsap-fade opacity-0 translate-y-10">
+                    <div class="flex items-center gap-3 mb-6">
+                        <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(225,29,72,0.4)]" onerror="this.onerror=null; this.src='https://placehold.co/100x100/030303/E11D48?text=O';">
+                        <span class="font-display font-bold text-2xl text-white">OFFLIQ<span class="text-brand-red">.</span></span>
+                    </div>
+                    <p class="text-gray-400 max-w-sm leading-relaxed">We build 100% offline, air-gapped AI engineers for enterprise IT. Zero telemetry. Absolute data sovereignty.</p>
+                </div>
+                
+                <div class="gsap-fade opacity-0 translate-y-10">
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-widest text-xs border-b border-brand-red/30 inline-block pb-1">Platform</h4>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a href="#metrics" class="hover:text-brand-red transition-colors interactive inline-flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px]"></i> Architecture</a></li>
+                        <li><a href="#process" class="hover:text-brand-red transition-colors interactive inline-flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px]"></i> Workflow</a></li>
+                        <li><a href="#features" class="hover:text-brand-red transition-colors interactive inline-flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px]"></i> Capabilities</a></li>
+                    </ul>
+                </div>
+
+                <div class="gsap-fade opacity-0 translate-y-10">
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-widest text-xs border-b border-brand-red/30 inline-block pb-1">Connect</h4>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a href="mailto:founder.offliq@gmail.com" class="hover:text-brand-red transition-colors interactive flex items-center gap-2"><i class="fa-regular fa-envelope"></i> founder.offliq@gmail.com</a></li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Faridabad, Haryana</li>
+                        <li class="pl-6">India 121002</li>
+                    </ul>
+                </div>
             </div>
-            <p class="text-gray-500 text-sm">
-                &copy; 2026 OFFLIQ Intelligence. Built in the NCR, India.
-            </p>
-            <div class="text-gray-500 text-sm">
-                Contact: founder.offliq@gmail.com
+
+            <div class="border-t border-[#1a1a1a] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-medium tracking-wide gsap-fade opacity-0 translate-y-10">
+                <span>© 2026 OFFLIQ Intelligence. All rights reserved.</span>
+                <span><i class="fa-solid fa-code text-brand-red mx-1"></i> Engineered in India.</span>
             </div>
         </div>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- CUSTOM OFFLIQ PROPRIETARY CHATBOT WIDGET   -->
-    <!-- ========================================== -->
-    
-    <!-- Chatbot Toggle Button -->
-    <button id="chatbot-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-brand-red rounded-full shadow-[0_0_20px_rgba(225,29,72,0.5)] flex items-center justify-center cursor-pointer z-[100] hover:scale-110 transition-transform duration-300">
-        <i class="fa-solid fa-comment-dots text-white text-2xl"></i>
-    </button>
-
-    <!-- Chatbot Window -->
-    <div id="chatbot-window" class="fixed bottom-24 right-6 w-[350px] max-w-[calc(100vw-48px)] h-[450px] glass-panel border border-brand-border rounded-xl flex-col shadow-2xl z-[100] transition-all duration-300 transform scale-0 origin-bottom-right opacity-0 hidden">
-        
-        <!-- Chat Header -->
-        <div class="bg-brand-gray border-b border-brand-border p-4 rounded-t-xl flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="relative">
-                    <img src="logo.png" alt="OFFLIQ" class="w-8 h-8 rounded-md bg-black border border-brand-red/50" onerror="this.onerror=null; this.src='https://placehold.co/32x32/121212/E11D48?text=O';">
-                    <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-brand-gray"></div>
+    <div id="chatbot-container" class="fixed bottom-6 right-6 z-[90] flex flex-col items-end">
+        <div id="chatbot-window" class="hidden w-[360px] sm:w-[400px] h-[600px] bg-[#0a0a0a] border border-[#222] rounded-2xl shadow-[0_15px_50px_rgba(0,0,0,0.9)] flex-col overflow-hidden mb-4 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right relative">
+            
+            <div class="bg-[#111] border-b border-[#222] p-5 flex justify-between items-center z-10 relative shrink-0">
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-full bg-[#1a1a1a] border border-brand-red/30 flex items-center justify-center overflow-hidden shadow-[0_0_10px_rgba(225,29,72,0.2)]">
+                            <i class="fa-solid fa-robot text-brand-red"></i>
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#111]"></div>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold text-sm">OFFLIQ Routing Agent</h4>
-                    <p class="text-green-400 text-xs">Online</p>
+                    <h4 class="text-white font-bold text-sm">OFFLIQ Gatekeeper</h4>
+                    <p class="text-brand-red text-[10px] tracking-widest uppercase mt-1 font-bold">Automated Routing Agent</p>
                 </div>
             </div>
-            <button id="chatbot-close" class="text-gray-400 hover:text-white transition-colors">
+            <button id="close-chat" class="text-gray-400 hover:text-white transition-colors interactive w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#222]">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
 
-        <!-- Chat Messages Area -->
-        <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto flex flex-col gap-4 bg-[#0a0a0a]">
-            <!-- Initial Welcome Message -->
-            <div class="flex gap-2 w-full">
-                <div class="w-6 h-6 rounded-md bg-brand-red/20 flex-shrink-0 flex items-center justify-center mt-1 border border-brand-red/30">
-                    <i class="fa-solid fa-robot text-brand-red text-xs"></i>
-                </div>
-                <div class="bg-[#1a1a1a] border border-brand-border p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-300 max-w-[85%]">
-                    Welcome to OFFLIQ Intelligence. I am the automated routing agent. You can type your question below, or select an option to learn more:
-                    <div class="flex flex-col gap-2 mt-3">
-                        <button class="chat-shortcut text-left text-xs bg-[#262626] hover:bg-brand-red/20 border border-brand-border hover:border-brand-red transition-colors p-2 rounded text-white" data-query="security">How is my data kept safe?</button>
-                        <button class="chat-shortcut text-left text-xs bg-[#262626] hover:bg-brand-red/20 border border-brand-border hover:border-brand-red transition-colors p-2 rounded text-white" data-query="price">What is the pricing model?</button>
-                        <button class="chat-shortcut text-left text-xs bg-[#262626] hover:bg-brand-red/20 border border-brand-border hover:border-brand-red transition-colors p-2 rounded text-white" data-query="pilot">How do I test the software?</button>
-                    </div>
-                </div>
+        <div id="chatbot-messages" class="h-[460px] p-5 flex flex-col gap-4 relative z-10 bg-[#050505] overflow-y-auto" style="overscroll-behavior: contain;">
+            <!-- Messages injected here -->
+        </div>
+
+        <div class="p-4 bg-[#0a0a0a] border-t border-[#222] text-center z-10 relative shrink-0">
+                <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-lock text-brand-red"></i> Menu-Driven Encrypted Routing
+                </span>
             </div>
         </div>
 
-        <!-- Chat Input Area -->
-        <div class="p-3 bg-brand-gray border-t border-brand-border rounded-b-xl">
-            <form id="chatbot-form" class="flex gap-2">
-                <input type="text" id="chatbot-input" placeholder="Type a message..." autocomplete="off" class="flex-1 bg-[#121212] border border-brand-border rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
-                <button type="submit" class="bg-brand-red hover:bg-brand-darkred text-white w-10 h-10 rounded-md flex items-center justify-center transition-colors">
-                    <i class="fa-solid fa-paper-plane text-sm"></i>
-                </button>
-            </form>
-        </div>
+        <button id="chatbot-toggle" class="w-16 h-16 bg-brand-red hover:bg-brand-darkred text-white rounded-full shadow-[0_0_25px_rgba(225,29,72,0.4)] flex items-center justify-center text-2xl transition-all hover:scale-110 interactive group">
+            <i class="fa-solid fa-comment-dots group-hover:hidden"></i>
+            <i class="fa-solid fa-robot hidden group-hover:block"></i>
+        </button>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize Animations
-        AOS.init({ once: true, offset: 50 });
+        // ==========================================
+        // 1. REFINED MAGNETIC DART CURSOR 
+        // ==========================================
+        const cursor = document.getElementById('custom-cursor');
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let cursorX = mouseX, cursorY = mouseY;
+        let currentAngle = 0;
+        let targetAngle = 0;
 
-        // Mobile Menu Toggle
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+        if (window.innerWidth > 1024) {
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
 
-        // =========================================================================
-        // AJAX FORM SUBMISSION & TOAST NOTIFICATION LOGIC
-        // =========================================================================
-        const form = document.getElementById('pilot-form');
-        const toastContainer = document.getElementById('toast-container');
-        const submitBtn = document.getElementById('submit-btn');
+            function animateCursor() {
+                const dx = mouseX - cursorX;
+                const dy = mouseY - cursorY;
+                
+                cursorX += dx * 0.35;
+                cursorY += dy * 0.35;
+                
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    targetAngle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                }
+                
+                let diff = targetAngle - currentAngle;
+                if (diff > 180) currentAngle -= 360;
+                if (diff < -180) currentAngle += 360;
+                
+                currentAngle += (targetAngle - currentAngle) * 0.2;
 
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            const bgColor = type === 'success' ? 'bg-green-500/20 border-green-500' : 'bg-brand-red/20 border-brand-red';
-            const textColor = type === 'success' ? 'text-green-400' : 'text-brand-red';
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-circle-exclamation';
+                cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) rotate(${currentAngle}deg)`;
+                
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
 
-            toast.className = `glass-panel border ${bgColor} px-5 py-4 rounded-lg flex items-center gap-3 shadow-[0_0_20px_rgba(0,0,0,0.5)] transform transition-all duration-500 translate-x-full opacity-0 pointer-events-auto`;
-            toast.innerHTML = `<i class="fa-solid ${icon} ${textColor} text-xl"></i><span class="text-white text-sm font-medium">${message}</span>`;
-            toastContainer.appendChild(toast);
-            
-            requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.remove('translate-x-full', 'opacity-0')));
-            setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => toast.remove(), 500); 
-            }, 5000);
+            const interactives = document.querySelectorAll('.interactive, a, button, input, select, textarea');
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+            });
+
+            // FIX: Show default cursor securely inside chatbot to allow scrollbar grabbing
+            const chatbotWin = document.getElementById('chatbot-window');
+            chatbotWin.addEventListener('mouseenter', () => {
+                cursor.style.opacity = '0';
+                document.body.classList.add('default-cursor');
+            });
+            chatbotWin.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '1';
+                document.body.classList.remove('default-cursor');
+            });
         }
 
+        // ==========================================
+        // 2. HERO TYPEWRITER ANIMATION
+        // ==========================================
+        const words = ["Without Limits.", "At Edge Speed.", "With Zero Leaks."];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterElement = document.getElementById('typewriter-text');
+
+        function typeEffect() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 2000; 
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 500; 
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+        setTimeout(typeEffect, 1000);
+
+        // ==========================================
+        // 3. HIGH-PERFORMANCE 2D NEURAL CANVAS
+        // ==========================================
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        const particleCount = window.innerWidth > 768 ? 50 : 25; 
+        const connectionDistance = 150;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(225, 29, 72, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        const opacity = 1 - (dist / connectionDistance);
+                        ctx.strokeStyle = `rgba(225, 29, 72, ${opacity * 0.15})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // ==========================================
+        // 4. OPTIMIZED GSAP SCROLL ANIMATIONS (Hardware Accelerated)
+        // ==========================================
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.to(".gsap-hero", {
+            opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.2, force3D: true
+        });
+
+        gsap.utils.toArray('.gsap-fade').forEach(element => {
+            gsap.to(element, {
+                scrollTrigger: { trigger: element, start: "top 90%", once: true },
+                opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true
+            });
+        });
+
+        // Use scrollTrigger batch to handle multiple staggers cleanly and prevent delay overlap lag
+        ScrollTrigger.batch(".gsap-stagger", {
+          onEnter: batch => gsap.to(batch, {opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: "back.out(1.2)", force3D: true, overwrite: true}),
+          start: "top 85%",
+          once: true
+        });
+
+        // ==========================================
+        // 5. AJAX FORM LOGIC
+        // ==========================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const borderColor = type === 'success' ? 'border-green-500/50' : 'border-brand-red/50';
+            const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-green-500"></i>' : '<i class="fa-solid fa-circle-exclamation text-brand-red"></i>';
+
+            toast.className = `flex items-center gap-3 px-5 py-4 rounded-xl border bg-[#111] ${borderColor} shadow-2xl transform transition-all duration-500 translate-x-full opacity-0 z-[100]`;
+            toast.innerHTML = `${icon} <span class="text-white text-sm font-bold tracking-wide">${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-x-full', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        const form = document.getElementById('offliq-form');
+        const submitBtn = document.getElementById('submit-btn');
+
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Initializing Request...';
+            e.preventDefault();
+            
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Encrypting...';
             submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            const inquiryType = document.getElementById('inquiry-type').value;
+            const fullName = document.getElementById('full-name').value;
+            const email = document.getElementById('work-email').value;
+            const company = document.getElementById('company-name').value;
+            const message = document.getElementById('message').value;
+            const subjectLine = `OFFLIQ: ${inquiryType} - ${company}`;
+
+            const formData = new FormData();
+            formData.append('name', fullName);
+            formData.append('email', email);
+            formData.append('_subject', subjectLine); 
+            formData.append('Company', company);
+            formData.append('Inquiry_Type', inquiryType);
+            formData.append('Message', message);
+            formData.append('_captcha', 'false');
 
             fetch('https://formsubmit.co/ajax/founder.offliq@gmail.com', {
                 method: 'POST',
-                body: new FormData(form)
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if(data.success) {
-                    showToast('Request sent securely. Check your email shortly.', 'success');
-                    form.reset(); 
-                } else { showToast('Transmission error. Please try again.', 'error'); }
+                    showToast('Secure Request Sent Successfully.', 'success');
+                    form.reset();
+                } else {
+                    showToast('Error sending request.', 'error');
+                }
             })
-            .catch(error => showToast('Network error. Unable to connect to server.', 'error'))
+            .catch(() => showToast('Network error. Check connection.', 'error'))
             .finally(() => {
-                submitBtn.innerHTML = originalBtnText;
+                submitBtn.innerHTML = originalBtnHtml;
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
             });
         });
 
-        // =========================================================================
-        // CUSTOM RULE-BASED PROPRIETARY CHATBOT LOGIC
-        // =========================================================================
-        const chatToggleBtn = document.getElementById('chatbot-toggle');
-        const chatWindow = document.getElementById('chatbot-window');
-        const chatCloseBtn = document.getElementById('chatbot-close');
-        const chatForm = document.getElementById('chatbot-form');
-        const chatInput = document.getElementById('chatbot-input');
+        // ==========================================
+        // 6. EXPANDED 26-NODE CHATBOT 
+        // ==========================================
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const closeChatBtn = document.getElementById('close-chat');
         const chatMessages = document.getElementById('chatbot-messages');
-        const shortcuts = document.querySelectorAll('.chat-shortcut');
 
-        // Intelligence Database
-        const botKnowledge = {
-            "price": "OFFLIQ operates on a CapEx model. It is a one-time workstation license of ₹80,000 ($950) for lifetime use. There are absolutely no recurring SaaS or API token fees.",
-            "cost": "OFFLIQ operates on a CapEx model. It is a one-time workstation license of ₹80,000 ($950) for lifetime use. There are absolutely no recurring SaaS or API token fees.",
-            "security": "OFFLIQ is engineered for 100% air-gapped environments. It runs natively on your hardware with zero internet required. Your client data, active directory structures, and logs never leave your physical workstation.",
-            "safe": "OFFLIQ is engineered for 100% air-gapped environments. It runs natively on your hardware with zero internet required. Your client data, active directory structures, and logs never leave your physical workstation.",
-            "internet": "No internet connection is required. Physically disconnect the router and OFFLIQ will continue to autonomously write and execute code perfectly.",
-            "pilot": "To test the software, please fill out the 'Request Pilot' form on this page. Our Lead Architect will manually generate a secure Hardware ID key for your test machine.",
-            "demo": "To test the software, please fill out the 'Request Pilot' form on this page. Our Lead Architect will manually generate a secure Hardware ID key for your test machine.",
-            "default": "I am an automated routing agent. Please submit a Pilot Request via the form on this page to connect directly with our Lead Architect, Om Sharma."
+        let chatOpen = false;
+        let chatInitialized = false;
+
+        const botFlow = {
+            "start": {
+                msg: "Welcome to OFFLIQ Intelligence. I am the automated routing agent. What aspect of the architecture would you like to explore?",
+                options: [
+                    { text: "Security & Privacy", next: "security_main" },
+                    { text: "Technical Specs", next: "tech_main" },
+                    { text: "Pricing & Licensing", next: "price_main" },
+                    { text: "Deployment & Pilot", next: "deploy_main" }
+                ]
+            },
+            
+            // SECURITY BRANCH
+            "security_main": {
+                msg: "OFFLIQ is engineered for 100% air-gapped environments. It runs natively on your hardware with zero internet required.",
+                options: [
+                    { text: "Does it connect to OpenAI?", next: "sec_openai" },
+                    { text: "Is it SOC2 Compliant?", next: "sec_soc2" },
+                    { text: "What if it writes a virus?", next: "sec_dangerous" },
+                    { text: "How do you prevent piracy?", next: "sec_piracy" },
+                    { text: "Main Menu", next: "start" }
+                ]
+            },
+            "sec_openai": {
+                msg: "No. Connecting to public cloud APIs violates strict data laws. OFFLIQ processes all intelligence locally. It does not ping external servers.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "sec_soc2": {
+                msg: "Absolutely. Because OFFLIQ has zero telemetry and never transmits data externally, it immediately satisfies SOC2, HIPAA, and DPDPA compliance frameworks.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "sec_dangerous": {
+                msg: "We utilize a 'Human-In-The-Loop' shield. OFFLIQ writes code autonomously, but a native Windows UAC popup forces a human to click 'Approve' before execution occurs.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "sec_piracy": {
+                msg: "Every enterprise binary is cryptographically bound to the unique motherboard UUID of the purchasing workstation. It cannot be copied or booted elsewhere.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+
+            // TECH BRANCH
+            "tech_main": {
+                msg: "OFFLIQ is an OS-native execution engine capable of creating, editing, and executing Python and PowerShell scripts natively.",
+                options: [
+                    { text: "What are the Hardware Limits?", next: "tech_hardware" },
+                    { text: "Supported Languages?", next: "tech_languages" },
+                    { text: "How does Self-Healing work?", next: "tech_bug" },
+                    { text: "Can it read my existing SOPs?", next: "tech_rag" },
+                    { text: "Main Menu", next: "start" }
+                ]
+            },
+            "tech_hardware": {
+                msg: "It requires a Windows OS and a minimum of 8GB physical VRAM. It features dynamic hardware telemetry that checks your specs on boot to prevent OOM crashes.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "tech_languages": {
+                msg: "OFFLIQ natively compiles and executes Windows PowerShell (.ps1), Python (.py), and standard Batch (.bat) scripts. It can also manage JSON/YAML configurations.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "tech_bug": {
+                msg: "If a script fails, OFFLIQ's Self-Healing Loop reads the red terminal error, diagnoses the syntax mistake, patches the local file, and re-executes automatically.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "tech_rag": {
+                msg: "Yes. It features a Local RAG Vector DB. Drop your historical scripts into its folder, and it silently indexes them offline for infinite organizational recall.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+
+            // PRICE BRANCH
+            "price_main": {
+                msg: "We despise recurring SaaS fees. OFFLIQ operates on a strict Capital Expenditure (CapEx) model.",
+                options: [
+                    { text: "What is the exact cost?", next: "price_exact" },
+                    { text: "Are there API token fees?", next: "price_api" },
+                    { text: "Do you offer team discounts?", next: "price_team" },
+                    { text: "Will future updates cost money?", next: "price_updates" },
+                    { text: "Main Menu", next: "start" }
+                ]
+            },
+            "price_exact": {
+                msg: "A lifetime perpetual workstation license is ₹80,000. You buy it once, you own the digital engineer forever.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "price_api": {
+                msg: "Zero. Because OFFLIQ uses your local hardware to process the AI, there are absolutely no recurring API or token fees, regardless of volume.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "price_team": {
+                msg: "Yes. For MSPs purchasing 5 or more workstation licenses, we offer enterprise volume scaling. Please select 'Purchase' in the contact form below.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "price_updates": {
+                msg: "Minor patches and security updates are provided freely via encrypted download links. Major V2.0 overhauls may require a separate license.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+
+            // DEPLOYMENT & SUPPORT BRANCH
+            "deploy_main": {
+                msg: "Deployment is fast and entirely local. No complex cloud integrations required.",
+                options: [
+                    { text: "How do I get a free pilot?", next: "deploy_pilot" },
+                    { text: "Pilot System Requirements?", next: "pilot_requirements" },
+                    { text: "How do I uninstall it?", next: "tech_uninstall" },
+                    { text: "Who provides technical support?", next: "deploy_support" },
+                    { text: "Main Menu", next: "start" }
+                ]
+            },
+            "deploy_pilot": {
+                msg: "We offer a 5-Day Free Pilot. Please select 'Request 3-Day Free Pilot' in the Contact form on this page, and our team will email you the secure download link.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "pilot_requirements": {
+                msg: "To run the pilot, you need a Windows 10/11 machine with an Nvidia GPU (minimum 8GB VRAM) or equivalent system RAM for CPU fallback.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "deploy_support": {
+                msg: "You get direct email support from our Lead Architect. Because the system is air-gapped, if there is a bug, we compile a secure patch and send you the updated installer.",
+                options: [{ text: "Main Menu", next: "start" }]
+            },
+            "tech_uninstall": {
+                msg: "Because it is completely self-contained, uninstallation is clean. You run the uninstaller, and it deletes the isolated workspace directory without leaving registry ghosts.",
+                options: [{ text: "Main Menu", next: "start" }]
+            }
         };
 
+        function addBotMessage(text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = "flex items-start gap-3 w-full max-w-[90%] opacity-0 transform translate-y-4 transition-all duration-500 ease-out";
+            msgDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-[#111] border border-brand-red/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(225,29,72,0.2)]">
+                    <i class="fa-solid fa-microchip text-brand-red text-xs"></i>
+                </div>
+                <div class="bg-[#111] border border-[#262626] p-3 rounded-2xl rounded-tl-none text-[13px] text-gray-300 shadow-lg leading-relaxed">
+                    ${text}
+                </div>
+            `;
+            chatMessages.appendChild(msgDiv);
+            
+            setTimeout(() => {
+                msgDiv.classList.remove('opacity-0', 'translate-y-4');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 50);
+        }
+
+        function addUserMessage(text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = "flex justify-end w-full mb-1 opacity-0 transform translate-y-4 transition-all duration-500 ease-out";
+            msgDiv.innerHTML = `
+                <div class="bg-[#222] border border-[#333] text-white p-3 rounded-2xl rounded-tr-none text-[12px] shadow-md max-w-[85%] font-medium">
+                    ${text}
+                </div>
+            `;
+            chatMessages.appendChild(msgDiv);
+            setTimeout(() => {
+                msgDiv.classList.remove('opacity-0', 'translate-y-4');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 50);
+        }
+
+        function renderNode(nodeId) {
+            const node = botFlow[nodeId];
+            if(!node) return;
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = "flex items-center gap-2 text-brand-muted text-[11px] ml-11 mb-2 italic tracking-wider";
+            typingDiv.innerHTML = "Agent routing request...";
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                typingDiv.remove();
+                addBotMessage(node.msg);
+                
+                setTimeout(() => {
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = "flex flex-col gap-2 mt-2 w-full max-w-[85%] ml-11 mb-4 opacity-0 transform translate-y-4 transition-all duration-500 ease-out"; 
+                    
+                    node.options.forEach(opt => {
+                        const btn = document.createElement('button');
+                        btn.className = "text-left text-[12px] font-medium bg-[#141414] hover:bg-[#1f1f1f] border border-[#2a2a2a] hover:border-brand-red transition-all duration-300 p-2.5 rounded-xl text-gray-300 shadow-sm flex items-center justify-between group interactive";
+                        btn.innerHTML = `<span class="flex items-center gap-2">${opt.text}</span> <i class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 text-brand-red transition-opacity transform group-hover:translate-x-1"></i>`;
+                        
+                        btn.onclick = () => {
+                            Array.from(optionsDiv.children).forEach(b => {
+                                b.disabled = true;
+                                b.classList.add('opacity-30', 'cursor-not-allowed');
+                            });
+                            addUserMessage(opt.text);
+                            setTimeout(() => renderNode(opt.next), 500);
+                        };
+                        optionsDiv.appendChild(btn);
+                    });
+                    
+                    chatMessages.appendChild(optionsDiv);
+                    
+                    setTimeout(() => {
+                        optionsDiv.classList.remove('opacity-0', 'translate-y-4');
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 50);
+                    
+                }, 400);
+            }, 600);
+        }
+
         function toggleChat() {
-            if (chatWindow.classList.contains('hidden')) {
-                chatWindow.classList.remove('hidden');
+            chatOpen = !chatOpen;
+            if (chatOpen) {
+                chatbotWindow.classList.remove('hidden');
                 setTimeout(() => {
-                    chatWindow.classList.remove('scale-0', 'opacity-0');
-                    chatWindow.classList.add('scale-100', 'opacity-100');
-                    chatWindow.style.display = 'flex';
+                    chatbotWindow.classList.remove('scale-95', 'opacity-0');
+                    chatbotToggle.classList.add('rotate-90', 'scale-75', 'opacity-0');
+                    setTimeout(() => chatbotToggle.classList.add('hidden'), 300);
                 }, 10);
+
+                if (!chatInitialized) {
+                    setTimeout(() => renderNode('start'), 300);
+                    chatInitialized = true;
+                }
             } else {
-                chatWindow.classList.remove('scale-100', 'opacity-100');
-                chatWindow.classList.add('scale-0', 'opacity-0');
+                chatbotWindow.classList.add('scale-95', 'opacity-0');
+                chatbotToggle.classList.remove('hidden');
                 setTimeout(() => {
-                    chatWindow.classList.add('hidden');
-                    chatWindow.style.display = '';
+                    chatbotWindow.classList.add('hidden');
+                    chatbotToggle.classList.remove('rotate-90', 'scale-75', 'opacity-0');
                 }, 300);
             }
         }
 
-        chatToggleBtn.addEventListener('click', toggleChat);
-        chatCloseBtn.addEventListener('click', toggleChat);
+        chatbotToggle.addEventListener('click', toggleChat);
+        closeChatBtn.addEventListener('click', toggleChat);
 
-        function addMessage(text, isUser = false) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `flex gap-2 w-full ${isUser ? 'justify-end' : ''}`;
-            
-            if (isUser) {
-                msgDiv.innerHTML = `
-                    <div class="bg-brand-red text-white text-sm p-3 rounded-l-xl rounded-br-xl max-w-[85%] border border-brand-darkred">
-                        ${text}
-                    </div>
-                `;
-            } else {
-                msgDiv.innerHTML = `
-                    <div class="w-6 h-6 rounded-md bg-brand-red/20 flex-shrink-0 flex items-center justify-center mt-1 border border-brand-red/30">
-                        <i class="fa-solid fa-robot text-brand-red text-xs"></i>
-                    </div>
-                    <div class="bg-[#1a1a1a] border border-brand-border p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-300 max-w-[85%]">
-                        ${text}
-                    </div>
-                `;
-            }
-            chatMessages.appendChild(msgDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function botReply(userText) {
-            const textLower = userText.toLowerCase();
-            let replyText = botKnowledge["default"];
-            
-            for (const key in botKnowledge) {
-                if (textLower.includes(key)) {
-                    replyText = botKnowledge[key];
-                    break;
-                }
-            }
-            
-            // Add slight typing delay to feel like AI processing
-            setTimeout(() => addMessage(replyText, false), 600);
-        }
-
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = chatInput.value.trim();
-            if (!text) return;
-            
-            addMessage(text, true);
-            chatInput.value = '';
-            botReply(text);
-        });
-
-        // Handle Shortcut Buttons
-        shortcuts.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const query = this.getAttribute('data-query');
-                addMessage(this.innerText, true);
-                
-                // Hide the buttons after one is clicked
-                this.parentElement.style.display = 'none';
-                
-                botReply(query);
-            });
-        });
     </script>
 </body>
 </html>
