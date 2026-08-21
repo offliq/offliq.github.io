@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFFLIQ Intelligence | Autonomous Air-Gapped AI</title>
+    <title>OFFLIQ Intelligence | Autonomous Air-Gapped AI V1.2</title>
     
     <meta name="description" content="100% offline, autonomous AI engineer that automates local Windows IT scripting and maintenance.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -22,18 +22,17 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
                     },
                     colors: {
                         brand: {
                             red: '#E11D48',
                             darkred: '#BE123C',
-                            black: '#030303',
-                            gray: '#0a0a0a',
-                            border: '#1f1f1f',
+                            black: '#050505',
+                            border: 'rgba(255, 255, 255, 0.08)',
                             text: '#E2E8F0',
-                            muted: '#888888'
+                            muted: '#A1A1AA'
                         }
                     },
                     letterSpacing: {
@@ -47,19 +46,17 @@
 
     <style>
         body {
-            background-color: #030303;
+            background-color: #000000;
             color: #E2E8F0;
             overflow-x: hidden;
             cursor: none; 
             -webkit-font-smoothing: antialiased;
         }
         
-        /* Apply custom cursor globally */
         a, button, input, select, textarea, .interactive, * {
             cursor: none !important;
         }
 
-        /* --- THE FIX: Restoring default cursor ONLY inside the chatbot --- */
         body.default-cursor, body.default-cursor * {
             cursor: auto !important;
         }
@@ -67,24 +64,128 @@
             cursor: pointer !important;
         }
 
-        .bg-grid-pattern {
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-position: center center;
+        /* DYNAMIC MESH GRADIENT BACKGROUND */
+        .mesh-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -3;
+            overflow: hidden;
+            background: #030303;
         }
 
+        .blob {
+            position: absolute;
+            filter: blur(120px);
+            opacity: 0.5;
+            animation: floatBlob 20s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%; left: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(225,29,72,0.2) 0%, rgba(0,0,0,0) 70%);
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%; right: -10%;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, rgba(0,0,0,0) 70%);
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%; left: 30%;
+            width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(225,29,72,0.1) 0%, rgba(0,0,0,0) 70%);
+            animation-delay: -10s;
+        }
+
+        /* PREMIUM CINEMATIC NOISE OVERLAY */
+        .noise-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: -1; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* ADVANCED GLASSMORPHISM */
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .text-gradient-accent {
+            background: linear-gradient(135deg, #E11D48 0%, #ff4b72 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* INTERACTIVE SPOTLIGHT CARDS */
+        .spotlight-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .spotlight-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(225, 29, 72, 0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(225, 29, 72, 0.1);
+            z-index: 10;
+        }
+
+        .spotlight-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+                rgba(225, 29, 72, 0.08),
+                transparent 40%
+            );
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+        }
+
+        /* NEURAL CANVAS */
         #neural-canvas {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
             z-index: -2;
             pointer-events: none;
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
-        /* The Custom Dart Cursor - Increased to 28px */
+        /* CURSOR */
         .cursor-wrapper {
             position: fixed;
             top: 0; left: 0;
@@ -125,24 +226,64 @@
             line-height: 1;
             letter-spacing: -0.04em;
         }
-        
-        .glass-nav {
-            background: rgba(3, 3, 3, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+        /* BUTTONS & FORMS */
+        .btn-premium {
+            background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-premium::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%); transition: 0.6s;
+        }
+        .btn-premium:hover::before { transform: translateX(100%); }
+        .btn-premium:hover {
+            box-shadow: 0 10px 30px rgba(225, 29, 72, 0.6), inset 0 0 10px rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            transform: translateY(-3px) scale(1.02);
+        }
+        .btn-premium:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 5px 15px rgba(225, 29, 72, 0.4);
         }
 
-        /* Form Visibility Fixes */
+        /* FORM SUBMIT ANIMATION STATES */
+        .btn-send-loading {
+            background: #111 !important;
+            border-color: #333 !important;
+            color: #A1A1AA !important;
+            box-shadow: none !important;
+            transform: scale(0.96) !important;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-send-success {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+            border-color: #34D399 !important;
+            color: white !important;
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.5) !important;
+            transform: scale(1.05) translateY(-2px) !important;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
         .form-input {
-            background-color: #161616;
-            border: 1px solid #333333;
+            background-color: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
             transition: all 0.3s ease;
         }
         .form-input:hover, .form-input:focus {
             border-color: #E11D48;
-            box-shadow: 0 0 10px rgba(225, 29, 72, 0.1);
+            box-shadow: 0 0 15px rgba(225, 29, 72, 0.2);
             outline: none;
+            background-color: rgba(20, 20, 20, 0.8);
         }
         
         select.form-input {
@@ -153,39 +294,6 @@
             background-size: 1em;
         }
         select option { background-color: #0a0a0a; color: #fff; padding: 15px; }
-
-        .btn-premium {
-            background: #E11D48;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            border-radius: 100px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid transparent;
-        }
-        .btn-premium::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: translateX(-100%); transition: 0.6s;
-        }
-        .btn-premium:hover::before { transform: translateX(100%); }
-        .btn-premium:hover {
-            box-shadow: 0 0 30px rgba(225, 29, 72, 0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-
-        .tilt-card {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-            transform-style: preserve-3d;
-            will-change: transform;
-        }
-        .tilt-card:hover {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(225, 29, 72, 0.15);
-            border-color: rgba(225, 29, 72, 0.4);
-            transform: translateY(-8px) scale(1.02);
-            z-index: 10;
-        }
 
         .watermark-text {
             font-size: clamp(5rem, 20vw, 25rem);
@@ -201,16 +309,6 @@
         ::-webkit-scrollbar-thumb { background: #1f1f1f; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #E11D48; }
 
-        @keyframes floatEffect {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float {
-            animation: floatEffect 6s ease-in-out infinite;
-        }
-
-        /* Typewriter Cursor */
         .typewriter-cursor {
             display: inline-block;
             width: 8px;
@@ -221,38 +319,21 @@
             vertical-align: bottom;
         }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        
-        /* Hero Glow Animation */
-        .hero-glow {
-            position: absolute;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(225,29,72,0.15) 0%, rgba(3,3,3,0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: pulseGlow 8s ease-in-out infinite alternate;
-        }
-        @keyframes pulseGlow {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-        }
 
-        /* HARDWARE ACCELERATION FOR LAG-FREE ANIMATIONS */
+        /* HARDWARE ACCELERATION */
         .gsap-fade, .gsap-stagger, .gsap-hero {
             will-change: transform, opacity;
-        }
-
-        /* Ensure Chatbot scrolls smoothly */
-        #chatbot-messages {
-            overscroll-behavior: contain;
         }
     </style>
 </head>
 <body class="antialiased selection:bg-brand-red selection:text-white">
 
+    <div class="noise-bg"></div>
+    <div class="mesh-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
     <canvas id="neural-canvas"></canvas>
 
     <div class="cursor-wrapper" id="custom-cursor">
@@ -263,21 +344,20 @@
     
     <div id="toast-container" class="fixed top-24 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
 
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-50 transition-all duration-300 border-b border-transparent" id="navbar">
         <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
             <div class="flex items-center justify-between h-20 md:h-24">
                 
                 <div class="flex-shrink-0 flex items-center gap-3 interactive group cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(225,29,72,0.4)] transition-transform group-hover:scale-110 duration-300" onerror="this.onerror=null; this.src='https://placehold.co/100x100/030303/E11D48?text=O';">
+                    <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(225,29,72,0.4)] transition-transform group-hover:scale-110 duration-300" onerror="this.onerror=null; this.src='https://placehold.co/100x100/000000/E11D48?text=O';">
                     <span class="font-display font-bold text-2xl md:text-3xl tracking-tighter text-white">OFFLIQ<span class="text-brand-red">.</span></span>
                 </div>
 
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center gap-10">
-                    <a href="#metrics" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Architecture</a>
-                    <a href="#process" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Execution</a>
-                    <a href="#features" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Capabilities</a>
-                    <a href="#contact" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors interactive">Support</a>
+                    <a href="#v1-2-updates" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">V1.2 Matrix</a>
+                    <a href="#metrics" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Architecture</a>
+                    <a href="#process" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Execution</a>
+                    <a href="#contact" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Support</a>
                     <a href="#contact" class="btn-premium px-7 py-3 text-sm font-bold interactive flex items-center gap-2">
                         Request Pilot <i class="fa-solid fa-terminal text-xs"></i>
                     </a>
@@ -286,192 +366,196 @@
         </div>
     </nav>
 
-    <main class="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden bg-grid-pattern">
-        <div class="hero-glow"></div>
-
-        <div class="max-w-[90rem] mx-auto px-6 lg:px-12 w-full relative z-10 flex flex-col justify-center animate-float">
+    <main class="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12 w-full relative z-10 flex flex-col justify-center items-center text-center">
             
             <div class="gsap-hero opacity-0 translate-y-10">
-                <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-brand-red/30 bg-[#111]/80 backdrop-blur-md mb-8 interactive shadow-[0_0_15px_rgba(225,29,72,0.15)]">
+                <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full glass-panel mb-8 interactive">
                     <span class="w-2 h-2 rounded-full bg-brand-red animate-pulse shadow-[0_0_10px_#E11D48]"></span>
-                    <span class="text-xs font-bold tracking-widest uppercase text-gray-200">V1.0 Enterprise Edition Live</span>
+                    <span class="text-xs font-bold tracking-widest uppercase text-gray-200">V1.2 Enterprise Edition Live</span>
                 </div>
             </div>
             
-            <h1 class="font-display text-massive font-bold text-white mb-6 tracking-tightest gsap-hero opacity-0 translate-y-10">
-                Engineer <br>
-                <span class="text-brand-red drop-shadow-[0_0_20px_rgba(225,29,72,0.4)]" id="typewriter-text"></span><span class="typewriter-cursor"></span>
+            <h1 class="font-display text-massive font-extrabold text-white mb-6 tracking-tightest gsap-hero opacity-0 translate-y-10 leading-tight">
+                <span class="text-gradient">Engineer</span> <br>
+                <span class="text-gradient-accent drop-shadow-[0_0_20px_rgba(225,29,72,0.3)]" id="typewriter-text"></span><span class="typewriter-cursor"></span>
             </h1>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-4 items-end gsap-hero opacity-0 translate-y-10">
-                <p class="text-xl md:text-2xl text-gray-400 max-w-2xl font-light leading-relaxed">
+            <div class="gsap-hero opacity-0 translate-y-10 flex flex-col items-center mt-4">
+                <p class="text-xl md:text-2xl text-gray-400 max-w-3xl font-light leading-relaxed mb-10">
                     OFFLIQ is an autonomous, 100% air-gapped AI engineer. Stop pasting proprietary client network data into public cloud APIs. Execute Windows server scripts locally with absolute zero telemetry.
                 </p>
-                <div class="flex gap-4 md:justify-end">
-                    <a href="#contact" class="btn-premium px-8 py-4 text-base font-bold flex items-center justify-center gap-3 interactive group">
-                        Deploy OFFLIQ <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                <div class="flex gap-4">
+                    <a href="#contact" class="btn-premium px-10 py-4 text-lg font-bold flex items-center justify-center gap-3 interactive group">
+                        Deploy Framework <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </div>
             </div>
         </div>
     </main>
 
-    <section id="metrics" class="py-32 relative bg-[#0a0a0a] border-y border-brand-border">
+    <section id="v1-2-updates" class="py-32 relative z-10">
         <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
-            <div class="mb-20 gsap-fade opacity-0">
-                <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase flex items-center gap-3">
-                    <i class="fa-solid fa-microchip"></i> The Math Behind the Architecture
+            <div class="mb-20 text-center gsap-fade opacity-0">
+                <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase">The Architecture Upgrade</span>
+                <h2 class="font-display text-5xl md:text-6xl font-bold tracking-tighter text-white">What's new in V1.2</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="update-cards">
+                <!-- Card 1 -->
+                <div class="spotlight-card p-8 gsap-stagger opacity-0 translate-y-10 group">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-xl bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-scale-balanced text-brand-red text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white mb-3 tracking-tight">"See-Saw" Memory Manager</h3>
+                        <p class="text-gray-400 leading-relaxed font-light">OFFLIQ dynamically juggles models. A lightweight 'Gatekeeper' stays awake for instant chat. When coding, it loads the Heavy model, executes, and instantly terminates to free up 100% of system RAM.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="spotlight-card p-8 gsap-stagger opacity-0 translate-y-10 group">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-vault text-purple-400 text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white mb-3 tracking-tight">Cryptographic Plugin Vault</h3>
+                        <p class="text-gray-400 leading-relaxed font-light">Drop custom Python scripts (like Azure scanners) into the plugins folder. OFFLIQ locks them with a SHA-256 signature. If altered by malware, execution is permanently blocked.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="spotlight-card p-8 gsap-stagger opacity-0 translate-y-10 group">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-microchip text-blue-400 text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white mb-3 tracking-tight">Hardware Telemetry Shield</h3>
+                        <p class="text-gray-400 leading-relaxed font-light">Dynamic OS querying prevents junior techs from crashing their workstations. If an attempt is made to allocate more memory than physically available, the system intercepts and blocks it.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="spotlight-card p-8 gsap-stagger opacity-0 translate-y-10 group">
+                    <div class="card-content">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-database text-green-400 text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white mb-3 tracking-tight">Tiered Vector RAG</h3>
+                        <p class="text-gray-400 leading-relaxed font-light">Drag and drop entire company IT manuals or codebases into the sources folder. OFFLIQ silently indexes them locally to write solutions customized to your specific internal standards.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="metrics" class="py-32 relative border-y border-white/5 z-10 glass-panel">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div class="mb-20 gsap-fade opacity-0 text-center md:text-left">
+                <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase flex items-center justify-center md:justify-start gap-3">
+                    <i class="fa-solid fa-shield-halved"></i> Security & Performance Metrics
                 </span>
-                <h2 class="font-display text-huge font-bold tracking-tighter">
+                <h2 class="font-display text-huge font-bold tracking-tighter text-gradient">
                     Absolute Data <br>Sovereignty.
                 </h2>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
-                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
-                        <i class="fa-solid fa-shield-halved text-brand-red"></i>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="metrics-cards">
+                <div class="spotlight-card p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="card-content">
+                        <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">Data Leakage</span>
+                        <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white">0%</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Physically disconnect your router. OFFLIQ continues to code and execute perfectly offline.</p>
                     </div>
-                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">Data Leakage</span>
-                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">0%</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Physically disconnect your router. OFFLIQ continues to code and execute perfectly offline.</p>
                 </div>
-                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
-                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
-                        <i class="fa-solid fa-money-bill-wave text-brand-red"></i>
+                
+                <div class="spotlight-card p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="card-content">
+                        <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">API Token Costs</span>
+                        <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-brand-red drop-shadow-[0_0_15px_rgba(225,29,72,0.3)]">₹0</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">A one-time CapEx license. Zero recurring SaaS fees regardless of how much code you generate.</p>
                     </div>
-                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">API Token Costs</span>
-                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-brand-red drop-shadow-[0_0_15px_rgba(225,29,72,0.3)]">₹0</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">A one-time CapEx license. Zero recurring SaaS fees regardless of how much code you generate.</p>
                 </div>
-                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
-                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
-                        <i class="fa-solid fa-bolt text-brand-red"></i>
+                
+                <div class="spotlight-card p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="card-content">
+                        <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">RAG Engine Recall</span>
+                        <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white">&lt;42ms</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Local Vector DB ingestion. Drop your historical SOPs into the folder for instant organizational memory.</p>
                     </div>
-                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">RAG Engine Recall</span>
-                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">&lt;42ms</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Local Vector DB ingestion. Drop your historical SOPs into the folder for instant organizational memory.</p>
                 </div>
-                <div class="tilt-card bg-[#111] border border-[#1a1a1a] rounded-2xl p-8 interactive gsap-stagger opacity-0 translate-y-10">
-                    <div class="w-12 h-12 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-12">
-                        <i class="fa-solid fa-server text-brand-red"></i>
+                
+                <div class="spotlight-card p-8 interactive gsap-stagger opacity-0 translate-y-10">
+                    <div class="card-content">
+                        <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">Required Hardware</span>
+                        <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white">8GB+</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Dynamic telemetry reads your physical VRAM and adjusts chunking to prevent OOM system crashes.</p>
                     </div>
-                    <span class="text-brand-muted font-mono text-xs font-bold tracking-widest block mb-2 uppercase">Required Hardware</span>
-                    <h3 class="font-display text-5xl font-bold mb-4 tracking-tighter text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">8GB+</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Dynamic telemetry reads your physical VRAM and adjusts chunking to prevent OOM system crashes.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="process" class="py-32 relative bg-[#030303] overflow-hidden bg-grid-pattern">
+    <section id="process" class="py-32 relative overflow-hidden z-10">
         <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
             <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 text-center uppercase">Autonomous Workflow</span>
-            <h2 class="font-display text-5xl md:text-6xl font-bold mb-24 tracking-tighter text-center">From problem to <br>executed solution.</h2>
+            <h2 class="font-display text-5xl md:text-6xl font-bold mb-24 tracking-tighter text-center text-gradient">From problem to <br>executed solution.</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative mt-10">
-                <!-- Perfectly Aligned Connected Line -->
-                <div class="hidden md:block absolute top-[48px] left-[12.5%] right-[12.5%] h-[2px] bg-[#1f1f1f] z-0">
-                    <div class="absolute top-0 left-0 h-full w-[20%] bg-brand-red shadow-[0_0_20px_#E11D48] animate-data-flow"></div>
+                <!-- Connected Line -->
+                <div class="hidden md:block absolute top-[48px] left-[12.5%] right-[12.5%] h-[1px] bg-white/10 z-0">
+                    <div class="absolute top-0 left-0 h-full w-[25%] bg-brand-red shadow-[0_0_20px_#E11D48] animate-pulse"></div>
                 </div>
 
-                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl group interactive">
-                    <div class="w-24 h-24 rounded-full bg-[#050505] border-2 border-[#1f1f1f] text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">01</div>
-                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-gray-200">Ingest</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed text-center md:text-left">Provide a prompt or error log. OFFLIQ's Gatekeeper instantly queries your local Vector database for relevant company SOPs.</p>
-                </div>
-                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl group interactive">
-                    <div class="w-24 h-24 rounded-full bg-[#050505] border-2 border-[#1f1f1f] text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">02</div>
-                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-gray-200">Architect</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed text-center md:text-left">The Heavy Coder engine spins up, allocating dynamic VRAM to write the necessary PowerShell or Python script from scratch.</p>
-                </div>
-                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-gradient-to-b from-[#1a050a] to-[#0a0a0a] border border-brand-red/50 rounded-xl interactive">
-                    <div class="w-24 h-24 rounded-full bg-brand-red border-4 border-[#050505] outline outline-2 outline-brand-red text-white flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 shadow-[0_0_30px_rgba(225,29,72,0.5)]">03</div>
-                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-white">Execute</h3>
-                    <p class="text-gray-300 text-sm leading-relaxed text-center md:text-left font-medium">The Windows UAC shield triggers. Once a human clicks 'Approve', OFFLIQ executes the script natively on the host OS.</p>
-                </div>
-                <div class="relative z-10 gsap-fade opacity-0 tilt-card p-6 bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl group interactive">
-                    <div class="w-24 h-24 rounded-full bg-[#050505] border-2 border-[#1f1f1f] text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">04</div>
-                    <h3 class="text-2xl font-bold mb-4 font-display text-center md:text-left text-gray-200">Self-Heal</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed text-center md:text-left">If the terminal returns a syntax error, the AI reads it, patches the local file, and re-runs the loop automatically.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="features" class="py-32 relative bg-[#0a0a0a] border-t border-[#1a1a1a]">
-        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-32">
-                <div class="gsap-fade opacity-0">
-                    <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase">Core Technology Stack</span>
-                    <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tighter mb-6">Engineered for the Edge.</h2>
-                    <p class="text-gray-400 text-lg leading-relaxed mb-8">OFFLIQ is not a web wrapper. It is a highly optimized, C++ compiled executable designed to interface natively with the Windows OS kernel while maintaining a zero-byte external footprint.</p>
-                    
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded-full bg-[#111] border border-brand-red/30 flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-microchip text-brand-red text-xs"></i></div>
-                            <div>
-                                <h4 class="text-white font-bold mb-1">Llama.cpp Backend</h4>
-                                <p class="text-sm text-gray-500">C-compiled ML inferencing ensures massive AI models can run on standard consumer hardware.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded-full bg-[#111] border border-brand-red/30 flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-code text-brand-red text-xs"></i></div>
-                            <div>
-                                <h4 class="text-white font-bold mb-1">Native OS Subprocess Hooking</h4>
-                                <p class="text-sm text-gray-500">Directly executes and parses standard output/error from PowerShell and Python interpreters.</p>
-                            </div>
-                        </div>
+                <div class="relative z-10 gsap-fade opacity-0 spotlight-card p-6 group interactive text-center md:text-left">
+                    <div class="card-content">
+                        <div class="w-24 h-24 rounded-full bg-[#0a0a0a] border border-white/10 text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">01</div>
+                        <h3 class="text-2xl font-bold mb-4 font-display text-white">Ingest</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Provide a prompt or error log. OFFLIQ's Gatekeeper instantly queries your local Vector database for relevant company SOPs.</p>
                     </div>
                 </div>
                 
-                <div class="gsap-fade opacity-0 relative">
-                    <div class="absolute inset-0 bg-brand-red/10 blur-[80px] rounded-full pointer-events-none"></div>
-                    <div class="bg-[#111] border border-[#222] rounded-2xl p-6 relative z-10 shadow-2xl font-mono text-sm text-gray-300 overflow-hidden">
-                        <div class="flex gap-2 mb-4 border-b border-[#222] pb-4">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <p class="text-brand-red mb-2">> Initialization Sequence Started</p>
-                        <p class="mb-1 text-gray-400">Loading Configuration... [OK]</p>
-                        <p class="mb-1 text-gray-400">Querying Hardware Telemetry...</p>
-                        <p class="mb-4 text-green-400">↳ Detected: 12GB Physical VRAM (Tier 2)</p>
-                        <p class="mb-1 text-gray-400">Mounting Vector DB (Offline Mode)... [OK]</p>
-                        <p class="mb-1 text-white font-bold">> Engine Ready. Awaiting execution command.</p>
-                        <div class="w-2 h-4 bg-white animate-pulse mt-2 inline-block"></div>
+                <div class="relative z-10 gsap-fade opacity-0 spotlight-card p-6 group interactive text-center md:text-left">
+                    <div class="card-content">
+                        <div class="w-24 h-24 rounded-full bg-[#0a0a0a] border border-white/10 text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">02</div>
+                        <h3 class="text-2xl font-bold mb-4 font-display text-white">Architect</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">The Heavy Coder engine spins up, allocating dynamic VRAM to write the necessary PowerShell or Python script from scratch.</p>
                     </div>
                 </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="tilt-card bg-[#111] border border-[#222] p-10 rounded-3xl interactive gsap-stagger opacity-0 translate-y-10 group">
-                    <i class="fa-solid fa-fingerprint text-4xl text-brand-red mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                    <h3 class="text-2xl font-bold text-white mb-4 font-display">Cryptographic Hardware Lock</h3>
-                    <p class="text-gray-400 leading-relaxed">Piracy is impossible. Every OFFLIQ binary is mathematically bound to the unique UUID of your purchasing motherboard. It will not boot on an unauthorized flash drive or secondary machine.</p>
+                
+                <div class="relative z-10 gsap-fade opacity-0 spotlight-card p-6 border-brand-red/40 interactive text-center md:text-left" style="background: rgba(225, 29, 72, 0.05);">
+                    <div class="card-content">
+                        <div class="w-24 h-24 rounded-full bg-brand-red text-white flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 shadow-[0_0_30px_rgba(225,29,72,0.4)]">03</div>
+                        <h3 class="text-2xl font-bold mb-4 font-display text-white">Execute</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">The Windows UAC shield triggers. Once a human clicks 'Approve', OFFLIQ executes the script natively on the host OS.</p>
+                    </div>
                 </div>
-                <div class="tilt-card bg-[#111] border border-[#222] p-10 rounded-3xl interactive gsap-stagger opacity-0 translate-y-10 group">
-                    <i class="fa-solid fa-memory text-4xl text-brand-red mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                    <h3 class="text-2xl font-bold text-white mb-4 font-display">Dynamic Swarm Telemetry</h3>
-                    <p class="text-gray-400 leading-relaxed">You don't need a supercomputer. OFFLIQ's telemetry node reads your physical VRAM on boot and adjusts its neural chunking limits to prevent your system from crashing via OOM errors.</p>
+                
+                <div class="relative z-10 gsap-fade opacity-0 spotlight-card p-6 group interactive text-center md:text-left">
+                    <div class="card-content">
+                        <div class="w-24 h-24 rounded-full bg-[#0a0a0a] border border-white/10 text-gray-500 group-hover:text-brand-red flex items-center justify-center font-display text-3xl font-bold mb-8 mx-auto md:mx-0 transition-all duration-300 group-hover:border-brand-red group-hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">04</div>
+                        <h3 class="text-2xl font-bold mb-4 font-display text-white">Self-Heal</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">If the terminal returns a syntax error, the AI reads it, patches the local file, and re-runs the loop automatically.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-32 relative bg-[#030303] border-t border-[#1a1a1a] bg-grid-pattern">
+    <section id="contact" class="py-32 relative border-t border-white/5 z-10 glass-panel">
         <div class="max-w-4xl mx-auto px-6 lg:px-8">
-            <div class="bg-[#050505] rounded-3xl p-10 md:p-16 border border-[#1f1f1f] shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative gsap-fade opacity-0 translate-y-10 tilt-card">
+            <div class="glass-panel rounded-3xl p-10 md:p-16 border border-white/10 shadow-2xl relative gsap-fade opacity-0 translate-y-10">
                 
                 <div class="text-center mb-12 gsap-stagger opacity-0 translate-y-10">
-                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tighter">Contact & Procurement</h2>
-                    <p class="text-brand-muted text-lg">Request a free pilot, purchase a license, or contact the architecture team directly.</p>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tighter text-gradient">Contact & Procurement</h2>
+                    <p class="text-gray-400 text-lg">Request a free pilot, purchase a license, or contact the architecture team directly.</p>
                 </div>
 
                 <form id="offliq-form" class="space-y-8">
                     <div class="gsap-stagger opacity-0 translate-y-10">
                         <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Inquiry Type <span class="text-brand-red">*</span></label>
                         <div class="relative interactive group">
-                            <select id="inquiry-type" required class="w-full form-input rounded-xl px-5 py-4 font-medium cursor-none appearance-none bg-[#161616]">
+                            <select id="inquiry-type" required class="w-full form-input rounded-xl px-5 py-4 font-medium cursor-none appearance-none">
                                 <option value="" disabled selected class="text-gray-500">Select an option...</option>
                                 <option value="Request 3-Day Free Pilot">Request 3-Day Free Pilot</option>
                                 <option value="Purchase Permanent License (₹80,000)">Purchase Permanent License (₹80,000)</option>
@@ -484,25 +568,25 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="gsap-stagger opacity-0 translate-y-10">
                             <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Full Name <span class="text-brand-red">*</span></label>
-                            <input type="text" id="full-name" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="John Doe">
+                            <input type="text" id="full-name" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600" placeholder="John Doe">
                         </div>
                         <div class="gsap-stagger opacity-0 translate-y-10">
                             <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Work Email <span class="text-brand-red">*</span></label>
-                            <input type="email" id="work-email" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="john@company.com">
+                            <input type="email" id="work-email" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600" placeholder="john@company.com">
                         </div>
                     </div>
                     
                     <div class="gsap-stagger opacity-0 translate-y-10">
                         <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Company Name (IT/MSP) <span class="text-brand-red">*</span></label>
-                        <input type="text" id="company-name" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="Acme Tech Solutions">
+                        <input type="text" id="company-name" required class="w-full form-input rounded-xl px-5 py-4 interactive font-medium placeholder-gray-600" placeholder="Acme Tech Solutions">
                     </div>
                     
                     <div class="gsap-stagger opacity-0 translate-y-10">
                         <label class="block text-xs font-bold tracking-widest text-gray-400 uppercase mb-3">Message (Optional)</label>
-                        <textarea id="message" rows="4" class="w-full form-input rounded-xl px-5 py-4 resize-none interactive font-medium placeholder-gray-600 bg-[#161616]" placeholder="Tell us about your infrastructure requirements..."></textarea>
+                        <textarea id="message" rows="4" class="w-full form-input rounded-xl px-5 py-4 resize-none interactive font-medium placeholder-gray-600" placeholder="Tell us about your infrastructure requirements..."></textarea>
                     </div>
                     
-                    <button type="submit" id="submit-btn" class="w-full btn-premium py-5 rounded-xl font-bold text-lg flex justify-center items-center gap-3 interactive mt-4 shadow-[0_0_20px_rgba(225,29,72,0.3)] gsap-stagger opacity-0 translate-y-10">
+                    <button type="submit" id="submit-btn" class="w-full btn-premium py-5 rounded-xl font-bold text-lg flex justify-center items-center gap-3 interactive mt-4 gsap-stagger opacity-0 translate-y-10">
                         <span>Send Secure Message</span>
                         <i class="fa-solid fa-paper-plane text-sm"></i>
                     </button>
@@ -511,7 +595,7 @@
         </div>
     </section>
 
-    <footer class="relative overflow-hidden bg-[#0a0a0a] pt-32 pb-12 border-t border-[#1a1a1a]">
+    <footer class="relative overflow-hidden pt-32 pb-12 z-10">
         <div class="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none z-0">
             <h1 class="font-display watermark-text">OFFLIQ.</h1>
         </div>
@@ -520,7 +604,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
                 <div class="md:col-span-2 gsap-fade opacity-0 translate-y-10">
                     <div class="flex items-center gap-3 mb-6">
-                        <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(225,29,72,0.4)]" onerror="this.onerror=null; this.src='https://placehold.co/100x100/030303/E11D48?text=O';">
+                        <img src="logo.png" alt="OFFLIQ Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(225,29,72,0.4)]" onerror="this.onerror=null; this.src='https://placehold.co/100x100/000000/E11D48?text=O';">
                         <span class="font-display font-bold text-2xl text-white">OFFLIQ<span class="text-brand-red">.</span></span>
                     </div>
                     <p class="text-gray-400 max-w-sm leading-relaxed">We build 100% offline, air-gapped AI engineers for enterprise IT. Zero telemetry. Absolute data sovereignty.</p>
@@ -529,9 +613,9 @@
                 <div class="gsap-fade opacity-0 translate-y-10">
                     <h4 class="text-white font-bold mb-6 uppercase tracking-widest text-xs border-b border-brand-red/30 inline-block pb-1">Platform</h4>
                     <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a href="#v1-2-updates" class="hover:text-brand-red transition-colors interactive inline-flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px]"></i> V1.2 Matrix</a></li>
                         <li><a href="#metrics" class="hover:text-brand-red transition-colors interactive inline-flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px]"></i> Architecture</a></li>
                         <li><a href="#process" class="hover:text-brand-red transition-colors interactive inline-flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px]"></i> Workflow</a></li>
-                        <li><a href="#features" class="hover:text-brand-red transition-colors interactive inline-flex items-center gap-2"><i class="fa-solid fa-angle-right text-[10px]"></i> Capabilities</a></li>
                     </ul>
                 </div>
 
@@ -545,55 +629,79 @@
                 </div>
             </div>
 
-            <div class="border-t border-[#1a1a1a] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-medium tracking-wide gsap-fade opacity-0 translate-y-10">
-                <span>© 2026 OFFLIQ Intelligence. All rights reserved.</span>
-                <span><i class="fa-solid fa-code text-brand-red mx-1"></i> Engineered in India.</span>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-medium tracking-wide gsap-fade opacity-0 translate-y-10">
+                <span>&copy; 2026 OFFLIQ Intelligence. All rights reserved.</span>
+                <span class="flex items-center text-[13px]">Made with <i class="fa-solid fa-heart text-brand-red mx-1.5 animate-pulse drop-shadow-[0_0_8px_rgba(225,29,72,0.6)]"></i> in India.</span>
             </div>
         </div>
     </footer>
 
+    <!-- Chatbot Container -->
     <div id="chatbot-container" class="fixed bottom-6 right-6 z-[90] flex flex-col items-end">
-        <div id="chatbot-window" class="hidden w-[360px] sm:w-[400px] h-[600px] bg-[#0a0a0a] border border-[#222] rounded-2xl shadow-[0_15px_50px_rgba(0,0,0,0.9)] flex-col overflow-hidden mb-4 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right relative">
+        <!-- Upgraded Glassmorphic Chatbot Window -->
+        <div id="chatbot-window" class="hidden w-[360px] sm:w-[400px] h-[600px] glass-panel border border-white/10 rounded-2xl shadow-2xl flex-col overflow-hidden mb-4 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right relative">
             
-            <div class="bg-[#111] border-b border-[#222] p-5 flex justify-between items-center z-10 relative shrink-0">
+            <div class="bg-black/60 border-b border-white/5 p-5 flex justify-between items-center z-10 relative shrink-0 backdrop-blur-xl">
                 <div class="flex items-center gap-4">
                     <div class="relative">
-                        <div class="w-10 h-10 rounded-full bg-[#1a1a1a] border border-brand-red/30 flex items-center justify-center overflow-hidden shadow-[0_0_10px_rgba(225,29,72,0.2)]">
+                        <div class="w-10 h-10 rounded-full bg-black/80 border border-brand-red/40 flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(225,29,72,0.3)]">
                             <i class="fa-solid fa-robot text-brand-red"></i>
                         </div>
-                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#111]"></div>
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-black"></div>
                 </div>
                 <div>
                     <h4 class="text-white font-bold text-sm">OFFLIQ Gatekeeper</h4>
-                    <p class="text-brand-red text-[10px] tracking-widest uppercase mt-1 font-bold">Automated Routing Agent</p>
+                    <p class="text-brand-red text-[10px] tracking-widest uppercase mt-1 font-bold">V1.2 Routing Agent</p>
                 </div>
             </div>
-            <button id="close-chat" class="text-gray-400 hover:text-white transition-colors interactive w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#222]">
+            <button id="close-chat" class="text-gray-400 hover:text-white transition-colors interactive w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
 
-        <div id="chatbot-messages" class="h-[460px] p-5 flex flex-col gap-4 relative z-10 bg-[#050505] overflow-y-auto" style="overscroll-behavior: contain;">
+        <div id="chatbot-messages" class="h-[460px] p-5 flex flex-col gap-4 relative z-10 bg-black/40 overflow-y-auto" style="overscroll-behavior: contain;">
             <!-- Messages injected here -->
         </div>
 
-        <div class="p-4 bg-[#0a0a0a] border-t border-[#222] text-center z-10 relative shrink-0">
-                <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold flex justify-center items-center gap-2">
-                    <i class="fa-solid fa-lock text-brand-red"></i> Menu-Driven Encrypted Routing
+        <div class="p-4 bg-black/60 border-t border-white/5 text-center z-10 relative shrink-0 backdrop-blur-xl">
+                <span class="text-[10px] text-gray-400 uppercase tracking-widest font-bold flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-lock text-brand-red"></i> Encrypted Local Routing
                 </span>
             </div>
         </div>
 
-        <button id="chatbot-toggle" class="w-16 h-16 bg-brand-red hover:bg-brand-darkred text-white rounded-full shadow-[0_0_25px_rgba(225,29,72,0.4)] flex items-center justify-center text-2xl transition-all hover:scale-110 interactive group">
+        <button id="chatbot-toggle" class="w-16 h-16 btn-premium text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-all hover:scale-110 interactive group">
             <i class="fa-solid fa-comment-dots group-hover:hidden"></i>
             <i class="fa-solid fa-robot hidden group-hover:block"></i>
         </button>
     </div>
 
     <script>
-        // ==========================================
-        // 1. REFINED MAGNETIC DART CURSOR 
-        // ==========================================
+        // 1. Navbar Glass Effect on Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('glass-panel');
+                nav.classList.remove('border-transparent');
+            } else {
+                nav.classList.remove('glass-panel');
+                nav.classList.add('border-transparent');
+            }
+        });
+
+        // 2. Spotlight Hover Effect Logic for Cards
+        const spotCards = document.querySelectorAll('.spotlight-card');
+        spotCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // 3. REFINED MAGNETIC DART CURSOR 
         const cursor = document.getElementById('custom-cursor');
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let cursorX = mouseX, cursorY = mouseY;
@@ -635,7 +743,6 @@
                 el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
             });
 
-            // FIX: Show default cursor securely inside chatbot to allow scrollbar grabbing
             const chatbotWin = document.getElementById('chatbot-window');
             chatbotWin.addEventListener('mouseenter', () => {
                 cursor.style.opacity = '0';
@@ -647,9 +754,7 @@
             });
         }
 
-        // ==========================================
-        // 2. HERO TYPEWRITER ANIMATION
-        // ==========================================
+        // 4. HERO TYPEWRITER ANIMATION
         const words = ["Without Limits.", "At Edge Speed.", "With Zero Leaks."];
         let wordIndex = 0;
         let charIndex = 0;
@@ -682,9 +787,7 @@
         }
         setTimeout(typeEffect, 1000);
 
-        // ==========================================
-        // 3. HIGH-PERFORMANCE 2D NEURAL CANVAS
-        // ==========================================
+        // 5. HIGH-PERFORMANCE 2D NEURAL CANVAS
         const canvas = document.getElementById('neural-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -747,39 +850,42 @@
         }
         animateCanvas();
 
-        // ==========================================
-        // 4. OPTIMIZED GSAP SCROLL ANIMATIONS (Hardware Accelerated)
-        // ==========================================
+        // 6. OPTIMIZED GSAP SCROLL ANIMATIONS
         gsap.registerPlugin(ScrollTrigger);
         
         gsap.to(".gsap-hero", {
-            opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.2, force3D: true
+            opacity: 1, y: 0, scale: 1, rotationX: 0,
+            duration: 1.4, stagger: 0.15, ease: "expo.out", delay: 0.1, force3D: true,
+            startAt: { y: 60, scale: 0.9, rotationX: -15, transformPerspective: 500 }
         });
 
         gsap.utils.toArray('.gsap-fade').forEach(element => {
             gsap.to(element, {
-                scrollTrigger: { trigger: element, start: "top 90%", once: true },
-                opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true
+                scrollTrigger: { trigger: element, start: "top 85%", once: true },
+                opacity: 1, y: 0, scale: 1,
+                duration: 1.2, ease: "power3.out", force3D: true,
+                startAt: { y: 40, scale: 0.95 }
             });
         });
 
-        // Use scrollTrigger batch to handle multiple staggers cleanly and prevent delay overlap lag
         ScrollTrigger.batch(".gsap-stagger", {
-          onEnter: batch => gsap.to(batch, {opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: "back.out(1.2)", force3D: true, overwrite: true}),
+          onEnter: batch => gsap.to(batch, {
+              opacity: 1, y: 0, scale: 1, rotationY: 0,
+              duration: 1, stagger: 0.1, ease: "back.out(1.4)", force3D: true, overwrite: true,
+              startAt: { y: 60, scale: 0.85, rotationY: 15, transformPerspective: 1000 }
+          }),
           start: "top 85%",
           once: true
         });
 
-        // ==========================================
-        // 5. AJAX FORM LOGIC
-        // ==========================================
+        // 7. AJAX FORM LOGIC
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             const borderColor = type === 'success' ? 'border-green-500/50' : 'border-brand-red/50';
             const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-green-500"></i>' : '<i class="fa-solid fa-circle-exclamation text-brand-red"></i>';
 
-            toast.className = `flex items-center gap-3 px-5 py-4 rounded-xl border bg-[#111] ${borderColor} shadow-2xl transform transition-all duration-500 translate-x-full opacity-0 z-[100]`;
+            toast.className = `flex items-center gap-3 px-5 py-4 rounded-xl border glass-panel ${borderColor} shadow-2xl transform transition-all duration-500 translate-x-full opacity-0 z-[100]`;
             toast.innerHTML = `${icon} <span class="text-white text-sm font-bold tracking-wide">${message}</span>`;
             
             container.appendChild(toast);
@@ -797,9 +903,9 @@
             e.preventDefault();
             
             const originalBtnHtml = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Encrypting...';
+            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span class="tracking-widest uppercase text-sm">Encrypting...</span>';
             submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            submitBtn.classList.add('btn-send-loading');
 
             const inquiryType = document.getElementById('inquiry-type').value;
             const fullName = document.getElementById('full-name').value;
@@ -824,23 +930,34 @@
             .then(response => response.json())
             .then(data => {
                 if(data.success) {
+                    submitBtn.classList.remove('btn-send-loading');
+                    submitBtn.classList.add('btn-send-success');
+                    submitBtn.innerHTML = '<i class="fa-solid fa-check text-xl"></i> <span class="tracking-widest uppercase text-sm">Transmission Secured</span>';
                     showToast('Secure Request Sent Successfully.', 'success');
                     form.reset();
+                    
+                    // Physical button reset after success animation
+                    setTimeout(() => {
+                        submitBtn.classList.remove('btn-send-success');
+                        submitBtn.innerHTML = originalBtnHtml;
+                        submitBtn.disabled = false;
+                    }, 4000);
                 } else {
+                    submitBtn.classList.remove('btn-send-loading');
+                    submitBtn.innerHTML = originalBtnHtml;
+                    submitBtn.disabled = false;
                     showToast('Error sending request.', 'error');
                 }
             })
-            .catch(() => showToast('Network error. Check connection.', 'error'))
-            .finally(() => {
+            .catch(() => {
+                submitBtn.classList.remove('btn-send-loading');
                 submitBtn.innerHTML = originalBtnHtml;
                 submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                showToast('Network error. Check connection.', 'error');
             });
         });
 
-        // ==========================================
-        // 6. EXPANDED 26-NODE CHATBOT 
-        // ==========================================
+        // 8. EXPANDED 26-NODE CHATBOT 
         const chatbotWindow = document.getElementById('chatbot-window');
         const chatbotToggle = document.getElementById('chatbot-toggle');
         const closeChatBtn = document.getElementById('close-chat');
@@ -851,13 +968,19 @@
 
         const botFlow = {
             "start": {
-                msg: "Welcome to OFFLIQ Intelligence. I am the automated routing agent. What aspect of the architecture would you like to explore?",
+                msg: "Welcome to OFFLIQ Intelligence V1.2. I am the automated routing agent. What aspect of the architecture would you like to explore?",
                 options: [
+                    { text: "What's new in V1.2?", next: "v1_2_updates" },
                     { text: "Security & Privacy", next: "security_main" },
                     { text: "Technical Specs", next: "tech_main" },
-                    { text: "Pricing & Licensing", next: "price_main" },
-                    { text: "Deployment & Pilot", next: "deploy_main" }
+                    { text: "Pricing & Licensing", next: "price_main" }
                 ]
+            },
+
+            // V1.2 BRANCH
+            "v1_2_updates": {
+                msg: "V1.2 introduces the Cryptographic Plugin Vault, 'See-Saw' dynamic memory allocation, and the Hardware Telemetry Shield. It is a massive enterprise upgrade.",
+                options: [{ text: "Main Menu", next: "start" }]
             },
             
             // SECURITY BRANCH
@@ -936,39 +1059,11 @@
                 options: [{ text: "Main Menu", next: "start" }]
             },
             "price_team": {
-                msg: "Yes. For MSPs purchasing 5 or more workstation licenses, we offer enterprise volume scaling. Please select 'Purchase' in the contact form below.",
+                msg: "Yes. For MSPs purchasing 5 or more workstation licenses, we offer enterprise volume scaling. Please select 'Purchase' in the contact form.",
                 options: [{ text: "Main Menu", next: "start" }]
             },
             "price_updates": {
                 msg: "Minor patches and security updates are provided freely via encrypted download links. Major V2.0 overhauls may require a separate license.",
-                options: [{ text: "Main Menu", next: "start" }]
-            },
-
-            // DEPLOYMENT & SUPPORT BRANCH
-            "deploy_main": {
-                msg: "Deployment is fast and entirely local. No complex cloud integrations required.",
-                options: [
-                    { text: "How do I get a free pilot?", next: "deploy_pilot" },
-                    { text: "Pilot System Requirements?", next: "pilot_requirements" },
-                    { text: "How do I uninstall it?", next: "tech_uninstall" },
-                    { text: "Who provides technical support?", next: "deploy_support" },
-                    { text: "Main Menu", next: "start" }
-                ]
-            },
-            "deploy_pilot": {
-                msg: "We offer a 5-Day Free Pilot. Please select 'Request 3-Day Free Pilot' in the Contact form on this page, and our team will email you the secure download link.",
-                options: [{ text: "Main Menu", next: "start" }]
-            },
-            "pilot_requirements": {
-                msg: "To run the pilot, you need a Windows 10/11 machine with an Nvidia GPU (minimum 8GB VRAM) or equivalent system RAM for CPU fallback.",
-                options: [{ text: "Main Menu", next: "start" }]
-            },
-            "deploy_support": {
-                msg: "You get direct email support from our Lead Architect. Because the system is air-gapped, if there is a bug, we compile a secure patch and send you the updated installer.",
-                options: [{ text: "Main Menu", next: "start" }]
-            },
-            "tech_uninstall": {
-                msg: "Because it is completely self-contained, uninstallation is clean. You run the uninstaller, and it deletes the isolated workspace directory without leaving registry ghosts.",
                 options: [{ text: "Main Menu", next: "start" }]
             }
         };
@@ -977,10 +1072,10 @@
             const msgDiv = document.createElement('div');
             msgDiv.className = "flex items-start gap-3 w-full max-w-[90%] opacity-0 transform translate-y-4 transition-all duration-500 ease-out";
             msgDiv.innerHTML = `
-                <div class="w-8 h-8 rounded-full bg-[#111] border border-brand-red/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(225,29,72,0.2)]">
+                <div class="w-8 h-8 rounded-full bg-black border border-brand-red/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(225,29,72,0.2)]">
                     <i class="fa-solid fa-microchip text-brand-red text-xs"></i>
                 </div>
-                <div class="bg-[#111] border border-[#262626] p-3 rounded-2xl rounded-tl-none text-[13px] text-gray-300 shadow-lg leading-relaxed">
+                <div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-tl-none text-[13px] text-gray-300 shadow-lg leading-relaxed backdrop-blur-md">
                     ${text}
                 </div>
             `;
@@ -996,7 +1091,7 @@
             const msgDiv = document.createElement('div');
             msgDiv.className = "flex justify-end w-full mb-1 opacity-0 transform translate-y-4 transition-all duration-500 ease-out";
             msgDiv.innerHTML = `
-                <div class="bg-[#222] border border-[#333] text-white p-3 rounded-2xl rounded-tr-none text-[12px] shadow-md max-w-[85%] font-medium">
+                <div class="bg-brand-red border border-red-400/50 text-white p-3 rounded-2xl rounded-tr-none text-[12px] shadow-md max-w-[85%] font-medium">
                     ${text}
                 </div>
             `;
@@ -1012,7 +1107,7 @@
             if(!node) return;
             
             const typingDiv = document.createElement('div');
-            typingDiv.className = "flex items-center gap-2 text-brand-muted text-[11px] ml-11 mb-2 italic tracking-wider";
+            typingDiv.className = "flex items-center gap-2 text-gray-500 text-[11px] ml-11 mb-2 italic tracking-wider";
             typingDiv.innerHTML = "Agent routing request...";
             chatMessages.appendChild(typingDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -1027,7 +1122,7 @@
                     
                     node.options.forEach(opt => {
                         const btn = document.createElement('button');
-                        btn.className = "text-left text-[12px] font-medium bg-[#141414] hover:bg-[#1f1f1f] border border-[#2a2a2a] hover:border-brand-red transition-all duration-300 p-2.5 rounded-xl text-gray-300 shadow-sm flex items-center justify-between group interactive";
+                        btn.className = "text-left text-[12px] font-medium bg-black/50 hover:bg-white/10 border border-white/10 hover:border-brand-red transition-all duration-300 p-2.5 rounded-xl text-gray-300 shadow-sm flex items-center justify-between group interactive backdrop-blur-sm";
                         btn.innerHTML = `<span class="flex items-center gap-2">${opt.text}</span> <i class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 text-brand-red transition-opacity transform group-hover:translate-x-1"></i>`;
                         
                         btn.onclick = () => {
