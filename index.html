@@ -357,9 +357,9 @@
                     <a href="#v1-2-updates" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">V1.2 Matrix</a>
                     <a href="#metrics" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Architecture</a>
                     <a href="#process" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Execution</a>
-                    <a href="#contact" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Support</a>
-                    <a href="#contact" class="btn-premium px-7 py-3 text-sm font-bold interactive flex items-center gap-2">
-                        Request Pilot <i class="fa-solid fa-terminal text-xs"></i>
+                    <a href="#deployment" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Downloads</a>
+                    <a href="#deployment" class="btn-premium px-7 py-3 text-sm font-bold interactive flex items-center gap-2">
+                        Deploy Engine <i class="fa-solid fa-download text-xs"></i>
                     </a>
                 </div>
             </div>
@@ -386,8 +386,8 @@
                     OFFLIQ is an autonomous, 100% air-gapped AI engineer. Stop pasting proprietary client network data into public cloud APIs. Execute Windows server scripts locally with absolute zero telemetry.
                 </p>
                 <div class="flex gap-4">
-                    <a href="#contact" class="btn-premium px-10 py-4 text-lg font-bold flex items-center justify-center gap-3 interactive group">
-                        Deploy Framework <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                    <a href="#deployment" class="btn-premium px-10 py-4 text-lg font-bold flex items-center justify-center gap-3 interactive group">
+                        Client Portal <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </div>
             </div>
@@ -542,6 +542,72 @@
         </div>
     </section>
 
+    <!-- NEW SECURE DEPLOYMENT (DOWNLOADS) SECTION -->
+    <section id="deployment" class="py-32 relative border-t border-white/5 z-10 glass-panel">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div class="mb-20 text-center gsap-fade opacity-0">
+                <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase">Client Portal</span>
+                <h2 class="font-display text-5xl md:text-6xl font-bold text-white tracking-normal">Secure Deployment</h2>
+            </div>
+            
+            <div class="max-w-4xl mx-auto p-8 bg-[#050505] border border-white/10 rounded-3xl shadow-2xl relative overflow-hidden gsap-fade opacity-0 translate-y-10">
+                <!-- Background Glow -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-red/10 rounded-full blur-[80px] pointer-events-none"></div>
+
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+                    
+                    <!-- BUTTON 1: THE FULL DEPLOYMENT -->
+                    <div class="w-full flex-1 bg-[#0A0A0A] border border-white/10 rounded-2xl p-8 hover:border-brand-red/50 transition-colors group interactive">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-full bg-brand-red/20 flex items-center justify-center border border-brand-red/50 shadow-[0_0_15px_rgba(225,29,72,0.3)]">
+                                <i class="fa-solid fa-download text-brand-red text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-white font-display">Full Enterprise Payload</h3>
+                                <p class="text-xs text-brand-red font-mono tracking-widest uppercase mt-1">V1.2 • ~72 GB</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-8 leading-relaxed">
+                            The complete air-gapped package. Includes the OFFLIQ Engine and all secure local Neural Matrices.
+                        </p>
+                        <!-- DIRECT DOWNLOAD LINK -->
+                        <a href="https://drive.google.com/uc?export=download&id=16m1CfjiChw4mFgAVFc_Wzz22_3oIOy6I" id="link-full-deploy" class="w-full btn-premium px-6 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 interactive" target="_blank" rel="noopener noreferrer">
+                            Download Master Setup <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- BUTTON 2: THE ENGINE UPDATE -->
+                    <div class="w-full md:w-80 bg-[#0A0A0A] border border-white/10 rounded-2xl p-8 hover:border-gray-500/50 transition-colors interactive group">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center border border-gray-600">
+                                <i class="fa-solid fa-rotate text-gray-300"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white font-display">Engine Patch</h3>
+                                <p class="text-[10px] text-gray-500 font-mono tracking-widest uppercase mt-1">~2.3 GB</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-8 leading-relaxed">
+                            Already have the models? Just download the updated execution engine.
+                        </p>
+                        <!-- DIRECT DOWNLOAD LINK -->
+                        <a href="https://drive.google.com/uc?export=download&id=1EzDr5hws80529iq-I-sLX_jxXsnMvaNM" id="link-engine-patch" class="w-full bg-transparent border border-gray-600 hover:border-white hover:text-white text-gray-400 px-4 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 interactive" target="_blank" rel="noopener noreferrer">
+                            Download Update
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- EXTERNAL RED DISCLAIMER NOTE -->
+            <div class="max-w-3xl mx-auto mt-8 text-center gsap-fade opacity-0 translate-y-5">
+                <p class="text-[11px] text-brand-red/90 font-mono tracking-wide leading-relaxed bg-brand-red/10 border border-brand-red/30 py-3 px-6 rounded-xl inline-block shadow-[0_0_20px_rgba(225,29,72,0.15)]">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> <b class="text-brand-red">Note:</b> Due to the massive 72GB encrypted size of the local neural matrices, standard browser scanners will flag the file as too large to scan. Click 'Download Anyway' on the secure routing page to begin transfer.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="py-32 relative border-t border-white/5 z-10 glass-panel">
         <div class="max-w-4xl mx-auto px-6 lg:px-8">
             <div class="glass-panel rounded-3xl p-10 md:p-16 border border-white/10 shadow-2xl relative gsap-fade opacity-0 translate-y-10">
@@ -630,7 +696,10 @@
             </div>
 
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-medium tracking-wide gsap-fade opacity-0 translate-y-10">
-                <span>&copy; 2026 OFFLIQ Intelligence. All rights reserved.</span>
+                <div class="flex items-center gap-4">
+                    <span>&copy; 2026 OFFLIQ Intelligence. All rights reserved.</span>
+                    <a href="#" id="open-terms" class="hover:text-white transition-colors interactive underline decoration-white/20 underline-offset-4">Terms & Conditions</a>
+                </div>
                 <span class="flex items-center text-[13px]">Made with <i class="fa-solid fa-heart text-brand-red mx-1.5 animate-pulse drop-shadow-[0_0_8px_rgba(225,29,72,0.6)]"></i> in India.</span>
             </div>
         </div>
@@ -674,6 +743,52 @@
             <i class="fa-solid fa-comment-dots group-hover:hidden"></i>
             <i class="fa-solid fa-robot hidden group-hover:block"></i>
         </button>
+    </div>
+
+    <!-- TERMS AND CONDITIONS MODAL -->
+    <div id="terms-modal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <!-- Dark Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm interactive" id="terms-backdrop"></div>
+        
+        <!-- Glassmorphic Modal Content -->
+        <div class="relative w-[90%] max-w-2xl max-h-[80vh] glass-panel border border-white/10 rounded-2xl shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="terms-content">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/50 rounded-t-2xl shrink-0">
+                <div>
+                    <h3 class="font-display text-xl font-bold text-white tracking-tight">End User License Agreement</h3>
+                    <p class="text-[10px] text-brand-red uppercase tracking-widest font-bold mt-1">OFFLIQ Enterprise V1.2</p>
+                </div>
+                <button id="close-terms-btn" class="text-gray-400 hover:text-white interactive w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body (Scrollable) -->
+            <div class="p-8 overflow-y-auto text-sm text-gray-400 leading-relaxed space-y-6" style="overscroll-behavior: contain;">
+                <p>
+                    <strong class="text-white text-base font-display tracking-tight block mb-1">1. AIR-GAPPED PRIVACY & SOVEREIGNTY</strong>
+                    The OFFLIQ Core Engine operates as a mathematically verified 100% offline, air-gapped application. It does not harvest, transmit, or store user data, chat histories, or generated scripts on external servers. The User assumes absolute legal liability for the physical security of their hardware under applicable global data protection laws.
+                </p>
+                <p>
+                    <strong class="text-white text-base font-display tracking-tight block mb-1">2. AUTONOMOUS OS EXECUTION & RISK ASSUMPTION</strong>
+                    OFFLIQ possesses the capability to natively interact with the Host OS, including writing files, executing PowerShell commands, and altering network firewall rules. DEPLOYING AI-GENERATED CODE CARRIES SEVERE RISK. The Creators assume ZERO LIABILITY for unintended operating system corruption, data loss, or business interruption.
+                </p>
+                <p>
+                    <strong class="text-white text-base font-display tracking-tight block mb-1">3. MODULAR PLUGINS & NETWORK LIABILITY</strong>
+                    While the Core Engine is offline, the User may install 'Plugins' that request external network access. The User assumes full liability for auditing the network traffic of these modules.
+                </p>
+                <p>
+                    <strong class="text-white text-base font-display tracking-tight block mb-1">4. STRICT NO-REFUND POLICY</strong>
+                    Due to the localized, unprotected binary architecture of this software and cryptographic license generation, all sales are strictly final and non-refundable upon delivery.
+                </p>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-6 border-t border-white/10 bg-black/50 rounded-b-2xl shrink-0 flex justify-end">
+                <button class="bg-transparent border border-white/20 hover:bg-white/10 text-white px-6 py-2.5 rounded-lg font-bold uppercase tracking-widest text-xs transition-colors interactive" onclick="document.getElementById('close-terms-btn').click()">I Understand</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -936,7 +1051,6 @@
                     showToast('Secure Request Sent Successfully.', 'success');
                     form.reset();
                     
-                    // Physical button reset after success animation
                     setTimeout(() => {
                         submitBtn.classList.remove('btn-send-success');
                         submitBtn.innerHTML = originalBtnHtml;
@@ -1173,6 +1287,36 @@
 
         chatbotToggle.addEventListener('click', toggleChat);
         closeChatBtn.addEventListener('click', toggleChat);
+
+        // 9. TERMS AND CONDITIONS MODAL LOGIC
+        const termsModal = document.getElementById('terms-modal');
+        const openTermsBtn = document.getElementById('open-terms');
+        const closeTermsBtn = document.getElementById('close-terms-btn');
+        const termsBackdrop = document.getElementById('terms-backdrop');
+        const termsContent = document.getElementById('terms-content');
+
+        function openTermsModal(e) {
+            e.preventDefault();
+            termsModal.classList.remove('hidden');
+            // Trigger reflow to ensure the transition animates correctly
+            void termsModal.offsetWidth;
+            termsModal.classList.remove('opacity-0');
+            termsContent.classList.remove('scale-95');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeTermsModal() {
+            termsModal.classList.add('opacity-0');
+            termsContent.classList.add('scale-95');
+            setTimeout(() => {
+                termsModal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore background scrolling
+            }, 300);
+        }
+
+        openTermsBtn.addEventListener('click', openTermsModal);
+        closeTermsBtn.addEventListener('click', closeTermsModal);
+        termsBackdrop.addEventListener('click', closeTermsModal);
 
     </script>
 </body>
