@@ -357,7 +357,7 @@
                     <a href="#v1-2-updates" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">V1.2 Matrix</a>
                     <a href="#metrics" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Architecture</a>
                     <a href="#process" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Execution</a>
-                    <a href="#deployment" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Downloads</a>
+                    <a href="#contact" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors interactive">Support</a>
                     <a href="#deployment" class="btn-premium px-7 py-3 text-sm font-bold interactive flex items-center gap-2">
                         Deploy Engine <i class="fa-solid fa-download text-xs"></i>
                     </a>
@@ -387,12 +387,45 @@
                 </p>
                 <div class="flex gap-4">
                     <a href="#deployment" class="btn-premium px-10 py-4 text-lg font-bold flex items-center justify-center gap-3 interactive group">
-                        Client Portal <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        Deploy Framework <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
                     </a>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- CINEMATIC DEMO VIDEO SECTION -->
+    <section id="demo" class="py-20 relative z-10">
+        <div class="max-w-5xl mx-auto px-6 lg:px-12">
+            <div class="gsap-fade opacity-0 translate-y-10 relative group">
+                <!-- Ambient Red Glow Behind Video -->
+                <div class="absolute -inset-1 bg-gradient-to-r from-brand-red to-brand-darkred rounded-2xl blur-xl opacity-20 transition duration-1000 group-hover:opacity-40 pointer-events-none"></div>
+                
+                <!-- Premium Glass Video Container -->
+                <div class="relative bg-[#050505] rounded-2xl border border-white/10 p-2 md:p-3 shadow-2xl glass-panel">
+                    <!-- Minimalist "Live" Overlay -->
+                    <div class="absolute top-6 left-8 flex items-center gap-2 z-20 pointer-events-none bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                        <span class="w-2 h-2 rounded-full bg-brand-red animate-pulse shadow-[0_0_8px_#E11D48]"></span>
+                        <span class="text-[10px] font-mono tracking-widest uppercase text-white font-bold drop-shadow-md">Live Engine Feed</span>
+                    </div>
+                    
+                    <!-- The Native Video Player (Autoplay, Muted, Looped, Hidden Controls) -->
+                    <video 
+                        src="demo_offliq.mp4" 
+                        autoplay 
+                        loop 
+                        muted 
+                        playsinline 
+                        class="w-full h-auto rounded-xl border border-white/5 object-cover shadow-inner"
+                        style="pointer-events: none;"
+                        poster="https://placehold.co/1920x1080/050505/262626?text=Loading+Neural+Feed..."
+                    >
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section id="v1-2-updates" class="py-32 relative z-10">
         <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
@@ -542,12 +575,20 @@
         </div>
     </section>
 
-    <!-- NEW SECURE DEPLOYMENT (DOWNLOADS) SECTION -->
+    <!-- SECURE DEPLOYMENT (DOWNLOADS) SECTION -->
     <section id="deployment" class="py-32 relative border-t border-white/5 z-10 glass-panel">
         <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
-            <div class="mb-20 text-center gsap-fade opacity-0">
+            <div class="mb-16 text-center gsap-fade opacity-0">
                 <span class="text-brand-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase">Client Portal</span>
-                <h2 class="font-display text-5xl md:text-6xl font-bold text-white tracking-normal">Secure Deployment</h2>
+                <h2 class="font-display text-5xl md:text-6xl font-bold text-white tracking-normal mb-6">Secure Deployment</h2>
+                
+                <!-- NEW: Cryptographic License Badge -->
+                <div class="inline-flex items-start md:items-center gap-3 px-6 py-3.5 rounded-xl bg-brand-red/5 border border-brand-red/20 shadow-lg text-left md:text-center max-w-2xl">
+                    <i class="fa-solid fa-lock text-brand-red mt-0.5 md:mt-0"></i>
+                    <p class="text-gray-300 text-xs md:text-sm font-medium leading-relaxed tracking-wide">
+                        <span class="text-white font-bold">Cryptographic Lock Active:</span> The compiled binaries are secured. You must request a pilot key or procure a permanent license below to initialize the engine post-deployment.
+                    </p>
+                </div>
             </div>
             
             <div class="max-w-4xl mx-auto p-8 bg-[#050505] border border-white/10 rounded-3xl shadow-2xl relative overflow-hidden gsap-fade opacity-0 translate-y-10">
@@ -591,7 +632,7 @@
                             Already have the models? Just download the updated execution engine.
                         </p>
                         <!-- DIRECT DOWNLOAD LINK -->
-                        <a href="https://drive.google.com/uc?export=download&id=1EzDr5hws80529iq-I-sLX_jxXsnMvaNM" id="link-engine-patch" class="w-full bg-transparent border border-gray-600 hover:border-white hover:text-white text-gray-400 px-4 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 interactive" target="_blank" rel="noopener noreferrer">
+                        <a href="https://drive.google.com/uc?export=download&id=1EzDr5hws80529iq-I-sLX_jxXsnMvaNM" target="_blank" rel="noopener noreferrer" id="link-engine-patch" class="w-full bg-transparent border border-gray-600 hover:border-white hover:text-white text-gray-400 px-4 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 interactive">
                             Download Update
                         </a>
                     </div>
@@ -600,10 +641,19 @@
             </div>
 
             <!-- EXTERNAL RED DISCLAIMER NOTE -->
-            <div class="max-w-3xl mx-auto mt-8 text-center gsap-fade opacity-0 translate-y-5">
-                <p class="text-[11px] text-brand-red/90 font-mono tracking-wide leading-relaxed bg-brand-red/10 border border-brand-red/30 py-3 px-6 rounded-xl inline-block shadow-[0_0_20px_rgba(225,29,72,0.15)]">
-                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> <b class="text-brand-red">Note:</b> Due to the massive 72GB encrypted size of the local neural matrices, standard browser scanners will flag the file as too large to scan. Click 'Download Anyway' on the secure routing page to begin transfer.
-                </p>
+            <div class="max-w-2xl mx-auto mt-10 gsap-fade opacity-0 translate-y-5">
+                <div class="flex items-start gap-5 p-6 rounded-2xl bg-[#0a0a0a] border border-white/5 shadow-2xl relative overflow-hidden group hover:border-white/10 transition-colors">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-red"></div>
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-brand-red/10 flex items-center justify-center border border-brand-red/20">
+                        <i class="fa-solid fa-triangle-exclamation text-brand-red text-sm"></i>
+                    </div>
+                    <div class="text-left">
+                        <h4 class="text-white text-sm font-bold tracking-wide mb-2 font-display">Large Payload Routing Notice</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed font-medium">
+                            Due to the massive 72GB encrypted size of the local neural matrices, standard browser scanners will flag the file as too large to scan. Please click <span class="text-white font-bold">"Download Anyway"</span> on the secure routing page to begin the master transfer.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -740,7 +790,7 @@
         </div>
 
         <button id="chatbot-toggle" class="w-16 h-16 btn-premium text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-all hover:scale-110 interactive group">
-            <i class="fa-solid fa-comment-dots group-hover:hidden"></i>
+            <i class="fa-solid fa-terminal group-hover:hidden"></i>
             <i class="fa-solid fa-robot hidden group-hover:block"></i>
         </button>
     </div>
