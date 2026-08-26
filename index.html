@@ -409,16 +409,14 @@
                         <span class="text-[10px] font-mono tracking-widest uppercase text-white font-bold drop-shadow-md">Live Engine Feed</span>
                     </div>
                     
-                    <!-- The Native Video Player (Autoplay, Muted, Looped, Hidden Controls) -->
+                    <!-- The Native Video Player (With Controls and Audio) -->
                     <video 
                         src="demo_offliq.mp4" 
-                        autoplay 
-                        loop 
-                        muted 
+                        controls
                         playsinline 
-                        class="w-full h-auto rounded-xl border border-white/5 object-cover shadow-inner"
-                        style="pointer-events: none;"
-                        poster="https://placehold.co/1920x1080/050505/262626?text=Loading+Neural+Feed..."
+                        class="w-full h-auto rounded-xl border border-white/5 object-cover shadow-inner relative z-10"
+                        style="cursor: auto !important;"
+                        poster="https://placehold.co/1920x1080/050505/262626?text=Click+to+Play+Demo"
                     >
                         Your browser does not support the video tag.
                     </video>
