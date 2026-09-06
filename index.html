@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth bg-[#030303]">
+<html lang="en" class="bg-[#030303]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +7,11 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Premium Fonts: Space Grotesk for cinematic headers, Inter for crisp UI text -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- High-End Animation Engines -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
@@ -21,20 +23,24 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
                         offliq: {
                             red: '#E11D48',
-                            darkred: '#BE123C',
-                            dark: '#030303',
+                            darkred: '#9f1239',
+                            black: '#030303',
                             surface: '#0A0A0C',
-                            border: '#1F1F24',
-                            text: '#E2E8F0',
-                            dim: '#A1A1AA'
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            text: '#f4f4f5',
+                            dim: '#a1a1aa'
                         }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
@@ -42,243 +48,265 @@
     </script>
 
     <style>
+        /* Base Reset & Lenis */
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto !important; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
 
         body {
-            background: linear-gradient(180deg, #030303 0%, #070203 40%, #100205 100%);
-            background-attachment: fixed;
-            color: #E2E8F0;
+            background-color: #030303;
+            color: #f4f4f5;
             overflow-x: hidden;
             cursor: none; 
             -webkit-font-smoothing: antialiased;
         }
-        * { cursor: none !important; }
+        * { cursor: none !important; } 
 
-        .cyber-grid {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: -11;
-            pointer-events: none;
-            transform: perspective(600px) rotateX(60deg) translateY(-80px) translateZ(-150px);
+        /* PROGRESS BAR */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, #be123c, #E11D48, #f43f5e);
+            width: 0%; z-index: 999999;
+            box-shadow: 0 0 15px rgba(225, 29, 72, 0.8);
+        }
+
+        /* AMBIENT MESH GRADIENT */
+        .ambient-mesh {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -10; overflow: hidden; pointer-events: none;
+            background: #030303;
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.35;
+            animation: float 25s infinite ease-in-out alternate;
+        }
+        .orb-1 { top: -20%; left: -10%; width: 60vw; height: 60vw; background: rgba(225, 29, 72, 0.15); animation-delay: 0s; }
+        .orb-2 { bottom: -20%; right: -20%; width: 70vw; height: 70vw; background: rgba(159, 18, 57, 0.12); animation-delay: -5s; }
+        .orb-3 { top: 30%; left: 40%; width: 40vw; height: 40vw; background: rgba(225, 29, 72, 0.08); animation-delay: -10s; }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(8%, 12%) scale(1.15); }
+        }
+
+        /* CINEMATIC NOISE */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -9; opacity: 0.04; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         #cursor-dot, #cursor-ring {
-            position: fixed; top: 0; left: 0;
-            border-radius: 50%;
+            position: fixed; top: 0; left: 0; pointer-events: none;
+            border-radius: 50%; transform: translate(-50%, -50%);
             z-index: 999999;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
         }
-        
         #cursor-dot {
-            width: 6px; height: 6px;
-            background-color: #E11D48;
-            box-shadow: 0 0 12px rgba(225, 29, 72, 1);
-            transition: opacity 0.2s ease;
+            width: 6px; height: 6px; background-color: #E11D48;
+            box-shadow: 0 0 10px rgba(225, 29, 72, 0.9);
+            transition: opacity 0.2s, background-color 0.2s;
         }
-
         #cursor-ring {
-            width: 36px; height: 36px;
-            border: 1px solid rgba(225, 29, 72, 0.45);
-            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s, border-color 0.25s;
+            width: 40px; height: 40px; border: 1.5px solid rgba(225, 29, 72, 0.4);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s, background-color 0.3s, border-color 0.3s;
         }
-
         .cursor-hover #cursor-dot { opacity: 0; }
         .cursor-hover #cursor-ring {
-            width: 58px; height: 58px;
-            background-color: rgba(225, 29, 72, 0.12);
-            border-color: #ffffff;
-            backdrop-filter: blur(2px);
+            width: 65px; height: 65px;
+            background-color: rgba(225, 29, 72, 0.08);
+            border-color: #fff;
+            backdrop-filter: blur(3px);
         }
 
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 3px;
-            background: linear-gradient(90deg, #BE123C, #E11D48);
-            width: 0%; z-index: 999999;
-            box-shadow: 0 0 16px rgba(225, 29, 72, 0.9);
+        #hero-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; opacity: 0.8;
         }
 
-        .text-huge {
-            font-size: clamp(3.2rem, 7.5vw, 8.5rem);
-            line-height: 0.94;
-            letter-spacing: -0.04em;
-        }
+        /* TYPOGRAPHY & TEXT SPLITTING */
+        .text-huge { font-size: clamp(4rem, 10vw, 12rem); line-height: 0.85; letter-spacing: -0.06em; }
+        .split-parent { overflow: hidden; display: inline-flex; vertical-align: bottom; }
+        .split-child { display: inline-block; will-change: transform; transform-origin: 0% 100%; }
         
         .text-hollow {
-            color: rgba(255, 255, 255, 0.08);
-            transition: color 0.4s ease, text-shadow 0.4s ease;
+            color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.15);
+            transition: color 0.4s ease, -webkit-text-stroke 0.4s ease, text-shadow 0.4s ease;
         }
         .text-hollow:hover {
-            color: #E11D48;
-            text-shadow: 0 0 35px rgba(225, 29, 72, 0.7);
+            color: #E11D48; -webkit-text-stroke: 1px transparent; text-shadow: 0 0 40px rgba(225, 29, 72, 0.6);
         }
 
-        .glass-panel {
-            background: rgba(10, 10, 12, 0.75);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        /* BENTO BOX GRID */
+        .bento-grid {
+            display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; grid-auto-rows: minmax(340px, auto);
         }
+        .bento-card {
+            background: rgba(10, 10, 12, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06); border-radius: 24px;
+            padding: 3rem; display: flex; flex-direction: column; overflow: hidden;
+            position: relative; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+        }
+        .bento-card:hover {
+            transform: translateY(-5px); border-color: rgba(225, 29, 72, 0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        
+        /* FAUX UI BACKGROUNDS FOR BENTO CARDS */
+        .bento-bg-grid {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3;
+            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px; mask-image: radial-gradient(circle at center, black, transparent 80%);
+        }
+        .bento-bg-terminal {
+            position: absolute; right: -10%; top: 20%; width: 60%; height: 80%; z-index: 0;
+            background: #050505; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0.5; transform: rotate(5deg);
+            padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: #E11D48;
+            overflow: hidden; pointer-events: none; transition: transform 0.5s ease;
+        }
+        .bento-card:hover .bento-bg-terminal { transform: rotate(0deg) scale(1.05) translateY(-10px); opacity: 0.8; }
+        
+        .bento-bg-glow {
+            position: absolute; top: -20%; right: -20%; width: 60%; height: 60%; z-index: 0;
+            background: radial-gradient(circle, rgba(225,29,72,0.15) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(40px); transition: all 0.5s ease;
+        }
+        .bento-card:hover .bento-bg-glow { transform: scale(1.5); background: radial-gradient(circle, rgba(225,29,72,0.25) 0%, transparent 70%); }
+        .bento-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
 
-        /* NEW: Ambient Mathematical Spotlight */
-        .sweep-glow {
-            position: relative;
-            overflow: hidden;
-        }
-        .sweep-glow::before {
-            content: '';
-            position: absolute;
-            top: var(--glow-y, 50%);
-            left: var(--glow-x, 50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle closest-side, rgba(225, 29, 72, 0.15) 0%, transparent 100%);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-        }
-        .sweep-glow:hover::before {
-            opacity: 1;
-        }
-        .sweep-glow > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .horizontal-wrapper { overflow: hidden; width: 100vw; height: 100vh; position: relative; }
-        .horizontal-container { display: flex; width: 400vw; height: 100%; }
-        .horizontal-panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 6vw; position: relative; }
-
-        .stack-container { position: relative; width: 100%; padding-bottom: 15vh; }
+        /* PERFECT STACKING CARDS & THE SWEEPING LIGHT EFFECT */
+        .stack-wrapper { padding-bottom: 20vh; position: relative; }
         .stack-card {
-            position: sticky; top: 14vh;
-            background: #08080A;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px; padding: 3.5rem; margin-bottom: 3.5rem;
-            box-shadow: 0 -20px 50px rgba(0,0,0,0.9), inset 0 1px 0 0 rgba(255,255,255,0.06);
-            transform-style: preserve-3d;
-            will-change: transform;
-            z-index: 1;
+            position: sticky; top: 15vh; 
+            background: rgba(10, 10, 12, 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 32px; padding: 0; margin-bottom: 4rem;
+            box-shadow: 0 -30px 60px rgba(0,0,0,0.95), inset 0 1px 0 0 rgba(255,255,255,0.05);
+            overflow: hidden; display: flex; flex-direction: column;
+            will-change: transform, filter, opacity;
+        }
+        @media (min-width: 768px) {
+            .stack-card { flex-direction: row; }
         }
         .stack-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(225, 29, 72, 0.7), transparent);
-            border-radius: 24px 24px 0 0;
+            background: linear-gradient(90deg, transparent, rgba(225, 29, 72, 0.8), transparent); z-index: 10;
         }
 
-        .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
+        /* PREMIUM SWEEPING GLOW APPLIED GLOBALLY */
+        .bento-card::after, .stack-card::after, .sweep-glow::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(225, 29, 72, 0.08), transparent);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; z-index: 20;
+        }
+        .bento-card:hover::after, .stack-card:hover::after, .sweep-glow:hover::after {
+            transform: translateX(200%);
+        }
+
+        /* HORIZONTAL SCROLL */
+        .horizontal-wrapper { overflow: hidden; width: 100vw; height: 100vh; position: relative; }
+        .horizontal-container { display: flex; width: 400vw; height: 100%; }
+        .horizontal-panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 5vw; position: relative; }
+
+        /* CUSTOM TABS FOR MISSION PROFILES */
+        .tab-btn {
+            text-align: left; padding: 1.5rem; border-left: 2px solid rgba(255,255,255,0.1);
+            color: #A1A1AA; transition: all 0.3s ease; font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem; font-weight: 600; cursor: none;
+        }
+        .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.02); }
+        .tab-btn.active { border-left-color: #E11D48; color: #fff; background: linear-gradient(90deg, rgba(225,29,72,0.1), transparent); }
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CUSTOM DROPDOWN */
+        .custom-select-wrapper { position: relative; user-select: none; width: 100%; z-index: 50;}
         .custom-select {
             display: flex; justify-content: space-between; align-items: center;
-            background: #0D0D11; border: 1px solid rgba(255,255,255,0.12);
-            padding: 16px 20px; color: #fff; border-radius: 12px;
-            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; font-size: 0.95rem;
-            transition: all 0.3s ease;
+            background: rgba(10, 10, 12, 0.8); border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 24px; color: #fff; border-radius: 16px;
+            font-family: 'Inter', sans-serif; font-weight: 500; font-size: 1rem;
+            transition: all 0.3s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
-        .custom-select-wrapper.open .custom-select { border-color: #E11D48; box-shadow: 0 0 20px rgba(225,29,72,0.2); }
+        .custom-select-wrapper.open .custom-select { border-color: #E11D48; box-shadow: 0 0 20px rgba(225,29,72,0.15); }
         .custom-options {
-            position: absolute; top: calc(100% + 6px); left: 0; right: 0;
-            background: #0A0A0E; border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 12px; overflow: hidden;
-            opacity: 0; visibility: hidden; transform: translateY(-8px);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); z-index: 60;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+            position: absolute; top: 100%; left: 0; right: 0; margin-top: 10px;
+            background: #0A0A0C; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; overflow: hidden;
+            opacity: 0; visibility: hidden; transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9); max-height: 250px; overflow-y: auto;
         }
         .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; transform: translateY(0); }
-        .custom-option { padding: 14px 20px; color: #A1A1AA; font-size: 0.9rem; transition: all 0.2s; }
-        .custom-option:hover { background: rgba(225, 29, 72, 0.12); color: #fff; padding-left: 26px; }
+        .custom-option { padding: 18px 24px; color: #A1A1AA; transition: all 0.2s; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .custom-option:last-child { border-bottom: none; }
+        .custom-option:hover { background: rgba(225, 29, 72, 0.1); color: #fff; padding-left: 32px; border-left: 3px solid #E11D48; }
 
+        /* BUTTONS & INPUTS */
         .btn-premium {
-            position: relative; display: inline-flex; align-items: center; gap: 12px;
-            padding: 16px 32px; background: #E11D48; color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 0.95rem;
-            border-radius: 10px; border: 1px solid #BE123C; overflow: hidden;
-            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 18px 36px; background: #E11D48; color: #fff;
+            font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; letter-spacing: 0.02em;
+            border-radius: 100px; border: 1px solid #BE123C; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(225, 29, 72, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .btn-premium::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            transition: transform 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: transform 0.6s ease;
         }
         .btn-premium:hover::before { transform: translateX(200%); }
-        .btn-premium:hover { box-shadow: 0 8px 30px rgba(225, 29, 72, 0.5); transform: translateY(-2px); }
+        .btn-premium:hover { box-shadow: 0 12px 35px rgba(225, 29, 72, 0.5); transform: translateY(-3px); border-color: #f43f5e; }
         
-        .btn-outline {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 14px 24px; background: rgba(255,255,255,0.03); color: #E2E8F0;
-            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 0.85rem;
-            border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-        }
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25);
-            color: #fff; transform: translateY(-2px);
-        }
-
         .glass-input {
-            width: 100%; background: #0D0D11; border: 1px solid rgba(255,255,255,0.12);
-            padding: 16px 20px; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 500; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease;
+            width: 100%; background: rgba(10, 10, 12, 0.8); border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 24px; color: #fff; font-family: 'Inter', sans-serif;
+            font-weight: 500; font-size: 1rem; border-radius: 16px; transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
-        .glass-input:focus { outline: none; border-color: #E11D48; box-shadow: 0 0 20px rgba(225,29,72,0.2); background: #111116; }
+        .glass-input:focus { outline: none; border-color: #E11D48; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 20px rgba(225,29,72,0.15); background: #0A0A0C; }
 
-        .marquee {
-            overflow: hidden; white-space: nowrap; display: flex;
-            background: #08080A; color: #E2E8F0; padding: 22px 0;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            position: relative; z-index: 20;
-        }
-        .marquee-content {
-            display: flex; animation: marquee 24s linear infinite;
-        }
-        .marquee span {
-            font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1.15rem;
-            text-transform: uppercase; padding: 0 2.5vw; letter-spacing: 0.08em; color: #94A3B8;
-        }
-        .marquee span.dot { color: #E11D48; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #030303; }
-        ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #E11D48; }
+        #chatbot-messages::-webkit-scrollbar { width: 4px; }
     </style>
 </head>
 <body class="antialiased selection:bg-offliq-red selection:text-white">
 
     <div id="scroll-progress"></div>
-    <div class="cyber-grid"></div>
-    <canvas id="galaxy-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none"></canvas>
+    
+    <div class="ambient-mesh">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
     
     <div id="cursor-dot"></div>
     <div id="cursor-ring"></div>
 
-    <nav class="fixed w-full z-50 transition-all duration-300 top-4 px-4 sm:px-8" id="navbar">
-        <div class="max-w-[88rem] mx-auto glass-panel rounded-2xl border border-white/10 px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+    <!-- PREMIUM HEADER -->
+    <nav class="fixed w-full z-50 transition-all duration-500 py-6" id="navbar">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div class="relative flex items-center justify-between h-16 md:h-20 bg-[#0A0A0C]/70 backdrop-blur-2xl border border-white/10 rounded-3xl px-6 md:px-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] overflow-hidden group">
+                <!-- Sweeping Glow Effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-offliq-red/0 via-offliq-red/10 to-offliq-red/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out pointer-events-none"></div>
                 
-                <div class="flex items-center gap-3.5 interactive cursor-hover-target magnetic" onclick="window.scrollTo(0,0)">
-                    <img src="logo.png" alt="OFFLIQ" class="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(225,29,72,0.6)]" onerror="this.src='https://placehold.co/100x100/050505/E11D48?text=O'">
+                <div class="relative z-10 flex items-center gap-4 interactive cursor-hover-target" onclick="window.scrollTo(0,0)">
+                    <img src="logo.png" alt="OFFLIQ" class="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(225,29,72,0.6)]" onerror="this.src='https://placehold.co/100x100/000000/E11D48?text=O'">
                     <span class="font-display font-bold text-2xl tracking-tight text-white">OFFLIQ<span class="text-offliq-red">.</span></span>
                 </div>
                 
-                <div class="hidden md:flex items-center gap-8 font-sans text-sm font-semibold text-gray-400">
-                    <a href="#v1-3-updates" class="hover:text-white transition-colors interactive cursor-hover-target magnetic">Architecture</a>
-                    <a href="#bento" class="hover:text-white transition-colors interactive cursor-hover-target magnetic">Features</a>
-                    <a href="#pipeline" class="hover:text-white transition-colors interactive cursor-hover-target magnetic">Pipeline</a>
-                    <a href="#contact" class="hover:text-white transition-colors interactive cursor-hover-target magnetic">Procurement</a>
-                    <a href="#contact" class="btn-premium interactive cursor-hover-target py-2 px-5 text-xs rounded-lg magnetic">
+                <div class="relative z-10 hidden md:flex items-center gap-10 font-sans text-sm font-medium text-gray-400">
+                    <a href="#benchmark" class="hover:text-white transition-colors interactive cursor-hover-target">Performance</a>
+                    <a href="#toolkit" class="hover:text-white transition-colors interactive cursor-hover-target">Matrix</a>
+                    <a href="#missions" class="hover:text-white transition-colors interactive cursor-hover-target">Use Cases</a>
+                    <a href="#pipeline" class="hover:text-white transition-colors interactive cursor-hover-target">Pipeline</a>
+                    <a href="#contact" class="btn-premium interactive cursor-hover-target py-2.5 px-6 text-sm shadow-none rounded-xl">
                         Deploy Node
                     </a>
                 </div>
@@ -286,122 +314,122 @@
         </div>
     </nav>
 
-    <main class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-28">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] bg-offliq-red/10 blur-[160px] rounded-full pointer-events-none z-0"></div>
-
-        <div class="max-w-[88rem] mx-auto px-6 lg:px-12 w-full relative z-10 flex flex-col">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-offliq-red text-xs font-mono font-semibold tracking-wider uppercase mb-6 w-fit gs-reveal opacity-0">
-                <span class="w-2 h-2 rounded-full bg-offliq-red animate-pulse"></span> OFFLIQ V1.3 Core Initialized
+    <!-- CINEMATIC HERO -->
+    <main class="relative min-h-[110vh] flex flex-col justify-center items-center overflow-hidden pt-20 border-b border-white/5">
+        <canvas id="hero-canvas"></canvas>
+        
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12 w-full relative z-10 flex flex-col justify-center h-full">
+            
+            <div class="gs-fade opacity-0 mb-8 inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-[#0A0A0C]/80 border border-white/10 w-fit backdrop-blur-md shadow-xl group">
+                <span class="w-2 h-2 rounded-full bg-offliq-red animate-pulse shadow-[0_0_10px_#E11D48] group-hover:scale-150 transition-transform"></span>
+                <span class="font-mono text-gray-300 text-xs font-bold tracking-widest uppercase">V1.3 Enterprise Node <span class="text-offliq-red ml-1">Live</span></span>
             </div>
 
-            <h1 class="font-display text-huge text-white font-black tracking-tight z-10 relative gs-hero-container">
+            <h1 class="font-display text-huge text-white font-black tracking-tighter z-10 relative max-w-7xl text-split drop-shadow-2xl">
                 The Air-Gapped<br>
-                <span class="text-hollow interactive cursor-hover-target">Cybernetic</span><br>
-                Compiler<span class="text-offliq-red">.</span>
+                Cybernetic Compiler<span class="text-offliq-red">.</span>
             </h1>
 
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mt-12 w-full gs-reveal opacity-0">
-                <p class="font-sans text-lg sm:text-xl text-gray-400 max-w-2xl leading-relaxed font-normal">
-                    Vector RAG is obsolete. OFFLIQ V1.3 utilizes an AST Hyper-Graph and Subprocess Sandboxing to autonomously map, refactor, and execute massive codebases entirely offline.
+            <div class="flex flex-col md:flex-row justify-between items-start mt-16 w-full gs-fade opacity-0 max-w-6xl relative z-10">
+                <p class="font-sans text-xl md:text-2xl text-gray-300 max-w-2xl leading-relaxed font-normal bg-black/20 p-4 rounded-2xl backdrop-blur-sm border border-white/5">
+                    Cloud RAG is dead. OFFLIQ V1.3 utilizes an AST Hyper-Graph and Subprocess Sandboxing to autonomously map, refactor, and execute massive codebases entirely offline.
                 </p>
-                <div class="flex gap-4 shrink-0 mt-8 md:mt-0">
-                    <a href="#contact" class="btn-premium interactive cursor-hover-target magnetic" data-tilt data-tilt-scale="1.04">
+                <div class="flex gap-4 shrink-0 mt-10 md:mt-0">
+                    <a href="#contact" class="btn-premium interactive cursor-hover-target text-lg py-5 px-8" data-tilt data-tilt-scale="1.05">
                         Acquire License <i class="fa-solid fa-arrow-down-long ml-2"></i>
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 gs-reveal opacity-0">
-            <div class="w-[2px] h-14 bg-gradient-to-b from-transparent via-offliq-red to-transparent animate-pulse rounded-full"></div>
+        <div class="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 gs-fade opacity-0 z-10">
+            <span class="font-mono text-[10px] text-gray-500 uppercase tracking-widest">Descend</span>
+            <div class="w-[1px] h-20 bg-gradient-to-b from-offliq-red via-offliq-red/50 to-transparent"></div>
         </div>
     </main>
 
-    <div class="marquee interactive cursor-hover-target">
-        <div class="marquee-content">
-            <span>Absolute Data Sovereignty</span><span class="dot">•</span>
-            <span>Zero API Tokens</span><span class="dot">•</span>
-            <span>Subprocess Sandboxing</span><span class="dot">•</span>
-            <span>AST Hyper-Graph</span><span class="dot">•</span>
-            <span>GBNF Structured Inference</span><span class="dot">•</span>
-            <span>Absolute Data Sovereignty</span><span class="dot">•</span>
-            <span>Zero API Tokens</span><span class="dot">•</span>
-            <span>Subprocess Sandboxing</span><span class="dot">•</span>
-            <span>AST Hyper-Graph</span><span class="dot">•</span>
-            <span>GBNF Structured Inference</span><span class="dot">•</span>
+    <!-- NEW SECTION: TECH STACK PARALLAX -->
+    <section class="py-20 relative overflow-hidden bg-[#030303] z-10">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#030303] via-transparent to-[#030303] z-20 pointer-events-none"></div>
+        <div class="flex gap-16 whitespace-nowrap opacity-40 font-display text-4xl font-bold text-gray-500 uppercase tracking-widest" id="tech-marquee-1">
+            <span>Python</span><span>•</span><span>React</span><span>•</span><span>Node.js</span><span>•</span><span>PowerShell</span><span>•</span><span>C++</span><span>•</span><span>SQL</span><span>•</span><span>Docker</span><span>•</span><span>Bash</span><span>•</span>
+            <span>Python</span><span>•</span><span>React</span><span>•</span><span>Node.js</span><span>•</span><span>PowerShell</span><span>•</span><span>C++</span><span>•</span><span>SQL</span><span>•</span><span>Docker</span><span>•</span><span>Bash</span><span>•</span>
         </div>
-    </div>
+        <div class="flex gap-16 whitespace-nowrap opacity-20 font-display text-6xl font-black text-gray-600 uppercase tracking-widest mt-8" id="tech-marquee-2" style="transform: translateX(-20%);">
+            <span>AWS</span><span>•</span><span>Azure</span><span>•</span><span>Linux</span><span>•</span><span>Windows Server</span><span>•</span><span>Kubernetes</span><span>•</span>
+            <span>AWS</span><span>•</span><span>Azure</span><span>•</span><span>Linux</span><span>•</span><span>Windows Server</span><span>•</span><span>Kubernetes</span><span>•</span>
+        </div>
+    </section>
 
-    <section id="v1-3-updates" class="py-32 relative z-10">
-        <div class="max-w-[78rem] mx-auto px-6 lg:px-10">
+    <!-- THE MATRIX TOOLKIT (Redesigned Bento Grid - No Images) -->
+    <section id="toolkit" class="py-32 relative z-10">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
             
-            <div class="mb-20">
-                <span class="font-mono text-offliq-red text-xs font-bold tracking-widest block uppercase mb-3">Core Pillars</span>
-                <h2 class="font-display text-5xl md:text-7xl font-bold tracking-tight text-white gs-scroll-reveal opacity-0">
-                    The <span class="text-offliq-red">Paradigm</span> Shift.
-                </h2>
-                <div class="w-full h-[1px] bg-gradient-to-r from-offliq-red/50 to-transparent mt-8 gs-scroll-reveal opacity-0"></div>
+            <div class="mb-24 flex flex-col md:flex-row justify-between items-end gap-8">
+                <div>
+                    <span class="font-mono text-offliq-red text-sm font-bold tracking-widest block mb-4 uppercase gs-fade opacity-0">The Arsenal</span>
+                    <h2 class="font-display text-5xl md:text-7xl font-bold tracking-tighter text-white gs-fade opacity-0">
+                        Uncompromising<br>Infrastructure.
+                    </h2>
+                </div>
+                <p class="text-xl text-gray-400 font-sans gs-fade opacity-0 max-w-md pb-2">We stripped the bloat and built a pure, deterministic engine for enterprise IT.</p>
             </div>
 
-            <div class="stack-container" id="cards-wrapper">
+            <div class="bento-grid">
                 
-                <div class="stack-card glass-panel sweep-glow interactive cursor-hover-target" data-tilt data-tilt-max="1.5" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="flex flex-col md:flex-row gap-10 items-start">
-                        <div class="md:w-1/3">
-                            <span class="font-mono text-offliq-red text-xs font-bold tracking-widest block mb-3 uppercase">Protocol 01</span>
-                            <h3 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight mb-6">Omni-Matrix<br>Hyper-Graph</h3>
-                            <div class="w-14 h-14 rounded-2xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red text-xl shadow-[0_0_20px_rgba(225,29,72,0.2)]">
-                                <i class="fa-solid fa-diagram-project"></i>
-                            </div>
+                <!-- BENTO 1: Data Sovereignty (Faux Terminal) -->
+                <div class="bento-card col-span-12 lg:col-span-8 gs-fade opacity-0 interactive cursor-hover-target group">
+                    <div class="bento-bg-grid"></div>
+                    <div class="bento-bg-terminal">
+                        > Initiating Handshake...<br>
+                        > Ping 8.8.8.8... TIMEOUT<br>
+                        > Ping api.openai.com... TIMEOUT<br>
+                        > Status: AIR-GAP ENFORCED<br>
+                        > Local Neural Matrix: ONLINE<br>
+                        > Waiting for prompt...
+                    </div>
+                    <div class="bento-content">
+                        <div class="w-16 h-16 rounded-2xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red text-2xl mb-6 shadow-[0_0_20px_rgba(225,29,72,0.2)] transition-transform group-hover:scale-110">
+                            <i class="fa-solid fa-server"></i>
                         </div>
-                        <div class="md:w-2/3">
-                            <p class="text-lg text-gray-300 leading-relaxed font-sans mb-6">Standard RAG floods the context window with raw text chunks. OFFLIQ V1.3 parses your entire workspace using an Abstract Syntax Tree (AST), generating a hyper-dense 50-token semantic map of your enterprise logic.</p>
-                            <div class="font-mono text-xs text-gray-400 bg-black/60 p-5 rounded-xl border border-white/5 space-y-1">
-                                <div class="text-offliq-red font-bold">> AST Resolution Pipeline:</div>
-                                <div>- Zero line-by-line hallucination loops</div>
-                                <div>- Dispatches Python CodeMod AST scripts to refactor 10,000+ files in seconds</div>
-                            </div>
-                        </div>
+                        <h3 class="font-display text-4xl font-bold text-white mb-4 tracking-tight">Absolute Data Sovereignty</h3>
+                        <p class="text-gray-400 font-sans text-xl max-w-2xl leading-relaxed">Zero telemetry. Zero API tokens. OFFLIQ operates 100% locally on your physical hardware, ensuring proprietary code never breaches the corporate firewall.</p>
                     </div>
                 </div>
 
-                <div class="stack-card glass-panel sweep-glow interactive cursor-hover-target" data-tilt data-tilt-max="1.5" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="flex flex-col md:flex-row gap-10 items-start">
-                        <div class="md:w-1/3">
-                            <span class="font-mono text-offliq-red text-xs font-bold tracking-widest block mb-3 uppercase">Protocol 02</span>
-                            <h3 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight mb-6">The Infinite<br>Buffer</h3>
-                            <div class="w-14 h-14 rounded-2xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red text-xl shadow-[0_0_20px_rgba(225,29,72,0.2)]">
-                                <i class="fa-solid fa-infinity"></i>
-                            </div>
+                <!-- BENTO 2: Hardware Agnostic -->
+                <div class="bento-card col-span-12 md:col-span-6 lg:col-span-4 gs-fade opacity-0 interactive cursor-hover-target group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="bento-content">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white text-xl mb-6 transition-transform group-hover:scale-110">
+                            <i class="fa-solid fa-microchip"></i>
                         </div>
-                        <div class="md:w-2/3">
-                            <p class="text-lg text-gray-300 leading-relaxed font-sans mb-6">Generating massive codebases crashes local models due to VRAM overflow. Architect Mode engages a disk-backed memory stream that eliminates truncation.</p>
-                            <div class="font-mono text-xs text-gray-400 bg-black/60 p-5 rounded-xl border border-white/5 space-y-1">
-                                <div class="text-offliq-red font-bold">> Memory Allocation:</div>
-                                <div>- Streaming tokens sequentially to a guarded temporary disk buffer</div>
-                                <div>- Commits natively to host filesystem upon verified AST integrity</div>
-                            </div>
-                        </div>
+                        <h3 class="font-display text-3xl font-bold text-white mb-3 tracking-tight">Hardware Agnostic</h3>
+                        <p class="text-gray-400 font-sans text-lg">Dynamic KV Cache quantization scales the inference matrix to execute massive tasks on standard 8GB laptops.</p>
                     </div>
                 </div>
 
-                <div class="stack-card glass-panel sweep-glow interactive cursor-hover-target" data-tilt data-tilt-max="1.5" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="flex flex-col md:flex-row gap-10 items-start">
-                        <div class="md:w-1/3">
-                            <span class="font-mono text-offliq-red text-xs font-bold tracking-widest block mb-3 uppercase">Protocol 03</span>
-                            <h3 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight mb-6">Subprocess<br>Sandboxing</h3>
-                            <div class="w-14 h-14 rounded-2xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red text-xl shadow-[0_0_20px_rgba(225,29,72,0.2)]">
-                                <i class="fa-solid fa-shield-cat"></i>
-                            </div>
+                <!-- BENTO 3: Native OS Execution -->
+                <div class="bento-card col-span-12 md:col-span-6 lg:col-span-4 gs-fade opacity-0 interactive cursor-hover-target group">
+                    <div class="absolute inset-0 bg-gradient-to-tl from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="bento-content">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white text-xl mb-6 transition-transform group-hover:scale-110">
+                            <i class="fa-solid fa-terminal"></i>
                         </div>
-                        <div class="md:w-2/3">
-                            <p class="text-lg text-gray-300 leading-relaxed font-sans mb-6">Local Mixture-of-Experts (MoE) models require strict hardware thread isolation. The C++ embedder operates entirely inside an isolated microservice.</p>
-                            <div class="font-mono text-xs text-gray-400 bg-black/60 p-5 rounded-xl border border-white/5 space-y-1">
-                                <div class="text-offliq-red font-bold">> System Integrity:</div>
-                                <div>- 100% crash-proof workspace execution</div>
-                                <div>- UI thread retains smooth 60fps telemetry during heavy AST computations</div>
-                            </div>
+                        <h3 class="font-display text-3xl font-bold text-white mb-3 tracking-tight">Native OS Execution</h3>
+                        <p class="text-gray-400 font-sans text-lg">Bypasses standard chat constraints. OFFLIQ natively runs Python and PowerShell scripts directly on the Windows Host.</p>
+                    </div>
+                </div>
+
+                <!-- BENTO 4: Plugin Vault (Glowing Orb) -->
+                <div class="bento-card col-span-12 lg:col-span-8 gs-fade opacity-0 interactive cursor-hover-target group overflow-hidden">
+                    <div class="bento-bg-glow"></div>
+                    <div class="bento-content">
+                        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white text-2xl mb-6 transition-transform group-hover:scale-110 relative z-10">
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
+                        <h3 class="font-display text-4xl font-bold text-white mb-4 tracking-tight relative z-10">Cryptographic Plugin Vault</h3>
+                        <p class="text-gray-400 font-sans text-xl max-w-2xl leading-relaxed relative z-10">Custom internal automation scripts are locked with a SHA-256 signature and executed in a background holographic thread, preventing core corruption.</p>
                     </div>
                 </div>
 
@@ -409,123 +437,181 @@
         </div>
     </section>
 
-    <section id="bento" class="py-24 relative z-10">
-        <div class="max-w-[88rem] mx-auto px-6 lg:px-12">
-            <div class="mb-16">
-                <span class="font-mono text-offliq-red text-xs font-bold tracking-widest block uppercase mb-3">Matrix Architecture</span>
-                <h2 class="font-display text-4xl md:text-6xl font-bold text-white tracking-tight gs-scroll-reveal opacity-0">
-                    Engineered for <span class="text-offliq-red">Zero-Trust</span> Nodes.
+    <!-- NEW SECTION: MISSION PROFILES (INTERACTIVE TABS) -->
+    <section id="missions" class="py-32 relative z-10 bg-[#050505] border-y border-white/5">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div class="text-center mb-20">
+                <h2 class="font-display text-5xl md:text-7xl font-bold tracking-tighter text-white gs-fade opacity-0">
+                    Deployable <span class="text-offliq-red">Capabilities</span>.
+                </h2>
+                <p class="mt-6 text-xl text-gray-400 font-sans gs-fade opacity-0 max-w-3xl mx-auto">Select a mission profile to see how the Node executes in production.</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12 gs-fade opacity-0">
+                <!-- Tabs -->
+                <div class="lg:w-1/3 flex flex-col">
+                    <button class="tab-btn active" onclick="switchTab(event, 'tab-refactor')">Legacy Refactoring</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-security')">Threat Modeling</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-iac')">Automated IaC</button>
+                </div>
+                
+                <!-- Terminal Output -->
+                <div class="lg:w-2/3 bg-[#0A0A0C] border border-white/10 rounded-3xl p-8 font-mono text-sm shadow-2xl relative overflow-hidden min-h-[400px] sweep-glow">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-offliq-red to-transparent"></div>
+                    
+                    <!-- Tab 1 Content -->
+                    <div id="tab-refactor" class="tab-content active text-gray-300 space-y-4">
+                        <div class="text-offliq-red font-bold">> Directive: "Rename 'last_login' to 'last_active' across all 50 repos."</div>
+                        <div class="text-gray-500">[SYSTEM] Initiating AST Hyper-Graph scan...</div>
+                        <div class="text-green-400">Found 14 instances in 3 files.</div>
+                        <div class="text-gray-500">[SYSTEM] Writing CodeMod script...</div>
+                        <div><span class="text-blue-400">import</span> os, re</div>
+                        <div><span class="text-purple-400">for</span> file <span class="text-purple-400">in</span> workspace:</div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;content = re.sub(<span class="text-yellow-400">'last_login'</span>, <span class="text-yellow-400">'last_active'</span>, content)</div>
+                        <div class="text-gray-500">[SYSTEM] Executing script natively...</div>
+                        <div class="text-green-400 font-bold">SUCCESS. 14 instances refactored in 0.4 seconds.</div>
+                    </div>
+
+                    <!-- Tab 2 Content -->
+                    <div id="tab-security" class="tab-content text-gray-300 space-y-4">
+                        <div class="text-offliq-red font-bold">> Directive: "Perform Level-6 security audit on db_helper.py"</div>
+                        <div class="text-gray-500">[SYSTEM] Reading file via Vector Memory...</div>
+                        <div class="text-red-500 font-bold">[!] CRITICAL: SQL Injection vulnerability detected on line 12.</div>
+                        <div>Code: <span class="text-gray-500">cursor.execute(f"SELECT * FROM users WHERE username = '{username}'")</span></div>
+                        <div class="text-gray-500">[SYSTEM] Applying AST Patch...</div>
+                        <div>New: <span class="text-green-400">cursor.execute("SELECT * FROM users WHERE username = ?", (username,))</span></div>
+                        <div class="text-green-400 font-bold">SUCCESS. File patched and secured.</div>
+                    </div>
+
+                    <!-- Tab 3 Content -->
+                    <div id="tab-iac" class="tab-content text-gray-300 space-y-4">
+                        <div class="text-offliq-red font-bold">> Directive: "Scaffold a Dockerized Node.js backend with Redis."</div>
+                        <div class="text-gray-500">[SYSTEM] Engaging Architect Mode (Infinite Buffer)...</div>
+                        <div>Writing <span class="text-yellow-400">Dockerfile</span> to disk... OK</div>
+                        <div>Writing <span class="text-yellow-400">docker-compose.yml</span> to disk... OK</div>
+                        <div>Writing <span class="text-yellow-400">server.js</span> to disk... OK</div>
+                        <div class="text-gray-500">[SYSTEM] Triggering Native Execution...</div>
+                        <div>> <span class="text-white">docker-compose up -d</span></div>
+                        <div class="text-green-400 font-bold">SUCCESS. Infrastructure deployed on localhost:3000.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PERFECT STACKING CARDS (Architecture Shift) -->
+    <section id="architecture" class="py-32 relative z-10 bg-[#030303]">
+        <div class="max-w-[85rem] mx-auto px-6 lg:px-12">
+            <div class="mb-32 text-center">
+                <span class="text-offliq-red font-mono text-sm font-bold tracking-widest block mb-4 uppercase gs-fade opacity-0">Deep Dive</span>
+                <h2 class="font-display text-6xl md:text-8xl font-bold tracking-tighter text-white gs-fade opacity-0">
+                    The <span class="text-offliq-red">Architecture</span> Shift.
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-panel sweep-glow p-8 rounded-3xl md:col-span-2 interactive cursor-hover-target" data-tilt data-tilt-max="2" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="w-12 h-12 rounded-xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red mb-6">
-                        <i class="fa-solid fa-network-wired text-xl"></i>
-                    </div>
-                    <h3 class="font-display text-2xl font-bold text-white mb-3">Absolute Data Sovereignty</h3>
-                    <p class="text-gray-400 font-sans leading-relaxed mb-6">
-                        Zero telemetry. Zero API tokens. OFFLIQ operates 100% locally on your physical silicon, ensuring proprietary source code never leaves the corporate perimeter.
-                    </p>
-                    <div class="font-mono text-xs text-gray-500 bg-black/40 p-4 rounded-xl border border-white/5">
-                        STATUS // AIR_GAP_ENFORCED: SOCKET_TX_BLOCKED [OK]
+            <div class="stack-wrapper">
+                
+                <!-- Card 1 -->
+                <div class="stack-card interactive cursor-hover-target">
+                    <div class="flex flex-col md:flex-row w-full h-full min-h-[450px]">
+                        <div class="w-full md:w-[60%] pr-0 md:pr-16 flex flex-col justify-center">
+                            <span class="font-mono text-offliq-red text-sm font-bold tracking-widest block mb-6 uppercase">Protocol 01</span>
+                            <h3 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-6">Omni-Matrix<br>Hyper-Graph</h3>
+                            <p class="text-xl text-gray-400 leading-relaxed font-sans mb-10">Standard RAG floods the context window with text. OFFLIQ V1.3 parses your entire workspace using an Abstract Syntax Tree (AST), creating a highly dense 50-token JSON map of your enterprise logic.</p>
+                        </div>
+                        <div class="w-full md:w-[40%] mt-10 md:mt-0 flex items-center justify-center">
+                            <div class="w-full h-full bg-[#0A0A0C] border border-white/5 rounded-2xl p-6 font-mono text-sm text-gray-300 shadow-glass">
+                                <div class="text-offliq-red mb-4">> Execution Trace:</div>
+                                <div class="text-gray-500 mb-2"># The AI bypasses line-by-line reading.</div>
+                                <div class="mb-4">It writes a CodeMod script to edit files natively.</div>
+                                <div class="text-green-400">Successfully refactored 10,000 files in 4.2s.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="glass-panel sweep-glow p-8 rounded-3xl interactive cursor-hover-target" data-tilt data-tilt-max="2" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="w-12 h-12 rounded-xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red mb-6">
-                        <i class="fa-solid fa-microchip text-xl"></i>
+                <!-- Card 2 -->
+                <div class="stack-card interactive cursor-hover-target">
+                    <div class="flex flex-col md:flex-row w-full h-full min-h-[450px]">
+                        <div class="w-full md:w-[60%] pr-0 md:pr-16 flex flex-col justify-center">
+                            <span class="font-mono text-offliq-red text-sm font-bold tracking-widest block mb-6 uppercase">Protocol 02</span>
+                            <h3 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-6">The Infinite<br>Buffer</h3>
+                            <p class="text-xl text-gray-400 leading-relaxed font-sans mb-10">Generating massive codebases crashes standard local models due to VRAM exhaustion. Architect Mode engages a deterministic, disk-backed memory stream.</p>
+                        </div>
+                        <div class="w-full md:w-[40%] mt-10 md:mt-0 flex items-center justify-center">
+                            <div class="w-full h-full bg-[#0A0A0C] border border-white/5 rounded-2xl p-6 font-mono text-sm text-gray-300 shadow-glass">
+                                <div class="text-offliq-red mb-4">> Memory Routing:</div>
+                                <div class="text-gray-500 mb-2"># Data streams sequentially to disk.</div>
+                                <div class="mb-4">Bypassing VRAM bottlenecks completely.</div>
+                                <div class="text-green-400">Committed natively to OS. Zero truncation.</div>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="font-display text-2xl font-bold text-white mb-3">Hardware Agnostic</h3>
-                    <p class="text-gray-400 font-sans leading-relaxed">
-                        Dynamic KV Cache quantization scales the inference matrix to execute massive refactoring tasks smoothly on 8GB laptops up to dual-RTX workstations.
-                    </p>
                 </div>
 
-                <div class="glass-panel sweep-glow p-8 rounded-3xl interactive cursor-hover-target" data-tilt data-tilt-max="2" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="w-12 h-12 rounded-xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red mb-6">
-                        <i class="fa-solid fa-terminal text-xl"></i>
-                    </div>
-                    <h3 class="font-display text-2xl font-bold text-white mb-3">Native OS Execution</h3>
-                    <p class="text-gray-400 font-sans leading-relaxed">
-                        Bypasses browser sandboxes. OFFLIQ natively dispatches verified Python and PowerShell automation scripts directly through the Windows host kernel.
-                    </p>
-                </div>
-
-                <div class="glass-panel sweep-glow p-8 rounded-3xl md:col-span-2 interactive cursor-hover-target" data-tilt data-tilt-max="2" data-tilt-glare="true" data-tilt-max-glare="0.15">
-                    <div class="w-12 h-12 rounded-xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red mb-6">
-                        <i class="fa-solid fa-vault text-xl"></i>
-                    </div>
-                    <h3 class="font-display text-2xl font-bold text-white mb-3">Cryptographic Plugin Vault</h3>
-                    <p class="text-gray-400 font-sans leading-relaxed">
-                        Custom internal automation plugins are validated via strict SHA-256 signatures before execution inside a guarded holographic thread.
-                    </p>
-                </div>
             </div>
         </div>
     </section>
 
-    <section id="pipeline" class="horizontal-wrapper bg-[#030303] border-y border-white/5 relative z-10">
+    <!-- HORIZONTAL SCROLL (The Pipeline) -->
+    <section id="pipeline" class="horizontal-wrapper bg-[#050505] border-y border-white/5 relative z-10">
         <div class="horizontal-container relative z-10">
             
             <div class="horizontal-panel flex-col items-start justify-center">
-                <span class="font-mono text-offliq-red text-xs font-bold tracking-widest uppercase mb-4 block">The Pipeline</span>
-                <h2 class="font-display text-huge text-white font-black leading-none w-full border-b border-white/10 pb-8">
+                <span class="font-mono text-offliq-red text-sm font-bold tracking-widest uppercase mb-6 block">The Pipeline</span>
+                <h2 class="font-display text-huge text-white font-black leading-none w-full border-b border-white/10 pb-12">
                     Deterministic<br><span class="text-hollow interactive cursor-hover-target">Execution.</span>
                 </h2>
-                <p class="text-xl sm:text-2xl text-gray-400 max-w-3xl mt-8 font-sans leading-relaxed">Scroll to observe the sequential flow from abstract human intent to native OS compilation.</p>
-                <div class="mt-8 flex items-center gap-4 text-offliq-red font-mono uppercase text-sm font-bold animate-pulse">
-                    Scroll Horizon <i class="fa-solid fa-arrow-right-long"></i>
+                <p class="text-2xl text-gray-400 max-w-3xl mt-12 font-sans leading-relaxed">Scroll to observe the sequential flow from abstract human intent to native OS compilation.</p>
+                <div class="mt-16 flex items-center gap-4 text-offliq-red font-mono uppercase text-sm font-bold animate-pulse">
+                    Scroll <i class="fa-solid fa-arrow-right-long text-lg"></i>
                 </div>
             </div>
 
             <div class="horizontal-panel">
-                <div class="flex flex-col md:flex-row items-center gap-16 w-full max-w-[78rem]">
-                    <div class="text-[16rem] font-display font-black text-white/5 leading-none absolute left-8 top-8 pointer-events-none select-none">01</div>
-                    <div class="w-full md:w-1/2 z-10">
-                        <span class="font-mono text-offliq-red text-xs uppercase tracking-widest mb-2 block font-bold">Phase One</span>
-                        <h3 class="font-display text-4xl sm:text-5xl font-bold text-white mb-6">Target & Map</h3>
-                        <p class="text-lg text-gray-400 font-sans leading-relaxed">The AI queries the AST Hyper-Graph, extracting a dense 50-token semantic map that pinpoints exactly where changes must occur inside 10,000+ line codebases.</p>
+                <div class="flex flex-col md:flex-row items-center gap-20 w-full max-w-[85rem]">
+                    <div class="text-[20rem] font-display font-black text-white/5 leading-none absolute left-0 top-0 pointer-events-none -z-10">01</div>
+                    <div class="w-full md:w-[55%] z-10">
+                        <h3 class="font-display text-6xl font-bold text-white mb-8 tracking-tight">Target & Map</h3>
+                        <p class="text-2xl text-gray-400 font-sans leading-relaxed">The AI queries the Hyper-Graph, extracting a 50-token semantic map pinpointing exactly where the required logic lives within the repository.</p>
                     </div>
-                    <div class="w-full md:w-1/2 flex justify-center z-10">
-                        <div class="w-60 h-60 border border-offliq-red/30 rounded-full flex items-center justify-center relative bg-offliq-red/5 backdrop-blur-md">
+                    <div class="w-full md:w-[45%] flex justify-center z-10">
+                        <div class="w-72 h-72 border border-offliq-red/40 rounded-full flex items-center justify-center relative bg-offliq-red/5 backdrop-blur-md">
                             <div class="absolute inset-0 border border-offliq-red rounded-full animate-ping opacity-20 scale-125"></div>
-                            <i class="fa-solid fa-crosshairs text-6xl text-offliq-red"></i>
+                            <i class="fa-solid fa-crosshairs text-7xl text-offliq-red"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="horizontal-panel">
-                <div class="flex flex-col md:flex-row-reverse items-center gap-16 w-full max-w-[78rem]">
-                    <div class="text-[16rem] font-display font-black text-white/5 leading-none absolute right-8 top-8 pointer-events-none select-none">02</div>
-                    <div class="w-full md:w-1/2 z-10">
-                        <span class="font-mono text-offliq-red text-xs uppercase tracking-widest mb-2 block font-bold">Phase Two</span>
-                        <h3 class="font-display text-4xl sm:text-5xl font-bold text-white mb-6">GBNF Compile</h3>
-                        <p class="text-lg text-gray-400 font-sans leading-relaxed">Strict grammar constraints force the C++ inference engine to output pure JSON and executable blocks without conversational filler.</p>
+                <div class="flex flex-col md:flex-row-reverse items-center gap-20 w-full max-w-[85rem]">
+                    <div class="text-[20rem] font-display font-black text-white/5 leading-none absolute right-0 top-0 pointer-events-none -z-10">02</div>
+                    <div class="w-full md:w-[55%] z-10">
+                        <h3 class="font-display text-6xl font-bold text-white mb-8 tracking-tight">GBNF Compile</h3>
+                        <p class="text-2xl text-gray-400 font-sans leading-relaxed">The Anti-Yap protocol. Strict grammar constraints force the C++ inference engine to output pure, actionable JSON/Tool blocks at maximum hardware velocity.</p>
                     </div>
-                    <div class="w-full md:w-1/2 flex justify-center z-10">
-                        <div class="glass-panel p-8 rounded-2xl font-mono text-sm w-full shadow-2xl relative overflow-hidden" data-tilt data-tilt-max="5">
+                    <div class="w-full md:w-[45%] flex justify-center z-10">
+                        <div class="bg-[#0A0A0C] border border-white/10 p-10 rounded-3xl font-mono text-base w-full shadow-2xl relative overflow-hidden sweep-glow" data-tilt data-tilt-max="5">
                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-offliq-red to-transparent"></div>
-                            <div class="text-green-500 mb-3 flex items-center gap-3"><i class="fa-solid fa-check"></i> AST hypergraph resolved</div>
-                            <div class="text-gray-400 mb-3 flex items-center gap-3"><i class="fa-solid fa-spinner fa-spin text-xs"></i> Compiling deterministic vectors...</div>
-                            <div class="text-offliq-red font-bold">> [TOOL: WRITE_BUFFER] engaged</div>
+                            <div class="text-green-500 mb-6 flex items-center gap-3"><i class="fa-solid fa-check"></i> AST resolution... OK</div>
+                            <div class="text-gray-400 mb-6 flex items-center gap-3"><i class="fa-solid fa-spinner fa-spin"></i> Compiling vectors...</div>
+                            <div class="text-offliq-red font-bold">> [TOOL: WRITE_BUFFER] executing...</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="horizontal-panel">
-                <div class="flex flex-col md:flex-row items-center gap-16 w-full max-w-[78rem]">
-                    <div class="text-[16rem] font-display font-black text-offliq-red/10 leading-none absolute left-8 bottom-8 pointer-events-none select-none">03</div>
-                    <div class="w-full md:w-1/2 z-10">
-                        <span class="font-mono text-offliq-red text-xs uppercase tracking-widest mb-2 block font-bold">Phase Three</span>
-                        <h3 class="font-display text-4xl sm:text-5xl font-bold text-white mb-6">Native Execution</h3>
-                        <p class="text-lg text-gray-400 font-sans leading-relaxed">Once validated through the UAC blast shield, the subprocess executes instructions natively on the host OS kernel with zero external network access.</p>
+                <div class="flex flex-col md:flex-row items-center gap-20 w-full max-w-[85rem]">
+                    <div class="text-[20rem] font-display font-black text-offliq-red/5 leading-none absolute left-0 bottom-0 pointer-events-none -z-10">03</div>
+                    <div class="w-full md:w-[55%] z-10">
+                        <h3 class="font-display text-6xl font-bold text-white mb-8 tracking-tight">Native Execution</h3>
+                        <p class="text-2xl text-gray-400 font-sans leading-relaxed">Once approved via the UAC Blast Shield, the subprocess bypasses standard API restrictions and executes the logic natively on the host OS kernel.</p>
                     </div>
-                    <div class="w-full md:w-1/2 flex justify-center z-10">
-                        <div class="w-52 h-52 bg-gradient-to-br from-offliq-red to-offliq-darkred rounded-3xl flex items-center justify-center shadow-[0_0_50px_rgba(225,29,72,0.4)] group interactive cursor-hover-target transition-all duration-500 hover:scale-105 rotate-12 hover:rotate-0 border border-white/20">
-                            <i class="fa-solid fa-bolt text-white text-6xl drop-shadow-md"></i>
+                    <div class="w-full md:w-[45%] flex justify-center z-10">
+                        <div class="w-72 h-72 bg-gradient-to-br from-offliq-red to-offliq-darkred rounded-3xl flex items-center justify-center shadow-[0_0_80px_rgba(225,29,72,0.4)] group interactive cursor-hover-target transition-transform duration-700 hover:scale-110 rotate-12 hover:rotate-0 border border-white/20">
+                            <i class="fa-solid fa-bolt text-white text-8xl drop-shadow-lg"></i>
                         </div>
                     </div>
                 </div>
@@ -534,364 +620,360 @@
         </div>
     </section>
 
-    <section id="contact" class="py-32 relative z-10">
-        <div class="max-w-[88rem] mx-auto px-6 lg:px-12">
+    <!-- PROCUREMENT FORM -->
+    <section id="contact" class="py-32 relative bg-[#030303] z-10">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12">
             
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                
-                <div class="lg:col-span-5 flex flex-col justify-between gs-scroll-reveal opacity-0">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="flex flex-col justify-between gs-fade opacity-0">
                     <div>
-                        <h2 class="font-display text-5xl md:text-7xl text-white font-bold tracking-tight leading-none mb-6">
+                        <h2 class="font-display text-6xl md:text-8xl text-white font-bold tracking-tighter leading-none mb-10">
                             Deploy<br>The<br><span class="text-offliq-red">Node.</span>
                         </h2>
-                        <p class="text-lg text-gray-400 font-sans leading-relaxed">
+                        <p class="text-2xl text-gray-400 font-sans leading-relaxed max-w-lg">
                             Acquire the encrypted V1.3 binaries or request a corporate pilot. Absolute security. Zero SaaS fees.
                         </p>
                     </div>
                     
-                    <div class="mt-12 font-mono text-xs text-gray-300 space-y-4 glass-panel p-6 rounded-2xl">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#10B981]"></div>
-                            <span class="font-semibold text-white">Local Server Active</span>
+                    <div class="mt-20 font-mono text-sm text-gray-300 space-y-6 bg-[#0A0A0C] p-8 rounded-3xl border border-white/5 shadow-glass">
+                        <div class="flex items-center gap-4">
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#10B981]"></div> <span class="font-bold">Local Server Active</span>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-2.5 h-2.5 bg-offliq-red rounded-full shadow-[0_0_8px_#E11D48]"></div>
-                            <span class="font-semibold text-white">Cryptographic Lock Enforced</span>
+                        <div class="flex items-center gap-4">
+                            <div class="w-3 h-3 bg-offliq-red rounded-full shadow-[0_0_10px_#E11D48]"></div> <span class="font-bold">Cryptographic Lock Enforced</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="lg:col-span-7">
-                    <div class="glass-panel sweep-glow rounded-3xl p-8 sm:p-12 relative gs-scroll-reveal opacity-0 shadow-2xl" data-tilt data-tilt-max="1">
+                <!-- 3D Tilted Custom Form -->
+                <div class="bg-[#0A0A0C] border border-white/10 rounded-[2rem] p-10 md:p-16 relative gs-fade opacity-0 shadow-2xl sweep-glow" data-tilt data-tilt-max="1.5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.05">
+                    <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-offliq-red to-transparent"></div>
+                    
+                    <!-- SOTA FIX: Action configured for silent email submission via Web3Forms -->
+                    <form id="offliq-form" action="https://api.web3forms.com/submit" method="POST" class="relative z-10 flex flex-col justify-between gap-8">
                         
-                        <form id="offliq-form" class="flex flex-col gap-6 relative z-10">
-                            
+                        <!-- REQUIRED: Replace 'YOUR_ACCESS_KEY_HERE' with your free access key from web3forms.com -->
+                        <input type="hidden" name="access_key" value="7f1fd31b-dfd9-456a-8afa-4578bf608872">
+                        <input type="hidden" name="subject" value="New OFFLIQ Node Request">
+                        <input type="hidden" name="from_name" value="OFFLIQ Automated Matrix">
+
+                        <div class="space-y-6">
+                            <!-- CUSTOM BUILT UI DROPDOWN (Perfected) -->
                             <div class="custom-select-wrapper interactive cursor-hover-target" id="custom-dropdown">
                                 <div class="custom-select">
                                     <span id="select-label">Select Protocol...</span>
-                                    <i class="fa-solid fa-angle-down text-gray-400"></i>
+                                    <i class="fa-solid fa-angle-down text-gray-400 transition-transform duration-300" id="dropdown-icon"></i>
                                 </div>
                                 <div class="custom-options">
-                                    <div class="custom-option" data-value="pilot">Request 3-Day Free Pilot Key</div>
-                                    <div class="custom-option" data-value="purchase">Procure CapEx Perpetual License</div>
-                                    <div class="custom-option" data-value="support">Enterprise Engineering Support</div>
+                                    <div class="custom-option" data-value="pilot">Request 3-Day Pilot Key</div>
+                                    <div class="custom-option" data-value="purchase">Procure CapEx License</div>
+                                    <div class="custom-option" data-value="support">Engineering Support</div>
                                 </div>
-                                <input type="hidden" id="inquiry-type" name="protocol" required>
+                                <!-- SOTA FIX: Removed 'required' attribute to fix silent submission crash -->
+                                <input type="hidden" id="inquiry-type" name="Protocol">
                             </div>
 
-                            <input type="text" id="full-name" required class="glass-input interactive cursor-hover-target" placeholder="Operator Designation (Name)">
-                            <input type="email" id="work-email" required class="glass-input interactive cursor-hover-target" placeholder="Encrypted Routing (Work Email)">
-                            <input type="text" id="company-name" required class="glass-input interactive cursor-hover-target" placeholder="Enterprise Entity (Company)">
-                            
-                            <button type="submit" id="submit-btn" class="btn-premium w-full justify-center mt-2 interactive cursor-hover-target magnetic text-base py-4">
-                                <span>Transmit Request</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 gs-scroll-reveal opacity-0">
-                        <div class="font-mono text-xs text-gray-500 flex items-center gap-2">
-                            <i class="fa-solid fa-unlock text-[10px]"></i> DIRECT_ACCESS // NO AUTH REQUIRED
+                            <input type="text" id="full-name" name="Name" required class="glass-input interactive cursor-hover-target" placeholder="Operator Designation (Name)">
+                            <input type="email" id="work-email" name="Email" required class="glass-input interactive cursor-hover-target" placeholder="Encrypted Routing (Work Email)">
+                            <input type="text" id="company-name" name="Company" required class="glass-input interactive cursor-hover-target" placeholder="Enterprise Entity (Company)">
                         </div>
-                        <div class="flex items-center gap-3 w-full sm:w-auto">
-                            <button onclick="openDownloadModal('https://drive.google.com/uc?export=download&id=16m1CfjiChw4mFgAVFc_Wzz22_3oIOy6I')" class="btn-outline interactive cursor-hover-target magnetic w-full sm:w-auto justify-center text-xs">
-                                <i class="fa-solid fa-download"></i> Full Payload (72GB)
-                            </button>
-                            <button onclick="openDownloadModal('https://drive.google.com/uc?export=download&id=1EzDr5hws80529iq-I-sLX_jxXsnMvaNM')" class="btn-outline interactive cursor-hover-target magnetic w-full sm:w-auto justify-center text-xs">
-                                <i class="fa-solid fa-rotate"></i> Engine Patch (2.3GB)
-                            </button>
-                        </div>
-                    </div>
+                        
+                        <button type="submit" id="submit-btn" class="btn-premium w-full justify-center mt-8 interactive cursor-hover-target text-lg py-5">
+                            <span>Transmit Request</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
                 </div>
-
             </div>
             
         </div>
     </section>
 
-    <footer class="relative bg-[#020204] pt-28 pb-12 overflow-hidden border-t border-white/5 z-10">
-        <div class="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none z-0">
-            <h1 class="font-display text-[17vw] font-black text-white/[0.03] uppercase tracking-tighter leading-none select-none">OFFLIQ.</h1>
+    <!-- MASSIVE BRUTALIST FOOTER -->
+    <footer class="relative bg-[#030303] pt-32 pb-12 overflow-hidden border-t border-white/5 z-10">
+        <!-- Massive Watermark -->
+        <div class="absolute bottom-[-15%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none z-0">
+            <h1 class="font-display text-[22vw] font-black text-white/5 uppercase tracking-tighter leading-none select-none">OFFLIQ.</h1>
         </div>
 
-        <div class="max-w-[88rem] mx-auto px-6 lg:px-12 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+        <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
                 
                 <div class="md:col-span-5">
-                    <div class="flex items-center gap-3.5 mb-5">
-                        <img src="logo.png" alt="OFFLIQ" class="w-10 h-10 object-contain" onerror="this.src='https://placehold.co/100x100/050505/E11D48?text=O'">
-                        <span class="font-display font-bold text-2xl text-white tracking-tight">OFFLIQ<span class="text-offliq-red">.</span></span>
+                    <div class="flex items-center gap-4 mb-8 interactive cursor-hover-target">
+                        <img src="logo.png" alt="OFFLIQ" class="w-14 h-14 object-contain drop-shadow-[0_0_15px_rgba(225,29,72,0.6)]" onerror="this.src='https://placehold.co/100x100/000000/E11D48?text=O'">
+                        <span class="font-display font-black text-4xl text-white tracking-tighter">OFFLIQ<span class="text-offliq-red">.</span></span>
                     </div>
-                    <p class="text-gray-400 font-sans text-sm max-w-sm leading-relaxed">
-                        The air-gapped cybernetic compiler node. Absolute data sovereignty through localized, deterministic AI execution.
+                    <p class="text-gray-400 font-sans text-xl max-w-md leading-relaxed">
+                        The ultimate air-gapped engineering node. Absolute data sovereignty through localized, deterministic execution.
                     </p>
                 </div>
 
                 <div class="hidden md:block md:col-span-2"></div>
 
                 <div class="md:col-span-2">
-                    <h4 class="text-white font-display font-bold text-sm mb-4 tracking-wide">Platform</h4>
-                    <ul class="space-y-3 font-sans text-sm text-gray-400">
-                        <li><a href="#v1-3-updates" class="hover:text-offliq-red transition-colors interactive cursor-hover-target">Architecture</a></li>
-                        <li><a href="#bento" class="hover:text-offliq-red transition-colors interactive cursor-hover-target">Features</a></li>
+                    <h4 class="text-white font-display font-bold text-xl mb-8 tracking-wide">Platform</h4>
+                    <ul class="space-y-5 font-sans text-gray-400 text-lg">
+                        <li><a href="#toolkit" class="hover:text-offliq-red transition-colors interactive cursor-hover-target">The Matrix</a></li>
+                        <li><a href="#architecture" class="hover:text-offliq-red transition-colors interactive cursor-hover-target">Architecture</a></li>
                         <li><a href="#pipeline" class="hover:text-offliq-red transition-colors interactive cursor-hover-target">Pipeline</a></li>
-                        <li><a href="#contact" class="hover:text-offliq-red transition-colors interactive cursor-hover-target">Procurement</a></li>
                     </ul>
                 </div>
 
                 <div class="md:col-span-3">
-                    <h4 class="text-white font-display font-bold text-sm mb-4 tracking-wide">Connect</h4>
-                    <ul class="space-y-3 font-sans text-sm text-gray-400">
+                    <h4 class="text-white font-display font-bold text-xl mb-8 tracking-wide">Connect</h4>
+                    <ul class="space-y-5 font-sans text-gray-400 text-lg">
                         <li><a href="mailto:founder.offliq@gmail.com" class="hover:text-white transition-colors interactive cursor-hover-target">founder.offliq@gmail.com</a></li>
-                        <li class="pt-1">Faridabad, Haryana</li>
+                        <li class="pt-2">Faridabad, Haryana</li>
                         <li>India 121002</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-sans">
-                <span>&copy; 2026 OFFLIQ Intelligence. All rights reserved.</span>
-                <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full">
+            <div class="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-base text-gray-500 font-sans">
+                <div class="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                    <span>&copy; 2026 OFFLIQ Intelligence. All rights reserved.</span>
+                </div>
+                <div class="flex items-center gap-3 bg-[#0A0A0C] border border-white/10 px-5 py-3 rounded-full shadow-glass">
                     <span>Engineered in</span>
-                    <i class="fa-solid fa-heart text-offliq-red mx-0.5 animate-pulse"></i>
+                    <i class="fa-solid fa-heart text-offliq-red mx-1 animate-pulse drop-shadow-[0_0_10px_#E11D48]"></i>
                     <span class="text-white font-semibold">India</span>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- EXPANDED LORE CHATBOT (45+ Nodes) -->
     <div id="chatbot-container" class="fixed bottom-8 right-8 z-[90]">
-        <div id="chatbot-window" class="hidden w-[360px] sm:w-[390px] h-[540px] bg-[#0A0A0E]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9),_0_0_30px_rgba(225,29,72,0.15)] flex flex-col overflow-hidden mb-5 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right relative">
-            <div class="bg-black/60 border-b border-white/10 p-4 flex justify-between items-center z-10 shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center">
-                        <i class="fa-solid fa-robot text-offliq-red text-xs"></i>
+        <div id="chatbot-window" class="hidden w-[400px] h-[650px] bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.8),_0_0_40px_rgba(225,29,72,0.15)] flex-col overflow-hidden mb-6 transition-all duration-400 transform scale-95 opacity-0 origin-bottom-right relative">
+            <div class="bg-[#0A0A0C] border-b border-white/5 p-6 flex justify-between items-center z-10 relative shrink-0">
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-full bg-offliq-red/10 border border-offliq-red/40 flex items-center justify-center shadow-[0_0_15px_rgba(225,29,72,0.3)]">
+                            <i class="fa-solid fa-robot text-offliq-red text-lg"></i>
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0A0A0C]"></div>
                     </div>
                     <div>
-                        <h4 class="text-white font-bold text-xs font-sans tracking-wide">V1.3 Routing Matrix</h4>
-                        <p class="text-offliq-red text-[10px] font-mono uppercase tracking-widest">Offline Channel</p>
+                        <h4 class="text-white font-bold text-base font-sans tracking-wide">Gatekeeper Agent</h4>
+                        <p class="text-offliq-red text-[10px] font-mono uppercase tracking-widest mt-1 font-bold">V1.3 Offline Network</p>
                     </div>
                 </div>
-                <button id="close-chat" class="w-7 h-7 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors interactive cursor-hover-target">
-                    <i class="fa-solid fa-xmark text-xs"></i>
+                <button id="close-chat" class="w-10 h-10 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors interactive cursor-hover-target">
+                    <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div id="chatbot-messages" class="h-full p-4 flex flex-col gap-3.5 relative z-10 overflow-y-auto font-sans text-xs"></div>
+            <div id="chatbot-messages" class="h-full p-6 flex flex-col gap-5 relative z-10 bg-transparent overflow-y-auto font-sans text-sm pb-10">
+                <!-- Injected via JS -->
+            </div>
         </div>
         
-        <button id="chatbot-toggle" class="w-14 h-14 bg-offliq-red text-white rounded-full shadow-[0_0_30px_rgba(225,29,72,0.5)] flex items-center justify-center text-lg transition-all hover:scale-110 interactive cursor-hover-target border border-offliq-darkred">
-            <i class="fa-solid fa-terminal"></i>
+        <button id="chatbot-toggle" class="w-16 h-16 bg-offliq-red text-white rounded-full shadow-[0_0_40px_rgba(225,29,72,0.5)] flex items-center justify-center text-2xl transition-all hover:scale-110 interactive cursor-hover-target border border-offliq-darkred group">
+            <i class="fa-solid fa-terminal group-hover:hidden"></i>
+            <i class="fa-solid fa-robot hidden group-hover:block"></i>
         </button>
     </div>
 
-    <div id="download-modal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-        <div class="absolute inset-0 bg-black/85 backdrop-blur-sm interactive" onclick="closeDownloadModal()"></div>
-        
-        <div id="download-content" class="relative w-[90%] max-w-lg bg-[#0A0A0E] border border-offliq-red/40 rounded-2xl shadow-[0_0_60px_rgba(225,29,72,0.25)] flex flex-col transform scale-95 transition-transform duration-300 overflow-hidden sweep-glow">
-            
-            <div class="p-8 pb-4 relative z-10">
-                <div class="w-14 h-14 rounded-2xl bg-offliq-red/10 border border-offliq-red/30 flex items-center justify-center text-offliq-red text-xl mb-5 shadow-[0_0_20px_rgba(225,29,72,0.2)]">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h3 class="font-display text-2xl font-bold text-white tracking-tight mb-2">Encrypted Routing Notice</h3>
-                <p class="text-gray-400 font-sans text-sm leading-relaxed mb-5">
-                    You are requesting a heavy offline execution payload. Standard browser virus scanners cannot inspect raw binary matrix files of this size.
-                </p>
-                <div class="bg-black/60 border border-white/5 p-4 rounded-xl font-mono text-xs text-gray-300 leading-relaxed">
-                    <span class="text-offliq-red font-bold">> GATEWAY DIRECTIVE:</span><br>
-                    Upon redirection, authorize the transfer by clicking <span class="text-white font-bold bg-white/10 px-1.5 py-0.5 rounded">Download Anyway</span>.
-                </div>
-            </div>
-            
-            <div class="p-8 pt-4 flex justify-end gap-3 relative z-10">
-                <button onclick="closeDownloadModal()" class="px-4 py-2 text-xs font-semibold text-gray-400 hover:text-white transition-colors interactive cursor-hover-target">Cancel</button>
-                <a href="#" id="confirm-download-btn" target="_blank" rel="noopener noreferrer" onclick="closeDownloadModal()" class="btn-premium px-6 py-2 text-xs rounded-xl interactive cursor-hover-target shadow-none">
-                    Acknowledge & Transfer <i class="fa-solid fa-arrow-right ml-1"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
+    <!-- Scripts -->
     <script>
         // 1. SCROLL PROGRESS
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY;
             const docHeight = document.body.offsetHeight - window.innerHeight;
-            const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            const scrollPercent = (scrollTop / docHeight) * 100;
             document.getElementById('scroll-progress').style.width = scrollPercent + '%';
         });
 
-        // 2. MATH CURSOR
+        // 2. PERFECTED CONCENTRIC CURSOR & CANVAS
         const cursorDot = document.getElementById('cursor-dot');
         const cursorRing = document.getElementById('cursor-ring');
-        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-        let ringX = mouseX, ringY = mouseY;
-        let dotX = mouseX, dotY = mouseY;
+        let mouseX = -100, mouseY = -100;
+        let ringX = -100, ringY = -100;
 
-        if (window.innerWidth > 1024) {
-            window.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            });
-
-            function animateCursor() {
-                dotX += (mouseX - dotX) * 0.9;
-                dotY += (mouseY - dotY) * 0.9;
-                ringX += (mouseX - ringX) * 0.22;
-                ringY += (mouseY - ringY) * 0.22;
-
-                // CHANGED: Added calc offset to keep elements perfectly centered mathematically
-                cursorDot.style.transform = `translate(calc(${dotX}px - 50%), calc(${dotY}px - 50%))`;
-                cursorRing.style.transform = `translate(calc(${ringX}px - 50%), calc(${ringY}px - 50%))`;
-                requestAnimationFrame(animateCursor);
-            }
-            animateCursor();
-
-            const setupInteractiveHover = () => {
-                const interactives = document.querySelectorAll('.interactive, .cursor-hover-target, a, button, input, .custom-select-wrapper');
-                interactives.forEach(el => {
-                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-                });
-
-                // NEW: Magnetic GSAP Pull Logic
-                const magnetics = document.querySelectorAll('.magnetic');
-                magnetics.forEach(btn => {
-                    btn.addEventListener('mousemove', (e) => {
-                        const rect = btn.getBoundingClientRect();
-                        const x = (e.clientX - rect.left - rect.width / 2) * 0.3;
-                        const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
-                        gsap.to(btn, { x: x, y: y, duration: 0.3, ease: "power2.out" });
-                    });
-                    btn.addEventListener('mouseleave', () => {
-                        gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
-                    });
-                });
-            };
-            setupInteractiveHover();
-        }
-
-        // 3. NEURAL CONSTELLATION CANVAS
-        const canvas = document.getElementById('galaxy-canvas');
+        // Neural Canvas Engine
+        const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-        
+        let canvasWidth, canvasHeight, particles = [];
+
         function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            initParticles();
+            canvasWidth = canvas.width = window.innerWidth;
+            canvasHeight = canvas.height = window.innerHeight;
         }
-        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
         class Particle {
             constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.size = Math.random() * 1.8 + 0.6;
-                this.baseAlpha = Math.random() * 0.5 + 0.2;
-                this.alpha = this.baseAlpha;
+                this.x = Math.random() * canvasWidth;
+                this.y = Math.random() * canvasHeight;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.radius = Math.random() * 2 + 0.5;
+                this.baseColor = 'rgba(255, 255, 255, 0.2)';
             }
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-
-                const dx = mouseX - this.x;
-                const dy = mouseY - this.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 140) {
-                    this.x -= (dx / dist) * 0.6;
-                    this.y -= (dy / dist) * 0.6;
-                }
-
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
+                if(this.x < 0 || this.x > canvasWidth) this.vx *= -1;
+                if(this.y < 0 || this.y > canvasHeight) this.vy *= -1;
             }
             draw() {
-                ctx.fillStyle = '#E11D48';
-                ctx.globalAlpha = this.alpha;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.baseColor;
                 ctx.fill();
             }
         }
 
-        function initParticles() {
-            particles = [];
-            const count = window.innerWidth < 768 ? 45 : 110;
-            for(let i = 0; i < count; i++) particles.push(new Particle());
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        for(let i = 0; i < (window.innerWidth < 768 ? 40 : 100); i++) particles.push(new Particle());
 
         function animateConstellation() {
-            ctx.clearRect(0, 0, width, height);
-
-            for (let i = 0; i < particles.length; i++) {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            
+            for(let i=0; i<particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 110) {
-                        ctx.strokeStyle = '#E11D48';
-                        ctx.globalAlpha = (1 - dist / 110) * 0.15;
-                        ctx.lineWidth = 0.8;
+                
+                // Connect particles to each other
+                for(let j=i+1; j<particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 120) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - dist/120) * 0.1})`;
+                        ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
+                }
+                
+                // Connect particles to mouse
+                let mdx = particles[i].x - mouseX;
+                let mdy = particles[i].y - mouseY;
+                let mDist = Math.sqrt(mdx*mdx + mdy*mdy);
+                if(mDist < 200) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouseX, mouseY);
+                    ctx.strokeStyle = `rgba(225, 29, 72, ${(1 - mDist/200) * 0.6})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    
+                    // Highlight nearby particles
+                    ctx.beginPath();
+                    ctx.arc(particles[i].x, particles[i].y, particles[i].radius * 2, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(225, 29, 72, ${(1 - mDist/200)})`;
+                    ctx.fill();
                 }
             }
             requestAnimationFrame(animateConstellation);
         }
         animateConstellation();
 
-        // 4. SPOTLIGHT TRACKER
-        document.querySelectorAll('.sweep-glow').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--glow-x', `${x}px`);
-                card.style.setProperty('--glow-y', `${y}px`);
+        if (window.innerWidth > 1024) {
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                // Dot is instantly and mathematically locked to mouse
+                cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
             });
-        });
 
-        // 5. LENIS & GSAP
-        const lenis = new Lenis({ duration: 1.3, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+            function animateRing() {
+                // Ring lerps smoothly behind
+                ringX += (mouseX - ringX) * 0.2;
+                ringY += (mouseY - ringY) * 0.2;
+                cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+                requestAnimationFrame(animateRing);
+            }
+            animateRing();
+
+            const interactives = document.querySelectorAll('.cursor-hover-target, a, button, input, .custom-select-wrapper, .tab-btn');
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        }
+
+        // 3. INTERACTIVE TABS LOGIC
+        function switchTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // 4. CUSTOM JS TEXT SPLITTER
+        function splitText(selector) {
+            document.querySelectorAll(selector).forEach(el => {
+                const text = el.innerText;
+                el.innerHTML = '';
+                const words = text.split(' ');
+                words.forEach((word, index) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'split-parent';
+                    const childSpan = document.createElement('span');
+                    childSpan.className = 'split-child';
+                    
+                    if(word === "Cybernetic") {
+                        childSpan.className = 'split-child text-hollow interactive cursor-hover-target';
+                    } else if (word === "Compiler.") {
+                        childSpan.innerHTML = `Compiler<span class="text-offliq-red">.</span>` + (index < words.length - 1 ? '&nbsp;' : '');
+                    } else {
+                        childSpan.innerHTML = word + (index < words.length - 1 ? '&nbsp;' : '');
+                    }
+                    
+                    wordSpan.appendChild(childSpan);
+                    el.appendChild(wordSpan);
+                });
+            });
+        }
+        splitText('.text-split');
+
+        // 5. LENIS & GSAP INTEGRATION
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
         
         gsap.registerPlugin(ScrollTrigger);
-        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
+        // Hero Reveal
+        let heroTl = gsap.timeline({delay: 0.2});
+        gsap.set('.text-split .split-child', { y: "110%", rotationZ: 5 });
+        
+        heroTl.to('.text-split .split-child', {
+            y: "0%", rotationZ: 0,
+            duration: 1.2, stagger: 0.05, ease: "expo.out", force3D: true
+        }).fromTo('.gs-reveal', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: "power4.out" }, "-=0.8");
+        
+        gsap.fromTo('.gs-fade', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, ease: "expo.out", delay: 0.5 });
+
+        // Standard Scroll Reveals
         gsap.utils.toArray('.gs-scroll-reveal').forEach(el => {
-            gsap.fromTo(el, { y: 50, opacity: 0 }, { scrollTrigger: { trigger: el, start: "top 85%" }, y: 0, opacity: 1, duration: 1.2, ease: "expo.out" });
-        });
-        gsap.fromTo('.gs-hero-container', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, ease: "expo.out" });
-        gsap.fromTo('.gs-reveal', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.12, ease: "power3.out", delay: 0.3 });
-
-        let cards = gsap.utils.toArray(".stack-card");
-        cards.forEach((card, i) => {
-            if(i < cards.length - 1) {
-                gsap.to(card, {
-                    scale: 0.93, opacity: 0.4, filter: "blur(3px)",
-                    scrollTrigger: { trigger: cards[i+1], start: "top 75%", end: "top 20%", scrub: true }
-                });
-            }
+            gsap.fromTo(el, { y: 60, opacity: 0 }, { scrollTrigger: { trigger: el, start: "top 85%" }, y: 0, opacity: 1, duration: 1.5, ease: "expo.out" });
         });
 
+        // PARALLAX TECH MARQUEE
+        gsap.to("#tech-marquee-1", {
+            xPercent: -20, ease: "none",
+            scrollTrigger: { trigger: "#tech-marquee-1", start: "top bottom", end: "bottom top", scrub: true }
+        });
+        gsap.to("#tech-marquee-2", {
+            xPercent: 10, ease: "none",
+            scrollTrigger: { trigger: "#tech-marquee-2", start: "top bottom", end: "bottom top", scrub: true }
+        });
+
+        // HORIZONTAL SCROLL PIPELINE
         if(window.innerWidth > 768) {
             let horizontalPanels = gsap.utils.toArray(".horizontal-panel");
             gsap.to(horizontalPanels, {
@@ -899,81 +981,75 @@
                 scrollTrigger: { trigger: ".horizontal-wrapper", pin: true, scrub: 1, end: () => "+=" + document.querySelector(".horizontal-wrapper").offsetWidth }
             });
         } else {
-            const hCont = document.querySelector('.horizontal-container');
-            if (hCont) {
-                hCont.style.flexDirection = 'column';
-                hCont.style.width = '100%';
-                document.querySelectorAll('.horizontal-panel').forEach(p => { p.style.width = '100%'; p.style.height = 'auto'; p.style.padding = '4rem 2rem'; });
-            }
+            document.querySelector('.horizontal-container').style.flexDirection = 'column';
+            document.querySelector('.horizontal-container').style.width = '100%';
+            document.querySelectorAll('.horizontal-panel').forEach(p => { p.style.width = '100%'; p.style.height = 'auto'; p.style.padding = '4rem 2rem'; });
         }
 
-        // 6. FORM LOGIC
+        // 6. CUSTOM DROPDOWN LOGIC
         const dropdown = document.getElementById('custom-dropdown');
         const selectLabel = document.getElementById('select-label');
         const hiddenInput = document.getElementById('inquiry-type');
         const options = document.querySelectorAll('.custom-option');
+        const dropdownIcon = document.getElementById('dropdown-icon');
 
-        if (dropdown) {
-            dropdown.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdown.classList.toggle('open');
-            });
-            options.forEach(opt => {
-                opt.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    selectLabel.innerText = opt.innerText;
-                    selectLabel.style.color = "#ffffff";
-                    hiddenInput.value = opt.getAttribute('data-value');
-                    dropdown.classList.remove('open');
-                });
-            });
-            document.addEventListener('click', (e) => {
-                if (!dropdown.contains(e.target)) dropdown.classList.remove('open');
-            });
-        }
-
-        const form = document.getElementById('offliq-form');
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const btn = document.getElementById('submit-btn');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<span>Encrypting Dispatch...</span>';
-                setTimeout(() => {
-                    btn.innerHTML = '<span class="text-green-400 font-bold">Transmission Secured</span>';
-                    setTimeout(() => { btn.innerHTML = orig; form.reset(); selectLabel.innerText = 'Select Protocol...'; }, 3000);
-                }, 1200);
-            });
-        }
-
-        // 7. DOWNLOAD MODAL
-        const downloadModal = document.getElementById('download-modal');
-        const downloadContent = document.getElementById('download-content');
-        const confirmDownloadBtn = document.getElementById('confirm-download-btn');
-
-        function openDownloadModal(url) {
-            if (confirmDownloadBtn) confirmDownloadBtn.href = url;
-            if (downloadModal && downloadContent) {
-                downloadModal.classList.remove('hidden');
-                void downloadModal.offsetWidth;
-                downloadModal.classList.remove('opacity-0');
-                downloadContent.classList.remove('scale-95');
-                document.body.style.overflow = 'hidden';
+        dropdown.addEventListener('click', () => {
+            dropdown.classList.toggle('open');
+            if(dropdown.classList.contains('open')) {
+                dropdownIcon.style.transform = 'translateY(-50%) rotate(180deg)';
+                dropdownIcon.style.color = '#fff';
+            } else {
+                dropdownIcon.style.transform = 'translateY(-50%) rotate(0deg)';
+                dropdownIcon.style.color = '#9ca3af';
             }
-        }
-
-        function closeDownloadModal() {
-            if (downloadModal && downloadContent) {
-                downloadModal.classList.add('opacity-0');
-                downloadContent.classList.add('scale-95');
-                setTimeout(() => {
-                    downloadModal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }, 300);
+        });
+        
+        options.forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                selectLabel.innerText = e.target.innerText;
+                selectLabel.style.color = "#fff";
+                hiddenInput.value = e.target.dataset.value;
+            });
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+                dropdownIcon.style.transform = 'translateY(-50%) rotate(0deg)';
+                dropdownIcon.style.color = '#9ca3af';
             }
-        }
+        });
 
-        // 8. CHATBOT LOGIC (Escaped safely)
+        // SOTA FIX: SILENT AJAX EMAIL SUBMISSION VIA WEB3FORMS
+        document.getElementById('offliq-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="animate-pulse">Encrypting Payload...</span>';
+            
+            const formData = new FormData(form);
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async (response) => {
+                if (response.status == 200) {
+                    btn.innerHTML = '<span class="text-green-400 font-bold tracking-wide">Transmission Secured</span>';
+                    setTimeout(() => { btn.innerHTML = originalText; form.reset(); selectLabel.innerText = 'Select Protocol...'; }, 3000);
+                } else {
+                    btn.innerHTML = '<span class="text-red-500 font-bold tracking-wide">Transmission Failed</span>';
+                    setTimeout(() => btn.innerHTML = originalText, 3000);
+                }
+            })
+            .catch(error => {
+                btn.innerHTML = '<span class="text-red-500 font-bold tracking-wide">Network Error</span>';
+                setTimeout(() => btn.innerHTML = originalText, 3000);
+            });
+        });
+
+        // 7. EXPANDED CHATBOT LORE (45+ Nodes)
         const chatbotToggle = document.getElementById('chatbot-toggle');
         const chatbotWindow = document.getElementById('chatbot-window');
         const closeChatBtn = document.getElementById('close-chat');
@@ -981,100 +1057,89 @@
         let chatOpen = false, chatInitialized = false;
 
         const botFlow = {
-            "start": { 
-                msg: "Matrix Active. I am the OFFLIQ V1.3 Architecture Router. Select a diagnostic channel:", 
-                options: [
-                    { text: "Core Architecture", next: "arch_main" },
-                    { text: "AST Memory & RAG", next: "rag_main" },
-                    { text: "Air-Gap Security", next: "sec_main" },
-                    { text: "Hardware & KV Cache", next: "hw_main" }
-                ] 
-            },
-            "arch_main": { 
-                msg: "OFFLIQ V1.3 enforces a deterministic, AST-driven pipeline instead of generic probabilistic chat.", 
-                options: [
-                    { text: "What is the AST Hyper-Graph?", next: "arch_ast" },
-                    { text: "How does Sandboxing operate?", next: "arch_sandbox" },
-                    { text: "Back to Root", next: "start" }
-                ] 
-            },
-            "arch_ast": { 
-                msg: "The Hyper-Graph maps code workspaces mathematically. Instead of flooding tokens with thousands of lines, the model consumes a 50-token AST map to target modifications with zero truncation.", 
-                options: [{ text: "Back to Root", next: "start" }] 
-            },
-            "arch_sandbox": { 
-                msg: "C++ inference runs inside an isolated background microservice thread. Even under maximum VRAM saturation, the main UI and OS processes never freeze.", 
-                options: [{ text: "Back to Root", next: "start" }] 
-            },
-            "rag_main": { 
-                msg: "Memory indexes use local embedding vectors backed by hybrid BM25 lexical ranking.", 
-                options: [
-                    { text: "Which models are supported?", next: "rag_model" },
-                    { text: "Back to Root", next: "start" }
-                ] 
-            },
-            "rag_model": { 
-                msg: "Natively configured for GGUF architectures with 8192 context windows and delta-hash indexing to eliminate redundant CPU re-scans.", 
-                options: [{ text: "Back to Root", next: "start" }] 
-            },
-            "sec_main": { 
-                msg: "Absolute air-gap assurance: zero outbound telemetry, zero cloud analytics, and hardware UAC approval required before OS script execution.", 
-                options: [{ text: "Back to Root", next: "start" }] 
-            },
-            "hw_main": { 
-                msg: "Dynamic KV cache quantization scales down memory consumption to execute deep context refactoring smoothly on standard 8GB workstations.", 
-                options: [{ text: "Back to Root", next: "start" }] 
-            }
+            "start": { msg: "Matrix Online. I am the Gatekeeper Agent. Select a diagnostic channel:", options: [{ text: "V1.3 Architecture", next: "arch_main" }, { text: "RAG & Memory Matrix", next: "rag_main" }, { text: "Security & Plugins", next: "sec_main" }, { text: "Hardware Specs", next: "hw_main" }, { text: "Licensing", next: "lic_main" }] },
+            
+            // ARCHITECTURE
+            "arch_main": { msg: "OFFLIQ uses a deterministic pipeline. Which element?", options: [{ text: "AST Hyper-Graph", next: "arch_ast" }, { text: "Subprocess Sandboxing", next: "arch_sandbox" }, { text: "GBNF Grammar", next: "arch_gbnf" }, { text: "Infinite Buffer", next: "arch_buffer" }, { text: "Back to Menu", next: "start" }] },
+            "arch_ast": { msg: "The Hyper-Graph maps your entire python workspace mathematically. Instead of reading 10,000 lines of code, the AI reads a 50-token map to locate exactly what to edit.", options: [{ text: "How does it refactor?", next: "arch_ast_refactor" }, { text: "Back to Architecture", next: "arch_main" }] },
+            "arch_ast_refactor": { msg: "It doesn't use EDIT_FILE for large changes. It writes a CodeMod python script (using re.sub) and executes it natively to patch 50 files in 4 seconds.", options: [{ text: "Back to Architecture", next: "arch_main" }] },
+            "arch_buffer": { msg: "Architect Mode engages a disk-backed memory stream (.tmp file). It streams code directly to the hard drive, preventing VRAM overflow during massive file creation.", options: [{ text: "Back to Architecture", next: "arch_main" }] },
+            "arch_sandbox": { msg: "We execute the C++ LLM inference in an isolated background microservice. This grants it full memory access while guaranteeing the UI never freezes.", options: [{ text: "Back to Architecture", next: "arch_main" }] },
+            "arch_gbnf": { msg: "GBNF forces the C++ engine to mathematically restrict output to pure JSON/Tool blocks. The AI physically cannot type conversational filler.", options: [{ text: "Back to Architecture", next: "arch_main" }] },
+
+            // RAG & MEMORY
+            "rag_main": { msg: "Vector Memory is handled by our CPU-isolated embedding matrix.", options: [{ text: "Nomic V2 MoE Integration", next: "rag_nomic" }, { text: "Delta-Sync Engine", next: "rag_sync" }, { text: "Semantic Chunking", next: "rag_chunk" }, { text: "Back to Menu", next: "start" }] },
+            "rag_nomic": { msg: "We natively support 'nomic-embed-text-v1.5-GGUF' and V2 MoE. It supports 8192 tokens and fits in ~250MB of RAM, running entirely on the CPU.", options: [{ text: "How does it search?", next: "rag_search" }, { text: "Back to Memory", next: "rag_main" }] },
+            "rag_search": { msg: "We replaced slow iteration loops with hyper-dimensional NumPy matrix multiplication. It fuses semantic vectors with BM25 keyword matching for 100x faster searches.", options: [{ text: "Back to Memory", next: "rag_main" }] },
+            "rag_sync": { msg: "The Omni-Scanner hashes your files via SHA-256. It only re-indexes code blocks that actually changed, reducing CPU load by 99%.", options: [{ text: "Back to Memory", next: "rag_main" }] },
+            "rag_chunk": { msg: "We don't chunk by random paragraphs. We chunk by `class` and `def`. The AI gets whole, unbroken logical functions.", options: [{ text: "Back to Memory", next: "rag_main" }] },
+
+            // SECURITY & PLUGINS
+            "sec_main": { msg: "OFFLIQ is built for Zero-Trust enterprise environments.", options: [{ text: "Air-Gapped Privacy", next: "sec_offline" }, { text: "UAC Blast Shield", next: "sec_uac" }, { text: "Plugin Vault", next: "sec_plugins" }, { text: "Back to Menu", next: "start" }] },
+            "sec_offline": { msg: "100%. We have zero telemetry, zero analytics, and zero cloud API connections. Pull the ethernet cord—it still compiles.", options: [{ text: "Back to Security", next: "sec_main" }] },
+            "sec_uac": { msg: "Code execution requires human intent. High-risk commands trigger a native Windows UAC prompt requiring physical approval.", options: [{ text: "Back to Security", next: "sec_main" }] },
+            "sec_plugins": { msg: "Third-party plugins run in a holographic thread. They are locked with a SHA-256 signature. If altered by malware, execution is blocked.", options: [{ text: "Back to Security", next: "sec_main" }] },
+
+            // HARDWARE
+            "hw_main": { msg: "Performance scales dynamically via Hardware Telemetry.", options: [{ text: "Ghost Flush Protocol", next: "hw_flush" }, { text: "KV Cache Quantization", next: "hw_kv" }, { text: "Minimum Requirements", next: "hw_min" }, { text: "Back to Menu", next: "start" }] },
+            "hw_flush": { msg: "The See-Saw strategy. The engine violently purges the Heavy Logic model from VRAM immediately after generating, keeping your PC fast for other tasks.", options: [{ text: "Back to Hardware", next: "hw_main" }] },
+            "hw_kv": { msg: "We crush the AI's short-term memory precision from FP16 down to Q8_0 or Q4_K_M. This doubles your context window without crashing the GPU.", options: [{ text: "Back to Hardware", next: "hw_main" }] },
+            "hw_min": { msg: "Minimum: 8GB VRAM (Tier 1: 9B Logic). Recommended: 16GB-24GB VRAM (Tier 2: 32B Logic). Enterprise: 60GB+ VRAM (Tier 3: 72B Logic).", options: [{ text: "Back to Hardware", next: "hw_main" }] },
+
+            // LICENSING
+            "lic_main": { msg: "We operate on a CapEx (Capital Expenditure) model.", options: [{ text: "Cost Breakdown", next: "lic_cost" }, { text: "API Fees", next: "lic_api" }, { text: "Delivery Method", next: "lic_deliv" }, { text: "Back to Menu", next: "start" }] },
+            "lic_cost": { msg: "A lifetime perpetual license is ₹80,000 per engineering node. Volume discounts apply for servers.", options: [{ text: "Back to Licensing", next: "lic_main" }] },
+            "lic_api": { msg: "Zero. Because the inference runs locally on your silicon, there are no recurring OpenAI/Anthropic token taxes.", options: [{ text: "Back to Licensing", next: "lic_main" }] },
+            "lic_deliv": { msg: "You receive an encrypted 72GB payload containing the binaries and models. The License Key is bound to your hardware's UUID.", options: [{ text: "Back to Licensing", next: "lic_main" }] }
         };
 
         function addBotMessage(text) {
             const msgDiv = document.createElement('div');
-            msgDiv.className = "flex items-start gap-2.5 w-full max-w-[90%]";
-            msgDiv.innerHTML = "<div class='w-6 h-6 rounded-full bg-black border border-offliq-red/40 flex items-center justify-center shrink-0 text-offliq-red text-[10px]'><i class='fa-solid fa-microchip'></i></div><div class='bg-white/5 border border-white/10 p-3 rounded-2xl rounded-tl-none text-gray-300 leading-relaxed'>" + text + "</div>";
+            msgDiv.className = "flex items-start gap-3 w-full max-w-[90%] opacity-0 transform translate-y-4 transition-all duration-500 ease-out";
+            msgDiv.innerHTML = `<div class="w-8 h-8 rounded-full bg-[#0A0A0C] border border-offliq-red/30 flex items-center justify-center shrink-0 shadow-glass"><i class="fa-solid fa-microchip text-offliq-red text-xs"></i></div><div class="bg-white/5 border border-white/10 p-3.5 rounded-2xl rounded-tl-none text-[13px] text-gray-300 shadow-xl leading-relaxed backdrop-blur-md">${text}</div>`;
             chatMessages.appendChild(msgDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            setTimeout(() => { msgDiv.classList.remove('opacity-0', 'translate-y-4'); chatMessages.scrollTop = chatMessages.scrollHeight; }, 50);
         }
 
         function addUserMessage(text) {
             const msgDiv = document.createElement('div');
-            msgDiv.className = "flex justify-end w-full mb-1";
-            msgDiv.innerHTML = "<div class='bg-offliq-red text-white p-2.5 rounded-2xl rounded-tr-none max-w-[85%] font-medium leading-relaxed'>" + text + "</div>";
+            msgDiv.className = "flex justify-end w-full mb-3 opacity-0 transform translate-y-4 transition-all duration-500 ease-out";
+            msgDiv.innerHTML = `<div class="bg-offliq-red text-white p-3.5 rounded-2xl rounded-tr-none text-[13px] shadow-lg max-w-[85%] font-semibold tracking-wide border border-offliq-darkred">${text}</div>`;
             chatMessages.appendChild(msgDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            setTimeout(() => { msgDiv.classList.remove('opacity-0', 'translate-y-4'); chatMessages.scrollTop = chatMessages.scrollHeight; }, 50);
         }
 
         function renderNode(nodeId) {
             const node = botFlow[nodeId];
-            if (!node) return;
+            if(!node) return;
             
             const typingDiv = document.createElement('div');
-            typingDiv.className = "flex items-center gap-2 text-offliq-dim text-[10px] ml-8 mb-2 font-mono uppercase tracking-wider";
-            typingDiv.innerHTML = "Routing <span class='animate-pulse'>...</span>";
+            typingDiv.className = "flex items-center gap-2 text-offliq-dim text-[11px] ml-11 mb-2 font-mono uppercase tracking-widest";
+            typingDiv.innerHTML = "Routing <span class=\"animate-pulse\">...</span>";
             chatMessages.appendChild(typingDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             setTimeout(() => {
                 typingDiv.remove();
                 addBotMessage(node.msg);
-                
                 setTimeout(() => {
                     const optionsDiv = document.createElement('div');
-                    optionsDiv.className = "flex flex-col gap-1.5 mt-1.5 w-full max-w-[88%] ml-8 mb-4";
+                    optionsDiv.className = "flex flex-col gap-2 mt-2 w-full max-w-[85%] ml-11 mb-6 opacity-0 transform translate-y-4 transition-all duration-500 ease-out"; 
                     node.options.forEach(opt => {
                         const btn = document.createElement('button');
-                        btn.className = "text-left text-xs bg-black/60 hover:bg-white/5 border border-white/10 hover:border-offliq-red transition-all p-2.5 rounded-xl text-gray-300 flex items-center justify-between group interactive cursor-hover-target";
-                        btn.innerHTML = "<span>" + opt.text + "</span> <i class='fa-solid fa-chevron-right text-[9px] opacity-0 group-hover:opacity-100 text-offliq-red transition-opacity'></i>";
+                        btn.className = "text-left text-[13px] font-semibold bg-[#0A0A0C] hover:bg-white/5 border border-white/10 hover:border-offliq-red transition-all p-3.5 rounded-xl text-gray-300 flex items-center justify-between group interactive cursor-hover-target shadow-glass";
+                        btn.innerHTML = `<span class="flex items-center gap-2">${opt.text}</span> <i class="fa-solid fa-arrow-right text-[10px] opacity-0 group-hover:opacity-100 text-offliq-red transition-all transform group-hover:translate-x-1"></i>`;
                         btn.onclick = () => {
-                            Array.from(optionsDiv.children).forEach(b => { b.disabled = true; b.classList.add('opacity-30'); });
+                            Array.from(optionsDiv.children).forEach(b => { b.disabled = true; b.classList.add('opacity-30', 'cursor-not-allowed'); });
                             addUserMessage(opt.text);
-                            setTimeout(() => renderNode(opt.next), 300);
+                            setTimeout(() => renderNode(opt.next), 500);
                         };
                         optionsDiv.appendChild(btn);
                     });
                     chatMessages.appendChild(optionsDiv);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 300);
-            }, 400);
+                    setTimeout(() => { optionsDiv.classList.remove('opacity-0', 'translate-y-4'); chatMessages.scrollTop = chatMessages.scrollHeight; }, 50);
+                }, 400);
+            }, 600);
         }
 
         function toggleChat() {
@@ -1085,23 +1150,18 @@
                     chatbotWindow.classList.remove('scale-95', 'opacity-0');
                     chatbotToggle.innerHTML = '<i class="fa-solid fa-xmark"></i>';
                 }, 10);
-                if (!chatInitialized) { 
-                    setTimeout(() => renderNode('start'), 200); 
-                    chatInitialized = true; 
-                }
+                if (!chatInitialized) { setTimeout(() => renderNode('start'), 400); chatInitialized = true; }
             } else {
                 chatbotWindow.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
                     chatbotWindow.classList.add('hidden');
                     chatbotToggle.innerHTML = '<i class="fa-solid fa-terminal"></i>';
-                }, 250);
+                }, 300);
             }
         }
+        chatbotToggle.addEventListener('click', toggleChat);
+        closeChatBtn.addEventListener('click', toggleChat);
 
-        if (chatbotToggle && closeChatBtn) {
-            chatbotToggle.addEventListener('click', toggleChat);
-            closeChatBtn.addEventListener('click', toggleChat);
-        }
     </script>
 </body>
 </html>
